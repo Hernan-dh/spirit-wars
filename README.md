@@ -92,8 +92,8 @@ Meshes and materials are native Godot resources; no external asset tools are req
 - **End Turn** hands local control to the other team, even if actions remain. Jade starts.
 - Defeating a team's last surviving unit ends the battle and displays the winner. Movement, attacks, selection, and turn changes stop. Choose **Restart Encounter** (or press Enter with the button focused) to restore the starting encounter, including all four units at full health, Jade's first turn, and the opening camera.
 
-Two jade pawns face two ember pawns on rows 12 and 3 of the field. Each has a
-team-colored body and base plus a team/name label and visible health. Every unit starts with **3 HP**; health persists between turns. A unit at zero health is removed and its hex becomes available. Selection adds a gold ground
+Two Jade Lantern Spirits face two Ember Lantern Spirits on rows 12 and 3 of the field. Each has a
+team-colored base plus a team/name label and visible health. Every unit starts with **3 HP**; health persists between turns. A unit at zero health is removed and its hex becomes available. Selection adds a gold ground
 ring and overhead pointer, while the top-right panel names the selected unit.
 Only one unit is selected at a time; both teams can be inspected. Only the active
 team can act. Each unit can move once and attack once, in either order, per
@@ -103,7 +103,7 @@ shows the turn, active team, and selected unit's remaining actions. Both teams
 are controlled locally; there is no AI or networking.
 
 `scenes/units/skirmish.tscn` holds the four editable starting positions and team
-assignments. `scenes/units/placeholder_unit.tscn` is the reusable pawn; its `team`
+assignments. `scenes/units/lantern_spirit.tscn` is the reusable Lantern Spirit; its `team`
 and `unit_number` properties also update its appearance in the editor. Selection
 uses 3D collision picking on physics layer 2, with hex ground picking on layer 1.
 
@@ -146,3 +146,26 @@ installed, prefix the command with `xvfb-run -a` for an unattended rebuild.
 Regeneration **overwrites the battlefield and prop scene files**, including any
 manual scene edits. Normal game/editor use does not run this script. Temporary
 validation scripts and preview renders belong in the ignored `tmp/` directory.
+
+## Lantern Spirit
+
+The encounter uses the Lantern Spirit from the unit sheet in
+`references/sw_concept_2.png`, with materials that match the sanctuary palette in
+`references/sw_concept_1.png`. Its glowing amber paper body, gold ribs, blue swept
+pagoda roof, hanging hook, prayer seals, red tassel, streaming silks, and two flame
+wisps are native editable Godot meshes in `scenes/units/lantern_visual.tscn`.
+The spirit hovers and sways, with gently flickering warm light. Jade and Ember
+retain their colored bases and labels; selection adds the gold ring and pointer.
+Spirit Pulse fires a small arcing firebolt and an expanding amber impact ring.
+The existing three HP, three-hex move/range, one-damage attack, and turn rules apply.
+
+`lantern_spirit.tscn` inherits the shared pawn scene and replaces its visible body,
+head, pick shape, and label heights. `scripts/lantern_spirit.gd` extends the shared
+unit behavior with idle animation and the fire effect. To rebuild the visual mesh
+scene after editing its authoring source:
+
+```sh
+godot --headless --path . --script tools/build_lantern_spirit.gd
+```
+
+This overwrites only `scenes/units/lantern_visual.tscn`. No rebuild is needed to play.
