@@ -33,13 +33,24 @@ asset tools or packages are required.
 - **Right-mouse drag** rotates and tilts around the current focus; **Q / E** rotate horizontally.
 - **Mouse wheel** zooms in and out.
 - **R** restores the opening position, angle, and zoom.
+- **Left click** a unit from either team to select it. Click empty space or press **Esc** to clear selection.
+
+Two jade pawns face two ember pawns on opposite rows of the board. Each has a
+team-colored body and base plus a team/name label. Selection adds a gold ground
+ring and overhead pointer, while the top-right panel names the selected unit.
+Only one unit is selected at a time; both teams can be inspected.
+
+`scenes/units/skirmish.tscn` holds the four editable starting positions and team
+assignments. `scenes/units/placeholder_unit.tscn` is the reusable pawn; its `team`
+and `unit_number` properties also update its appearance in the editor. Selection
+uses 3D collision picking on physics layer 2, with board occlusion on layer 1.
 
 Panning stays within eight world units of the opening focus on each ground axis.
 Zoom and tilt are limited to keep the view usable and above the battlefield.
 Speeds, pan limits, and zoom limits are adjustable on `CameraRig` in the inspector;
 keyboard bindings live in Project Settings → Input Map. The small title and
-control legend appear only at runtime. There are no units, combat systems,
-turn rules, or tile-selection behavior.
+control legend appear only at runtime. There are no movement, combat systems,
+turn rules, or tile-selection behavior yet.
 
 ## Rebuilding the initial layout
 

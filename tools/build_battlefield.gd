@@ -461,6 +461,8 @@ func build_battlefield() -> void:
 	make_bridge(root)
 	make_atmosphere(root)
 	make_camera(root)
+	var skirmish := preload("res://scenes/units/skirmish.tscn").instantiate()
+	root.add_child(skirmish)
 	var packed := save_scene(root,"res://scenes/battlefields/moonwell_courtyard.tscn")
 	print("Saved Moonwell Courtyard: 49 hexes, editable scenery, camera and lighting.")
 

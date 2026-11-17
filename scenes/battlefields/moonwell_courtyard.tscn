@@ -8,6 +8,8 @@
 [ext_resource type="Script" path="res://scripts/battlefield_camera.gd" id="6_di4o0"]
 [ext_resource type="Script" path="res://scripts/courtyard_labels.gd" id="7_7go63"]
 
+[ext_resource type="PackedScene" path="res://scenes/units/skirmish.tscn" id="8_skirmish"]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ovnv4"]
 resource_name = "StoneDark"
 albedo_color = Color(0.2, 0.28627452, 0.3372549, 1)
@@ -15338,3 +15340,5 @@ far = 150.0
 
 [node name="CourtyardLabels" type="CanvasLayer" parent="." unique_id=1370530651]
 script = ExtResource("7_7go63")
+
+[node name="Skirmish" parent="." instance=ExtResource("8_skirmish")]

@@ -1,0 +1,103 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/placeholder_unit.gd" id="1_unit"]
+
+[sub_resource type="StandardMaterial3D" id="TeamMaterial"]
+albedo_color = Color(0.322, 0.878, 0.753, 1)
+
+[sub_resource type="StandardMaterial3D" id="Porcelain"]
+albedo_color = Color(0.88, 0.91, 0.86, 1)
+roughness = 0.45
+
+[sub_resource type="StandardMaterial3D" id="SelectionGold"]
+shading_mode = 0
+albedo_color = Color(1, 0.86, 0.36, 1)
+
+[sub_resource type="CylinderMesh" id="BaseMesh"]
+top_radius = 0.48
+bottom_radius = 0.53
+height = 0.13
+radial_segments = 32
+
+[sub_resource type="CylinderMesh" id="BodyMesh"]
+top_radius = 0.24
+bottom_radius = 0.39
+height = 0.8
+radial_segments = 16
+
+[sub_resource type="SphereMesh" id="HeadMesh"]
+radius = 0.25
+height = 0.5
+radial_segments = 24
+rings = 12
+
+[sub_resource type="TorusMesh" id="RingMesh"]
+inner_radius = 0.57
+outer_radius = 0.69
+rings = 48
+ring_segments = 8
+
+[sub_resource type="CylinderMesh" id="MarkerMesh"]
+top_radius = 0.16
+bottom_radius = 0.0
+height = 0.27
+radial_segments = 4
+
+[sub_resource type="CapsuleShape3D" id="PickShape"]
+radius = 0.43
+height = 1.65
+
+[sub_resource type="CylinderShape3D" id="BaseShape"]
+radius = 0.54
+height = 0.16
+
+[node name="PlaceholderUnit" type="StaticBody3D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_unit")
+
+[node name="TeamBase" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.065, 0)
+mesh = SubResource("BaseMesh")
+material_override = SubResource("TeamMaterial")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.53, 0)
+mesh = SubResource("BodyMesh")
+material_override = SubResource("TeamMaterial")
+
+[node name="Head" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.17, 0)
+mesh = SubResource("HeadMesh")
+material_override = SubResource("Porcelain")
+
+[node name="PickShape" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.825, 0)
+shape = SubResource("PickShape")
+
+[node name="BaseShape" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.08, 0)
+shape = SubResource("BaseShape")
+
+[node name="SelectionRing" type="MeshInstance3D" parent="."]
+visible = false
+position = Vector3(0, 0.075, 0)
+mesh = SubResource("RingMesh")
+material_override = SubResource("SelectionGold")
+cast_shadow = 0
+
+[node name="SelectionMarker" type="MeshInstance3D" parent="."]
+visible = false
+position = Vector3(0, 1.72, 0)
+mesh = SubResource("MarkerMesh")
+material_override = SubResource("SelectionGold")
+cast_shadow = 0
+
+[node name="Badge" type="Label3D" parent="."]
+position = Vector3(0, 2.1, 0)
+billboard = 1
+text = "JADE 01"
+font_size = 24
+outline_size = 8
+pixel_size = 0.013
+outline_modulate = Color(0.025, 0.05, 0.07, 1)

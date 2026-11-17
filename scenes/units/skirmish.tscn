@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/unit_selection.gd" id="1_selection"]
+[ext_resource type="PackedScene" path="res://scenes/units/placeholder_unit.tscn" id="2_unit"]
+
+[node name="Skirmish" type="Node3D"]
+script = ExtResource("1_selection")
+
+[node name="Jade01" parent="." instance=ExtResource("2_unit")]
+position = Vector3(-1.2210958, 0.35, 2.82)
+
+[node name="Jade02" parent="." instance=ExtResource("2_unit")]
+position = Vector3(2.0351596, 0.35, 2.82)
+unit_number = 2
+
+[node name="Ember01" parent="." instance=ExtResource("2_unit")]
+position = Vector3(-1.2210958, 0.35, -2.82)
+team = 1
+
+[node name="Ember02" parent="." instance=ExtResource("2_unit")]
+position = Vector3(2.0351596, 0.35, -2.82)
+team = 1
+unit_number = 2
