@@ -5,6 +5,7 @@ signal selection_changed(unit: PlaceholderUnit)
 signal state_changed
 
 const NEIGHBORS := [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1), Vector2i(1, -1), Vector2i(-1, 1)]
+const MOVE_RANGE := 3
 
 var selected_unit: PlaceholderUnit
 var active_team: PlaceholderUnit.Team = PlaceholderUnit.Team.JADE
@@ -64,9 +65,23 @@ func available_moves(unit: PlaceholderUnit) -> Array[Vector2i]:
 	var result: Array[Vector2i] = []
 	if not can_act(unit) or unit.has_moved:
 		return result
-	for offset: Vector2i in NEIGHBORS:
-		var cell: Vector2i = unit_tiles[unit] + offset
-		if tiles.has(cell) and not cell in unit_tiles.values():
+	# Breadth-first search counts the shortest walk around occupied hexes.
+	var origin := unit_tiles[unit]
+	var frontier: Array[Vector2i] = [origin]
+	var distances: Dictionary[Vector2i, int] = {origin: 0}
+	var occupied := unit_tiles.values()
+	var index := 0
+	while index < frontier.size():
+		var current := frontier[index]
+		index += 1
+		if distances[current] >= MOVE_RANGE:
+			continue
+		for offset: Vector2i in NEIGHBORS:
+			var cell := current + offset
+			if not tiles.has(cell) or cell in occupied or distances.has(cell):
+				continue
+			distances[cell] = distances[current] + 1
+			frontier.append(cell)
 			result.append(cell)
 	return result
 
@@ -80,7 +95,7 @@ func try_move(unit: PlaceholderUnit, cell: Vector2i) -> bool:
 		elif unit.has_moved:
 			feedback = "%s has already moved this turn." % unit.display_name()
 		else:
-			feedback = "Choose a highlighted, empty adjacent hex."
+			feedback = "Choose a highlighted hex within %d steps." % MOVE_RANGE
 		state_changed.emit()
 		return false
 	unit_tiles[unit] = cell
@@ -156,9 +171,9 @@ func select_unit(unit: PlaceholderUnit) -> void:
 		elif unit.has_moved:
 			feedback = "Move used. Spirit Pulse is still available."
 		elif available_moves(unit).is_empty():
-			feedback = "No empty adjacent hexes to move to."
+			feedback = "No reachable empty hexes to move to."
 		else:
-			feedback = "Click a highlighted hex to move."
+			feedback = "Click a highlighted hex to move up to %d steps." % MOVE_RANGE
 	selection_changed.emit(selected_unit)
 	_refresh()
 

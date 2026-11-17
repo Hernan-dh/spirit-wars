@@ -80,7 +80,7 @@ func _ready() -> void:
 	feedback_label = add_status_row(rows, "", 14, Color("ffe08a"))
 	feedback_label.custom_minimum_size = Vector2(276, 48)
 	feedback_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	add_status_row(rows, "Click unit to select / inspect\nGold rings: available moves\nEmpty space / Esc to clear", 13, Color("a7bbc3"))
+	add_status_row(rows, "Click unit to select / inspect\nGold rings: reachable within %d hexes\nEmpty space / Esc to clear" % SkirmishController.MOVE_RANGE, 13, Color("a7bbc3"))
 	skirmish.state_changed.connect(_refresh_status)
 	_refresh_status()
 

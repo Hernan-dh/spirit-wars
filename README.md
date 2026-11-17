@@ -34,7 +34,7 @@ asset tools or packages are required.
 - **Mouse wheel** zooms in and out.
 - **R** restores the opening position, angle, and zoom.
 - **Left click** a unit from either team to select or inspect it. Click empty space or press **Esc** to clear selection.
-- During the active team's turn, **click a gold-ringed hex** to move the selected unit one adjacent hex. Occupied hexes are unavailable.
+- During the active team's turn, **click a gold-ringed hex** to move the selected unit up to three hexes in one move. Gold rings mark every empty destination reachable within three steps; units cannot move through occupied hexes or off the board.
 - **Spirit Pulse** uses the selected unit's ability: a team-colored expanding burst (visual starter ability; no damage yet).
 - **End Turn** hands local control to the other team, even if actions remain. Jade starts.
 
