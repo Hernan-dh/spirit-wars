@@ -18,7 +18,7 @@ var _highlights: Dictionary[Vector2i, MeshInstance3D] = {}
 var _pending_clicks: Array[Vector2] = []
 
 func _ready() -> void:
-	for tile: Node3D in get_parent().get_node("Board_7x7").get_children():
+	for tile: Node3D in get_parent().get_node("BattlefieldGrid").get_children():
 		var cell := Vector2i(tile.get_meta("axial_q"), tile.get_meta("axial_r"))
 		tiles[cell] = tile
 		var marker := MeshInstance3D.new()
@@ -34,7 +34,7 @@ func _ready() -> void:
 		marker.material_override = material
 		marker.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		tile.add_child(marker)
-		marker.position.y = 0.39
+		marker.position.y = float(tile.get_meta("surface_height", 0.35)) + 0.04
 		marker.visible = false
 		_highlights[cell] = marker
 	for child in get_children():
@@ -86,7 +86,7 @@ func available_moves(unit: PlaceholderUnit) -> Array[Vector2i]:
 	return result
 
 func tile_position(cell: Vector2i) -> Vector3:
-	return tiles[cell].global_position + Vector3(0, 0.35, 0)
+	return tiles[cell].to_global(Vector3(0, float(tiles[cell].get_meta("surface_height", 0.35)), 0))
 
 func try_move(unit: PlaceholderUnit, cell: Vector2i) -> bool:
 	if not cell in available_moves(unit):

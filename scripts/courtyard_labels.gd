@@ -31,11 +31,12 @@ func _ready() -> void:
 	footer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	frame.add_child(footer)
 	var count := Label.new()
-	count.text = "7 × 7   /   49 HEXES"
+	var grid := get_parent().get_node("BattlefieldGrid")
+	count.text = "%d × %d   /   %d HEXES" % [grid.get_meta("rows"), grid.get_meta("columns"), grid.get_child_count()]
 	count.add_theme_font_size_override("font_size", 13)
 	count.add_theme_color_override("font_color", Color("cbb58e"))
 	count.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
-	count.position = Vector2(-178, -43)
+	count.position = Vector2(-200, -43)
 	count.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	frame.add_child(count)
 	var panel := PanelContainer.new()

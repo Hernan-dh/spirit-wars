@@ -7,17 +7,17 @@
 script = ExtResource("1_selection")
 
 [node name="Jade01" parent="." instance=ExtResource("2_unit")]
-position = Vector3(-1.2210958, 0.35, 2.82)
+position = Vector3(-2.0351597, 0, 7.7450000)
 
 [node name="Jade02" parent="." instance=ExtResource("2_unit")]
-position = Vector3(2.0351596, 0.35, 2.82)
+position = Vector3(2.8492236, 0, 7.7450000)
 unit_number = 2
 
 [node name="Ember01" parent="." instance=ExtResource("2_unit")]
-position = Vector3(-1.2210958, 0.35, -2.82)
+position = Vector3(-2.8492236, 0, -4.9450000)
 team = 1
 
 [node name="Ember02" parent="." instance=ExtResource("2_unit")]
-position = Vector3(2.0351596, 0.35, -2.82)
+position = Vector3(2.0351597, 0, -4.9450000)
 team = 1
 unit_number = 2
