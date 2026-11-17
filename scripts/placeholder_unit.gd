@@ -16,6 +16,8 @@ enum Team { JADE, EMBER }
 			_update_identity()
 
 var selected := false
+var has_moved := false
+var ability_used := false
 
 func _ready() -> void:
 	_update_identity()
@@ -46,3 +48,27 @@ func set_selected(value: bool) -> void:
 	selected = value
 	$SelectionRing.visible = value
 	$SelectionMarker.visible = value
+
+func reset_actions() -> void:
+	has_moved = false
+	ability_used = false
+
+func play_spirit_pulse() -> void:
+	# Starter ability feedback; damage and combat rules are not implemented yet.
+	var pulse := MeshInstance3D.new()
+	var ring := TorusMesh.new()
+	ring.inner_radius = 0.48
+	ring.outer_radius = 0.62
+	pulse.mesh = ring
+	var material := StandardMaterial3D.new()
+	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	material.albedo_color = team_color()
+	pulse.material_override = material
+	pulse.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	get_parent().add_child(pulse)
+	pulse.global_position = global_position + Vector3(0, 0.2, 0)
+	var tween := pulse.create_tween().set_parallel(true)
+	tween.tween_property(pulse, "scale", Vector3(3.0, 1.0, 3.0), 0.65)
+	tween.tween_property(material, "albedo_color:a", 0.0, 0.65)
+	tween.chain().tween_callback(pulse.queue_free)

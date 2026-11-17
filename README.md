@@ -33,12 +33,20 @@ asset tools or packages are required.
 - **Right-mouse drag** rotates and tilts around the current focus; **Q / E** rotate horizontally.
 - **Mouse wheel** zooms in and out.
 - **R** restores the opening position, angle, and zoom.
-- **Left click** a unit from either team to select it. Click empty space or press **Esc** to clear selection.
+- **Left click** a unit from either team to select or inspect it. Click empty space or press **Esc** to clear selection.
+- During the active team's turn, **click a gold-ringed hex** to move the selected unit one adjacent hex. Occupied hexes are unavailable.
+- **Spirit Pulse** uses the selected unit's ability: a team-colored expanding burst (visual starter ability; no damage yet).
+- **End Turn** hands local control to the other team, even if actions remain. Jade starts.
 
 Two jade pawns face two ember pawns on opposite rows of the board. Each has a
 team-colored body and base plus a team/name label. Selection adds a gold ground
 ring and overhead pointer, while the top-right panel names the selected unit.
-Only one unit is selected at a time; both teams can be inspected.
+Only one unit is selected at a time; both teams can be inspected. Only the active
+team can act. Each unit can move once and use one ability, in either order, per
+team turn. Selecting another unit does not reset those allowances. Ending the
+turn clears selection and refreshes only the incoming team's actions. The panel
+shows the turn, active team, and selected unit's remaining actions. Both teams
+are controlled locally; there is no AI or networking.
 
 `scenes/units/skirmish.tscn` holds the four editable starting positions and team
 assignments. `scenes/units/placeholder_unit.tscn` is the reusable pawn; its `team`
@@ -49,8 +57,9 @@ Panning stays within eight world units of the opening focus on each ground axis.
 Zoom and tilt are limited to keep the view usable and above the battlefield.
 Speeds, pan limits, and zoom limits are adjustable on `CameraRig` in the inspector;
 keyboard bindings live in Project Settings → Input Map. The small title and
-control legend appear only at runtime. There are no movement, combat systems,
-turn rules, or tile-selection behavior yet.
+control legend appear only at runtime. Combat, health, and victory rules are not
+implemented yet. Turn and movement rules live in `scripts/unit_selection.gd`;
+pawns store their own action allowances in `scripts/placeholder_unit.gd`.
 
 ## Rebuilding the initial layout
 
