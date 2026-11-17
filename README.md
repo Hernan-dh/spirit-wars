@@ -46,8 +46,13 @@ Named groups organize the surroundings:
 
 Terrace crowns, rock strata, shore water, and roofs are saved native meshes;
 they can be moved, scaled, duplicated, or given different materials in the
-inspector. Blossom crowns are baked meshes of small flower clusters; lanterns have
-window lattice and carved bases. Stone and cliffs use procedural mineral grain,
+inspector. Blossom crowns use 15,360 triangles for close views and a native
+7,680-triangle mesh LOD for distant views (formerly 69,120 triangles per crown).
+The ten battlefield crowns therefore use at most 153,600 triangles, or 76,800
+when all use the distant LOD. Both levels retain the blossom centers and colors;
+Godot selects the level by screen size, including orthographic zoom, viewport
+resolution, and instance scale. Lanterns have window lattice and carved bases.
+Stone and cliffs use procedural mineral grain,
 strata, and moss weathering. Pool surfaces have gentle animated ripples.
 The lake outline and terrace profiles are also defined in the authoring
 script for geometry changes. Scenery is decorative; movement and picking use
@@ -65,7 +70,11 @@ so distant regions can still be culled separately. Batch `instance_names` metada
 maps each instance index to its authored placement name; transforms live in the
 MultiMesh resource. To change repeated scenery geometry or placements, edit the
 authoring script and rebuild. Batches contain baked mesh resources rather than
-live prop scene instances. All 196 tile roots, metadata, collisions, and gameplay nodes remain
+live prop scene instances. The blossom crown is authored as one surface with LOD
+indices before batching, so its lower-detail mesh survives in both the reusable
+prop and the saved battlefield. `BLOSSOM_LOD_ERROR` in the authoring script tunes
+the screen-size transition; there is no runtime mesh generation or swap script.
+All 196 tile roots, metadata, collisions, and gameplay nodes remain
 independent. Tile seals and static lines are combined meshes, with no segment nodes.
 Meshes and materials are native Godot resources; no external asset tools are required.
 

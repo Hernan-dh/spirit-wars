@@ -9,6 +9,9 @@ const LANDSCAPE_SCALE := 2.0
 const GRID_SIZE := 14
 const HEX_RADIUS := 0.94
 const GRID_CENTER_Z := 1.4
+# Screen-space error in local units; Godot also accounts for instance scale,
+# viewport resolution and orthographic zoom when choosing the crown LOD.
+const BLOSSOM_LOD_ERROR := 0.045
 
 var rng := RandomNumberGenerator.new()
 var palette: Dictionary = {}
@@ -16,7 +19,6 @@ var prop_scenes: Dictionary = {}
 var rock_geometry: SphereMesh
 var fern_geometry: Mesh
 var two_sided_materials: Dictionary = {}
-var flower_material: StandardMaterial3D
 
 func _initialize() -> void:
 	# The dummy renderer drops MultiMesh buffers when saving. Fail before overwriting
@@ -319,16 +321,21 @@ func make_props() -> void:
 	tree.name = "BlossomTree"
 	rod(tree,"AncientTrunk",Vector3.ZERO,Vector3(.18,2.3,0),.34,"Wood",.22)
 	rod(tree,"LeaningTrunk",Vector3(.18,2.3,0),Vector3(-.45,3.7,.1),.22,"Wood",.09)
+	var crown_near := SurfaceTool.new()
+	var crown_far := SurfaceTool.new()
+	crown_near.begin(Mesh.PRIMITIVE_TRIANGLES)
+	crown_far.begin(Mesh.PRIMITIVE_TRIANGLES)
 	var ends := [Vector3(-1.8,3.6,.1),Vector3(1.6,3.4,.1),Vector3(.4,4.35,-.5),Vector3(-.2,3.5,1.3),Vector3(.6,3.6,-1.2)]
 	for i in range(ends.size()):
 		rod(tree,"Bough%d" % i,Vector3(.1,2.0+i*.17,0),ends[i],.17,"Wood",.045)
 		for j in range(6):
 			var p: Vector3 = ends[i] + Vector3(rng.randf_range(-.65,.65),rng.randf_range(-.2,.4),rng.randf_range(-.5,.5))
 			rod(tree,"FlowerTwig%d_%d" % [i,j],ends[i],p+Vector3(0,.15,0),.034,"Wood",.009)
-			flower_cluster(tree,"FlowerCrown%d_%d" % [i,j],p,(i+j)%3)
+			flower_cluster(crown_near,crown_far,p,(i+j)%3)
 	for i in range(5):
 		var a := i*TAU/5
 		rod(tree,"Root%d" % i,Vector3(0,.15,0),Vector3(cos(a)*.8,0,sin(a)*.8),.12,"Wood",.04)
+	finish_blossom_crown(tree, crown_near, crown_far)
 	prop_scenes["tree"] = save_scene(tree,"res://scenes/props/blossom_tree.tscn")
 
 	var bamboo := Node3D.new()
@@ -951,20 +958,18 @@ func roof_point(rings: Array, side: int, next: int, u: float, t: float) -> Vecto
 	var peak: Vector3 = rings[2][side].lerp(rings[2][next],u)
 	return (eave.lerp(middle,t/.62) if t<.62 else middle.lerp(peak,(t-.62)/.38)) + Vector3.UP*.012
 
-func flower_cluster(parent: Node, title: String, pos: Vector3, shade: int) -> void:
-	# Each crown uses baked petals and a shared vertex-color material so all crowns
-	# can become one prop surface before the trees are instanced with MultiMesh.
-	var bloom := SphereMesh.new()
-	bloom.radius = 1.0
-	bloom.height = 2.0
-	bloom.radial_segments = 6
-	bloom.rings = 2
-	var arrays := bloom.get_mesh_arrays()
-	var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
-	var normals: PackedVector3Array = arrays[Mesh.ARRAY_NORMAL]
-	var indices: PackedInt32Array = arrays[Mesh.ARRAY_INDEX]
-	var st := SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+func flower_cluster(near: SurfaceTool, far: SurfaceTool, pos: Vector3, shade: int) -> void:
+	# Keep all 64 bloom positions, sizes and colors (and the RNG sequence), but
+	# replace the 36-triangle spheres with eight-triangle rounded octahedra.
+	var octa := PackedVector3Array([Vector3.UP, Vector3.RIGHT, Vector3.BACK,
+		Vector3.LEFT, Vector3.FORWARD, Vector3.DOWN])
+	var octa_faces := PackedInt32Array([0,1,2, 0,2,3, 0,3,4, 0,4,1,
+		5,2,1, 5,3,2, 5,4,3, 5,1,4])
+	# Four-triangle blooms retain the same centers and color variation at distance.
+	var tetra := PackedVector3Array([Vector3(1,1,1).normalized(),
+		Vector3(1,-1,-1).normalized(), Vector3(-1,1,-1).normalized(),
+		Vector3(-1,-1,1).normalized()])
+	var tetra_faces := PackedInt32Array([0,2,1, 0,1,3, 0,3,2, 1,2,3])
 	for i in range(64):
 		var a := rng.randf()*TAU
 		var r := sqrt(rng.randf())
@@ -972,22 +977,43 @@ func flower_cluster(parent: Node, title: String, pos: Vector3, shade: int) -> vo
 		var size := rng.randf_range(.12,.24)
 		var basis := Basis.from_euler(Vector3(rng.randf(),a,0))
 		var color := Color("f0b7d7").lerp(Color("a65f9e"),rng.randf()*.55+shade*.09)
-		for index in indices:
-			st.set_color(color)
-			st.set_normal(basis*normals[index])
-			st.add_vertex(basis*vertices[index]*size+p)
-	st.index()
+		append_bloom(near, octa, octa_faces, basis, size, pos+p, color)
+		# Equalize projected coverage so distant flowers do not become sparse.
+		append_bloom(far, tetra, tetra_faces, basis, size*1.225, pos+p, color)
+
+func append_bloom(st: SurfaceTool, vertices: PackedVector3Array, indices: PackedInt32Array,
+		basis: Basis, size: float, pos: Vector3, color: Color) -> void:
+	for index in indices:
+		st.set_color(color)
+		st.set_normal(basis*vertices[index])
+		st.add_vertex(basis*vertices[index]*size+pos)
+
+func finish_blossom_crown(tree: Node3D, near: SurfaceTool, far: SurfaceTool) -> void:
+	near.index()
+	far.index()
+	var arrays := near.commit_to_arrays()
+	var distant := far.commit_to_arrays()
+	var offset: int = arrays[Mesh.ARRAY_VERTEX].size()
+	var far_indices: PackedInt32Array = distant[Mesh.ARRAY_INDEX]
+	for i in range(far_indices.size()):
+		far_indices[i] += offset
+	for attribute in [Mesh.ARRAY_VERTEX, Mesh.ARRAY_NORMAL, Mesh.ARRAY_COLOR]:
+		arrays[attribute].append_array(distant[attribute])
+	var crown := ArrayMesh.new()
+	crown.resource_name = "BlossomCrownLOD"
+	crown.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays, [],
+		{BLOSSOM_LOD_ERROR: far_indices})
 	var n := MeshInstance3D.new()
-	n.name = title
-	n.position = pos
-	n.mesh = st.commit()
-	if flower_material == null:
-		flower_material = StandardMaterial3D.new()
-		flower_material.resource_name = "BlossomPetals"
-		flower_material.vertex_color_use_as_albedo = true
-		flower_material.roughness = .95
-	n.material_override = flower_material
-	parent.add_child(n)
+	n.name = "BlossomCrown"
+	n.mesh = crown
+	var mat := StandardMaterial3D.new()
+	mat.resource_name = "BlossomPetals"
+	mat.vertex_color_use_as_albedo = true
+	mat.roughness = .95
+	n.material_override = mat
+	# One complete crown surface avoids flattening away its native LOD indices
+	# during prop merging. Scenery MultiMeshes reuse this mesh unchanged.
+	tree.add_child(n)
 
 func guardian(parent: Node, title: String, pos: Vector3, yaw: float) -> void:
 	var n := node(parent,title,pos)
