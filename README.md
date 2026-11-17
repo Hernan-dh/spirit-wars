@@ -16,25 +16,28 @@ editable ground hexes in a 14×14 layout, named `Hex_row_column` with one-based
 display names. Their
 `row` and `column` metadata are zero-based; `axial_q` / `axial_r` provide axial
 coordinates for future tactics logic. The pointy-top hexes use an odd-row offset
-layout with a 0.94-unit grid radius, small seams, and level walking surfaces at
+layout with a 0.94-unit grid radius, gapless faces, and level walking surfaces at
 world y = 0. Each tile includes a matching convex collision shape. Tile roots sit
 at y = −0.35; their `surface_height` metadata is the local walking height (0.35),
 used by unit placement and movement highlights. Moving a tile node also moves its
-mesh, collision, and destination. `terrain` metadata identifies its authored surface
-palette; surface types currently have equal movement cost.
+mesh, collision, and destination. `terrain` metadata identifies approximate authored terrain zones; the shared ground
+shader determines the blended appearance. Surface types have equal movement cost.
 
 The landscape footprint is approximately **37.4 × 36.2 units**, twice the original
 width and depth (four times its ground area). The playable field now spans
 approximately 23.6 × 20.2 units inside it,
-using the original hex radius. There is no raised board foundation. Shallow stone,
-moss, meadow, and earth surfaces follow continuous patches and crossing paths,
-with subtle hex boundaries for tactical readability. All 196 cells are walkable;
+using the original hex radius. The grid has no slab sides, bevels, raised board foundation, or outer border.
+A shared world-space material blends irregular weathered flagstones, earth, and moss
+across the full ground, including the surrounding landscape. Faint, interrupted
+etchings mark internal hex boundaries; selection still reveals gold destination rings.
+Low grass, fallen petals, and buried rubble blend the field into the gardens. All 196 cells are walkable;
 water, cliffs, trees, and structures sit outside the playable footprint.
 
 Named groups organize the surroundings:
 
 - `HighlandTerraces`: five individually editable moss-capped landforms, eroded rock buttresses, hanging vines, and a rear mountain ridge.
-- `HighlandShrines`: hilltop temple, tea pavilion, pilgrim staircase, prayer silks, and offering braziers.
+- `HighlandShrines`: hilltop temple, tea pavilion, pilgrim staircase, prayer silks, and offering braziers. Roofs have overlapping curved ceramic tiles, timber brackets, and lattice screens.
+- `SanctuaryDetails`: two carved cloud-lion guardians, meadow shoots, windblown petals, buried stones, and feathered ferns.
 - `EasternWetlands`: irregular lake and stream, two waterfall stages, lotus clusters, stepping stones, and an arched crossing.
 - `OuterGardens`: cherry groves, bamboo thickets, ferns, mossy outcrops, and fallen blossoms.
 - `WesternRuins`: broken paving, carved pillars, vines, and an inscribed spirit monolith.
@@ -43,7 +46,10 @@ Named groups organize the surroundings:
 
 Terrace crowns, rock strata, shore water, and roofs are saved native meshes;
 they can be moved, scaled, duplicated, or given different materials in the
-inspector. The lake outline and terrace profiles are also defined in the authoring
+inspector. Blossom crowns are baked meshes of small flower clusters; lanterns have
+window lattice and carved bases. Stone and cliffs use procedural mineral grain,
+strata, and moss weathering. Pool surfaces have gentle animated ripples.
+The lake outline and terrace profiles are also defined in the authoring
 script for geometry changes. Scenery is decorative; movement and picking use
 the ground hexes. Waterfall ribbons and ripples are static editable meshes.
 
@@ -97,8 +103,12 @@ pawns store their own action allowances in `scripts/placeholder_unit.gd`.
 
 `tools/build_battlefield.gd` is the deterministic authoring source for the
 layout and reusable props. `GRID_SIZE`, `HEX_RADIUS`, `GRID_CENTER_Z`, and
-`grid_position()` define the grid; `ground_material()` defines the ground patches
-and crossing paths. The scene root groups and grid cells remain editable directly
+`grid_position()` define the grid; `ground_material()` labels approximate terrain zones.
+`materials/sanctuary_ground.gdshader` defines continuous paths, stone joints, and
+moss coverage in world coordinates. `materials/weathered_surface.gdshader` controls
+scenery grain and weathering, and `materials/lotus_water.gdshader` controls pool ripples.
+These procedural textures work in the configured Compatibility renderer and require
+no image imports or external packages. The scene root groups and grid cells remain editable directly
 in Godot without running the generator. The HUD reads the saved grid dimensions
 and cell count, and the movement controller discovers all cells in `BattlefieldGrid`.
 To regenerate them:

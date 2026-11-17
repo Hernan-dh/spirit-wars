@@ -54,7 +54,7 @@ func make_materials() -> void:
 	material("WoodLight", "86585a")
 	material("Roof", "254e60", 0.0, 0.22)
 	material("Gold", "cca76c", 0.0, 0.5)
-	material("Seam", "9ba795")
+	material("Seam", "687466")
 	material("Meadow", "566b52")
 	material("MeadowLight", "63765b")
 	material("MossPaving", "657b6c")
@@ -72,6 +72,26 @@ func make_materials() -> void:
 	for i in range(6):
 		var m := material("Paving%d" % i, "71858f")
 		m.albedo_color = Color("71858f").darkened(i * 0.032)
+
+	# One shared world-space material makes the ground continuous through the grid.
+	var ground := ShaderMaterial.new()
+	ground.resource_name = "Continuous sanctuary earth and flagstone"
+	ground.shader = load("res://materials/sanctuary_ground.gdshader")
+	palette["Terrain"] = ground
+	var water := ShaderMaterial.new()
+	water.resource_name = "Jade pool ripples"
+	water.shader = load("res://materials/lotus_water.gdshader")
+	palette["Water"] = water
+	for key in ["Stone", "StoneLight", "StoneDark", "Foundation", "Cliff", "CliffLight", "Moss", "MossLight", "Jade", "Wood", "WoodLight", "Roof"]:
+		var original: StandardMaterial3D = palette[key]
+		var weathered := ShaderMaterial.new()
+		weathered.resource_name = key + " weathered grain"
+		weathered.shader = load("res://materials/weathered_surface.gdshader")
+		weathered.set_shader_parameter("base_color", original.albedo_color)
+		weathered.set_shader_parameter("grain_scale", 18.0 if key in ["Wood", "WoodLight", "Roof"] else 9.0)
+		weathered.set_shader_parameter("strata_amount", .38 if key in ["Cliff", "CliffLight", "Foundation"] else .12)
+		weathered.set_shader_parameter("moss_amount", .7 if key in ["Cliff", "CliffLight", "Stone", "Moss"] else .15)
+		palette[key] = weathered
 
 func node(parent: Node, title: String, pos := Vector3.ZERO) -> Node3D:
 	var n := Node3D.new()
@@ -174,6 +194,30 @@ func roof(parent: Node, title: String, pos: Vector3, radius: float, height: floa
 			tri(faces, rings[k][i], rings[k + 1][i], rings[k][j])
 			tri(faces, rings[k][j], rings[k + 1][i], rings[k + 1][j])
 	surface(n, "SweptTileRoof", faces, "Roof")
+	var tile_faces: Array = []
+	for side in range(8):
+		var next := (side+1)%8
+		var count := maxi(3,int(radius*7))
+		for course in range(6):
+			var t0 := course/6.0
+			var t1 := (course+1)/6.0-.025
+			for column in range(count):
+				var u0 := column/float(count)
+				var u1 := (column+1)/float(count)-.018
+				var a := roof_point(rings,side,next,u0,t0)
+				var b := roof_point(rings,side,next,u1,t0)
+				var c := roof_point(rings,side,next,u0,t1)
+				var d := roof_point(rings,side,next,u1,t1)
+				var ridge0 := (a+b)*.5+Vector3.UP*.035
+				var ridge1 := (c+d)*.5+Vector3.UP*.035
+				tri(tile_faces,a,c,ridge0)
+				tri(tile_faces,c,ridge1,ridge0)
+				tri(tile_faces,ridge0,ridge1,b)
+				tri(tile_faces,ridge1,d,b)
+	var tiles := surface(n,"OverlappingCeramicTiles",tile_faces,"Roof")
+	# Roof faces include both windings at swept corners.
+	tiles.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_DOUBLE_SIDED
+
 	for i in range(8):
 		rod(n, "GildedEave%d" % i, rings[0][i], rings[0][(i+1)%8], 0.025, "Gold")
 		line(n, "RoofRib%d" % i, [rings[0][i], rings[1][i], rings[2][i]], 0.018, "Jade")
@@ -215,6 +259,12 @@ func make_props() -> void:
 	for x in [-1,1]:
 		for z in [-1,1]:
 			box(lantern, "Corner_%d_%d" % [x,z], Vector3(x*.31,1.73,z*.31), Vector3(.075,.76,.075), "Wood")
+	for side in [-1,1]:
+		for j in range(3):
+			box(lantern,"WindowLattice%d_%d"%[side,j],Vector3((j-1)*.15,1.72,side*.255),Vector3(.025,.6,.025),"Wood")
+		box(lantern,"WindowCrossbar%d"%side,Vector3(0,1.67,side*.27),Vector3(.54,.035,.025),"Wood")
+		for j in range(3):
+			box(lantern,"CarvedFoot%d_%d"%[side,j],Vector3((j-1)*.19,.3,side*.365),Vector3(.11,.045,.018),"StoneDark")
 	box(lantern, "Lintel", Vector3(0,2.08,0), Vector3(.72,.12,.72), "Wood")
 	roof(lantern, "PagodaCap", Vector3(0,2.1,0), .62, .37)
 	var light := OmniLight3D.new()
@@ -233,9 +283,10 @@ func make_props() -> void:
 	var ends := [Vector3(-1.8,3.6,.1),Vector3(1.6,3.4,.1),Vector3(.4,4.35,-.5),Vector3(-.2,3.5,1.3),Vector3(.6,3.6,-1.2)]
 	for i in range(ends.size()):
 		rod(tree,"Bough%d" % i,Vector3(.1,2.0+i*.17,0),ends[i],.17,"Wood",.045)
-		for j in range(4):
+		for j in range(6):
 			var p: Vector3 = ends[i] + Vector3(rng.randf_range(-.65,.65),rng.randf_range(-.2,.4),rng.randf_range(-.5,.5))
-			rock(tree,"FlowerCrown%d_%d" % [i,j],p,Vector3(.82,.45,.66),["Blossom","BlossomLight","BlossomDark"][(i+j)%3])
+			rod(tree,"FlowerTwig%d_%d" % [i,j],ends[i],p+Vector3(0,.15,0),.034,"Wood",.009)
+			flower_cluster(tree,"FlowerCrown%d_%d" % [i,j],p,(i+j)%3)
 	for i in range(5):
 		var a := i*TAU/5
 		rod(tree,"Root%d" % i,Vector3(0,.15,0),Vector3(cos(a)*.8,0,sin(a)*.8),.12,"Wood",.04)
@@ -254,10 +305,10 @@ func make_props() -> void:
 			if j > 2:
 				var direction := Vector3(1 if (i+j)%2==0 else -1,.25,.2)
 				rod(bamboo,"Twig%d_%d" % [i,j],mid,mid+direction*.7,.023,"Bamboo",.008)
-				for k in range(3):
-					var base := mid + direction * (.2+k*.18)
-					var tip_leaf := base + Vector3(direction.x*.5,-.16,(k-1)*.57)
-					var side := Vector3(.055,.10,.16)
+				for k in range(5):
+					var base := mid + direction * (.15+k*.12)
+					var tip_leaf := base + Vector3(direction.x*.42,-.12,(k-2)*.21)
+					var side := Vector3(.025,.045,.07)
 					var leaf := surface(bamboo,"Leaf%d_%d_%d" % [i,j,k],[base,base.lerp(tip_leaf,.5)+side,tip_leaf,base,tip_leaf,base.lerp(tip_leaf,.5)-side],"LeafLight" if k%2 else "Leaf")
 					var m: StandardMaterial3D = leaf.material_override.duplicate()
 					m.cull_mode = BaseMaterial3D.CULL_DISABLED
@@ -329,9 +380,9 @@ func grid_position(row: int, column: int) -> Vector3:
 
 func ground_material(pos: Vector3) -> String:
 	# Continuous meadow patches and paths cross cell boundaries, avoiding a checkerboard.
-	var pilgrim_path := absf(pos.x - sin(pos.z*.4)*1.6) < 2.0
-	var crossing_path := absf(pos.z + .4 - sin(pos.x*.3)*1.2) < 1.45
-	if pilgrim_path or crossing_path or Vector2(pos.x,pos.z-1.4).length() < 3.3:
+	var pilgrim_path := absf(pos.x - sin(pos.z*.25)*1.3) < 2.5
+	var crossing_path := absf(pos.z + .4 - sin(pos.x*.28)*1.1) < 1.8
+	if pilgrim_path or crossing_path or Vector2(pos.x,pos.z-1.4).length() < 3.8:
 		return "Paving%d"%rng.randi_range(0,5)
 	if pos.x > 7.5 + sin(pos.z*.5):
 		return "BankPaving"
@@ -352,46 +403,43 @@ func make_tile(parent: Node, row: int, column: int) -> void:
 	tile.set_meta("axial_r",row)
 	tile.set_meta("terrain",terrain_mat)
 	tile.set_meta("surface_height",.35)
-	var faces: Array = []
+	# Full-radius, coplanar faces share the landscape material. No slab or perimeter lip.
+	disk(tile,"WalkingSurface",HEX_RADIUS,.35,"Terrain")
+	var sacred := (row == 6 and column == 6)
+	var etching: Array = []
 	for i in range(6):
 		var a := PI/6+i*TAU/6
-		var b := PI/6+(i+1)*TAU/6
-		var a0 := Vector3(cos(a)*.938,.04,sin(a)*.938)
-		var b0 := Vector3(cos(b)*.938,.04,sin(b)*.938)
-		var a1 := Vector3(cos(a)*.938,.325,sin(a)*.938)
-		var b1 := Vector3(cos(b)*.938,.325,sin(b)*.938)
-		tri(faces,a0,a1,b0)
-		tri(faces,b0,a1,b1)
-	surface(tile,"StoneSlab",faces,"StoneDark")
-	var bevel: Array = []
-	var outline: Array = []
-	for i in range(7):
-		var a := PI/6+i*TAU/6
-		outline.append(Vector3(cos(a)*.924,.356,sin(a)*.924))
-		if i < 6:
-			var b := a+TAU/6
-			var p := Vector3(cos(a)*.938,.325,sin(a)*.938)
-			var q := Vector3(cos(b)*.938,.325,sin(b)*.938)
-			var s := Vector3(cos(a)*.928,.35,sin(a)*.928)
-			var t := Vector3(cos(b)*.928,.35,sin(b)*.928)
-			tri(bevel,p,s,q)
-			tri(bevel,q,s,t)
-	surface(tile,"GroundTransition",bevel,terrain_mat)
-	var sacred := (row == 6 and column == 6)
-	disk(tile,"WalkingSurface",.928,.35,"Jade" if sacred else terrain_mat)
-	line(tile,"HexBoundary",outline,.008,"Spirit" if sacred else "Seam")
+		var b := a+TAU/6
+		var start := Vector3(cos(a)*HEX_RADIUS,.352,sin(a)*HEX_RADIUS)
+		var end := Vector3(cos(b)*HEX_RADIUS,.352,sin(b)*HEX_RADIUS)
+		var midpoint := pos + (start+end)*.5
+		# Only interior shared edges: no rectangular outline around the playable area.
+		var adjacent := false
+		for other_row in range(maxi(0,row-1), mini(GRID_SIZE,row+2)):
+			for other_col in range(maxi(0,column-1), mini(GRID_SIZE,column+2)):
+				if other_row == row and other_col == column:
+					continue
+				var neighbor := grid_position(other_row,other_col)
+				if Vector2(neighbor.x-midpoint.x,neighbor.z-midpoint.z).length() < .83 and (other_row > row or (other_row == row and other_col > column)):
+					adjacent = true
+		if not adjacent:
+			continue
+		var tangent := (end-start).normalized()
+		var across := Vector3(-tangent.z,0,tangent.x)*.005
+		# Worn interruptions read as incised surveying marks in the stone.
+		for interval in [Vector2(.08,.36),Vector2(.45,.91)]:
+			var u := start.lerp(end,interval.x)
+			var v := start.lerp(end,interval.y)
+			tri(etching,u-across,u+across,v-across)
+			tri(etching,v-across,u+across,v+across)
+	if not etching.is_empty():
+		surface(tile,"WornGridEtching",etching,"Seam")
 	if sacred:
 		circle(tile,"MoonwellSeal",Vector3(0,.37,0),.59,"Spirit",.016)
 		circle(tile,"InnerSeal",Vector3(0,.37,0),.43,"Spirit",.009)
 		for i in range(6):
 			var a := i*TAU/6
 			line(tile,"PetalRune%d"%i,[Vector3.ZERO+Vector3(0,.37,0),Vector3(cos(a-.3)*.28,.37,sin(a-.3)*.28),Vector3(cos(a)*.39,.37,sin(a)*.39),Vector3(cos(a+.3)*.28,.37,sin(a+.3)*.28),Vector3(0,.37,0)],.012,"Spirit")
-	elif rng.randf() < .55:
-		var a := rng.randf()*TAU
-		line(tile,"HairlineFracture",[Vector3(cos(a)*.87,.354,sin(a)*.87),Vector3(cos(a)*.56,.354,sin(a)*.56),Vector3(cos(a+.3)*.32,.354,sin(a+.3)*.32)],.009,"StoneDark")
-	if terrain_mat in ["Meadow", "MeadowLight", "MossPaving"] and rng.randf()<.65:
-		var a := rng.randf()*TAU
-		rock(tile,"EdgeMoss",Vector3(cos(a)*.74,.355,sin(a)*.74),Vector3(.24,.012,.17),"Moss")
 	var collision := StaticBody3D.new()
 	collision.name = "TileBody"
 	var shape := CollisionShape3D.new()
@@ -401,7 +449,7 @@ func make_tile(parent: Node, row: int, column: int) -> void:
 	for y in [.04,.35]:
 		for i in range(6):
 			var a := PI/6+i*TAU/6
-			points.append(Vector3(cos(a)*.92,y,sin(a)*.92))
+			points.append(Vector3(cos(a)*HEX_RADIUS,y,sin(a)*HEX_RADIUS))
 	convex.points = points
 	shape.shape = convex
 	collision.add_child(shape)
@@ -425,18 +473,18 @@ func build_battlefield() -> void:
 	for i in range(rim.size()):
 		var p: Vector2 = rim[i] * LANDSCAPE_SCALE
 		var q: Vector2 = rim[(i+1)%rim.size()] * LANDSCAPE_SCALE
-		var a := Vector3(p.x,-.08,p.y)
-		var b := Vector3(q.x,-.08,q.y)
+		var a := Vector3(p.x,-.025,p.y)
+		var b := Vector3(q.x,-.025,q.y)
 		var c := Vector3(p.x*.97,-.65,p.y*.97)
 		var d := Vector3(q.x*.97,-.65,q.y*.97)
 		var e := Vector3(p.x*.89,-1.7,p.y*.89)
 		var f := Vector3(q.x*.89,-1.7,q.y*.89)
-		tri(top_faces,Vector3(0,-.08,0),b,a)
+		tri(top_faces,Vector3(0,-.025,0),b,a)
 		tri(side_faces,a,b,c)
 		tri(side_faces,b,d,c)
 		tri(base_faces,c,d,e)
 		tri(base_faces,d,f,e)
-	surface(land,"MossyIslandTop",top_faces,"Earth")
+	surface(land,"MossyIslandTop",top_faces,"Terrain")
 	surface(land,"UpperRockStratum",side_faces,"StoneDark")
 	surface(land,"ChiseledBedrock",base_faces,"Foundation")
 	# Ground-level stepping paths and planted margins merge into the playable field.
@@ -470,6 +518,7 @@ func build_battlefield() -> void:
 		var p := Vector3(-12.1-i*.22,-.015,2.0)
 		box(margins,"WestPath%d"%i,p,Vector3(.36,.09,.65),"MossPaving")
 	make_expanded_landscape(root)
+	make_sanctuary_details(root)
 	make_atmosphere(root)
 	make_camera(root)
 	var skirmish := preload("res://scenes/units/skirmish.tscn").instantiate()
@@ -597,13 +646,25 @@ func ring_mesh(parent: Node, title: String, center: Vector3, radius: float, thic
 func fern(parent: Node, title: String, pos: Vector3, size := 1.0) -> void:
 	var n := node(parent,title,pos)
 	n.scale *= size
-	for i in range(7):
-		var a := i*TAU/7
+	var fronds: Array = []
+	for i in range(9):
+		var a := i*TAU/9
 		var d := Vector3(cos(a),0,sin(a))
-		var side := Vector3(-sin(a),0,cos(a))*.12
-		var mid := d*.27+Vector3.UP*.48
-		var tip := d*.65+Vector3.UP*.28
-		surface(n,"Frond%d"%i,[Vector3.ZERO,mid+side,tip,Vector3.ZERO,tip,mid-side],"Grass" if i%2 else "LeafLight")
+		var side := Vector3(-sin(a),0,cos(a))
+		for j in range(7):
+			var t := j/7.0
+			var mid := d*t*.72+Vector3.UP*(sin(t*PI*.85)*.48+.03)
+			var next := d*(t+.14)*.72+Vector3.UP*(sin((t+.14)*PI*.85)*.48+.03)
+			tri(fronds,mid-side*.012,mid+side*.012,next)
+			tri(fronds,mid+side*.012,mid-side*.012,next)
+			for direction in [-1,1]:
+				var tip: Vector3 = mid+side*direction*(.17*(1.0-t)+.025)+d*.10
+				var middle := mid.lerp(tip,.5)+Vector3.UP*.035
+				tri(fronds,mid,middle-d*.04,tip)
+				tri(fronds,mid,tip,middle+d*.04)
+				tri(fronds,mid,tip,middle-d*.04)
+				tri(fronds,mid,middle+d*.04,tip)
+	surface(n,"FeatheredFronds",fronds,"LeafLight")
 
 func banner(parent: Node, title: String, pos: Vector3, yaw := 0.0) -> void:
 	var n := node(parent,title,pos)
@@ -646,6 +707,13 @@ func pavilion(parent: Node, title: String, pos: Vector3, size := 1.0) -> void:
 			var p := Vector3(x*1.75,1.85,z*1.35)
 			cylinder(n,"Pillar%d_%d"%[x,z],p,.13,.11,2.8,"Wood")
 			cylinder(n,"GiltFoot%d_%d"%[x,z],Vector3(p.x,.63,p.z),.22,.19,.3,"Gold")
+	for side in [-1,1]:
+		for j in range(9):
+			var x := (j-4)*.43
+			box(n,"EaveBracket%d_%d"%[side,j],Vector3(x,3.02,side*1.43),Vector3(.12,.34,.36),"Wood")
+			box(n,"BracketScroll%d_%d"%[side,j],Vector3(x,2.94,side*1.53),Vector3(.24,.08,.22),"Gold")
+		for j in range(5):
+			box(n,"RearScreen%d_%d"%[side,j],Vector3(side*(.6+j*.21),1.9,-1.35),Vector3(.04,2.2,.06),"WoodLight")
 	box(n,"LintelFront",Vector3(0,3.15,1.35),Vector3(3.8,.24,.18),"WoodLight")
 	box(n,"LintelRear",Vector3(0,3.15,-1.35),Vector3(3.8,.24,.18),"WoodLight")
 	var r := roof(n,"SweptRoof",Vector3(0,3.3,0),2.6,1.05)
@@ -687,6 +755,10 @@ func make_expanded_landscape(root: Node3D) -> void:
 			h = 4.3
 		var column := cylinder(terrain,"RidgeColumn%02d"%i,Vector3(x,h*.5-.1,z),.9,.57,h,"Cliff" if i%3 else "CliffLight",5)
 		column.rotation.y = i*.7
+		for ledge in range(4):
+			var y := h*(.18+ledge*.21)
+			var shelf := rock(terrain,"RidgeLedge%d_%d"%[i,ledge],Vector3(x+.18*sin(i+ledge),y,z+.12),Vector3(.83,.19,.72),"CliffLight")
+			shelf.rotation.z = .12*sin(i)
 		rock(terrain,"RidgeMoss%02d"%i,Vector3(x,h-.1,z),Vector3(.62,.13,.66),"Moss")
 	# Separated tall peaks give the rear silhouette the concept's vertical rhythm.
 	for i in range(6):
@@ -775,7 +847,7 @@ func make_expanded_landscape(root: Node3D) -> void:
 		var p := Vector3(rng.randf_range(-16,16),0,rng.randf_range(-11,14))
 		if not Geometry2D.is_point_in_polygon(Vector2(p.x,p.z),planted_boundary):
 			continue
-		# Keep the tactical board, shore water and terraces clear of scattered props.
+		# Keep the playable ground, shore water and terraces clear of tall props.
 		if (absf(p.x)<12.7 and p.z>-9.4 and p.z<12.2) or (p.x>12 and p.z<12) or (p.x<-12 and p.z<0) or (absf(p.x)<2 and p.z>5):
 			continue
 		fern(gardens,"GroundFern%03d"%i,p,rng.randf_range(.65,1.5))
@@ -786,7 +858,7 @@ func make_expanded_landscape(root: Node3D) -> void:
 		fern(gardens,"TerraceFern%02d"%i,p,.8)
 		if i%2 == 0:
 			rock(gardens,"BlossomCarpet%02d"%i,p,Vector3(.16,.025,.13),"BlossomDark")
-	# A worn approach remains low in the foreground, preserving the board silhouette.
+	# A worn approach remains low in the foreground, preserving views of the field.
 	var approach := node(root,"PilgrimApproach")
 	for i in range(13):
 		var z := 11.9+i*.26
@@ -832,3 +904,134 @@ func make_ruins(root: Node3D) -> void:
 	for i in range(12):
 		var a := i*TAU/12
 		fern(ruins,"ReclaimedFern%d"%i,Vector3(cos(a)*2.9,0,sin(a)*2.5),.8)
+
+func roof_point(rings: Array, side: int, next: int, u: float, t: float) -> Vector3:
+	var eave: Vector3 = rings[0][side].lerp(rings[0][next],u)
+	var middle: Vector3 = rings[1][side].lerp(rings[1][next],u)
+	var peak: Vector3 = rings[2][side].lerp(rings[2][next],u)
+	return (eave.lerp(middle,t/.62) if t<.62 else middle.lerp(peak,(t-.62)/.38)) + Vector3.UP*.012
+
+func flower_cluster(parent: Node, title: String, pos: Vector3, shade: int) -> void:
+	# Bake petals into an ArrayMesh: unlike renderer-owned MultiMesh buffers this
+	# serializes correctly when regenerating with the headless dummy renderer.
+	var bloom := SphereMesh.new()
+	bloom.radius = 1.0
+	bloom.height = 2.0
+	bloom.radial_segments = 6
+	bloom.rings = 2
+	var arrays := bloom.get_mesh_arrays()
+	var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+	var normals: PackedVector3Array = arrays[Mesh.ARRAY_NORMAL]
+	var indices: PackedInt32Array = arrays[Mesh.ARRAY_INDEX]
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for i in range(64):
+		var a := rng.randf()*TAU
+		var r := sqrt(rng.randf())
+		var p := Vector3(cos(a)*r*.76,rng.randf_range(-.22,.26),sin(a)*r*.6)
+		var size := rng.randf_range(.12,.24)
+		var basis := Basis.from_euler(Vector3(rng.randf(),a,0))
+		var color := Color("f0b7d7").lerp(Color("a65f9e"),rng.randf()*.55+shade*.09)
+		for index in indices:
+			st.set_color(color)
+			st.set_normal(basis*normals[index])
+			st.add_vertex(basis*vertices[index]*size+p)
+	st.index()
+	var n := MeshInstance3D.new()
+	n.name = title
+	n.position = pos
+	n.mesh = st.commit()
+	var mat := StandardMaterial3D.new()
+	mat.vertex_color_use_as_albedo = true
+	mat.roughness = .95
+	n.material_override = mat
+	parent.add_child(n)
+
+func guardian(parent: Node, title: String, pos: Vector3, yaw: float) -> void:
+	var n := node(parent,title,pos)
+	n.rotation.y = yaw
+	n.scale = Vector3.ONE*.82
+	box(n,"WeatheredPlinth",Vector3(0,.16,0),Vector3(1.8,.32,2.0),"StoneDark")
+	box(n,"CarvedPlinthLip",Vector3(0,.36,0),Vector3(1.65,.12,1.86),"StoneLight")
+	rock(n,"Haunches",Vector3(0,1.0,-.3),Vector3(.64,.65,.68),"Stone")
+	rock(n,"UprightChest",Vector3(0,1.45,.1),Vector3(.52,.8,.48),"StoneLight")
+	for side in [-1,1]:
+		rod(n,"Foreleg%d"%side,Vector3(side*.38,1.35,.35),Vector3(side*.42,.58,.65),.17,"StoneLight",.21)
+		rock(n,"Paw%d"%side,Vector3(side*.43,.53,.77),Vector3(.3,.18,.39),"StoneLight")
+		for toe in range(3):
+			rock(n,"Toe%d_%d"%[side,toe],Vector3(side*.43+(toe-1)*.15,.51,1.02),Vector3(.07,.08,.13),"Stone")
+	rock(n,"GuardianHead",Vector3(0,2.2,.3),Vector3(.62,.54,.52),"StoneLight")
+	rock(n,"Muzzle",Vector3(0,2.03,.77),Vector3(.4,.23,.28),"StoneLight")
+	rock(n,"Nose",Vector3(0,2.14,.99),Vector3(.21,.12,.1),"StoneDark")
+	box(n,"MouthCarving",Vector3(0,1.94,.98),Vector3(.45,.045,.035),"StoneDark")
+	for side in [-1,1]:
+		rock(n,"Ear%d"%side,Vector3(side*.5,2.58,.16),Vector3(.2,.27,.14),"Stone")
+		rock(n,"EyeSocket%d"%side,Vector3(side*.3,2.31,.73),Vector3(.16,.1,.055),"StoneDark")
+		rock(n,"SpiritEye%d"%side,Vector3(side*.3,2.31,.785),Vector3(.06,.045,.025),"SpiritDim")
+		line(n,"Brow%d"%side,[Vector3(side*.12,2.4,.77),Vector3(side*.3,2.46,.73),Vector3(side*.48,2.39,.62)],.065,"StoneLight")
+		line(n,"Whisker%d"%side,[Vector3(side*.25,2.09,.96),Vector3(side*.63,2.07,.85),Vector3(side*.72,2.28,.69)],.035,"Gold")
+		cylinder(n,"Fang%d"%side,Vector3(side*.23,1.92,.98),.0,.055,.19,"Gold")
+	# Repeated spiral locks give the guardian a carved cloud mane.
+	for i in range(13):
+		var a := i*TAU/13
+		var center := Vector3(cos(a)*.57,2.19+sin(a)*.61,.15)
+		var curl: Array = []
+		for j in range(12):
+			var t := j/11.0
+			curl.append(center+Vector3(cos(t*TAU*1.3)*(.2-.14*t),sin(t*TAU*1.3)*(.2-.14*t),.08*t))
+		line(n,"CloudMane%02d"%i,curl,.055,"Stone")
+	line(n,"CurledTail",[Vector3(.1,.8,-.75),Vector3(.65,1,-.9),Vector3(.81,1.5,-.75),Vector3(.6,1.69,-.57),Vector3(.42,1.5,-.48)],.13,"Stone")
+	for side in [-1,1]:
+		for j in range(4):
+			var seal := box(n,"PlinthRelief%d_%d"%[side,j],Vector3((j-1.5)*.33,.2,side*1.006),Vector3(.16,.11,.035),"Jade")
+			seal.rotation.z = PI/4
+
+func make_sanctuary_details(root: Node3D) -> void:
+	var details := node(root,"SanctuaryDetails")
+	guardian(details,"WesternCloudLion",Vector3(-4.95,0,-9.5),.2)
+	guardian(details,"EasternCloudLion",Vector3(4.95,0,-9.5),-.2)
+	# Low vegetation crosses the logical field boundary, without covering destinations.
+	var grass_faces: Array = []
+	var petal_faces: Array = []
+	var boundary := PackedVector2Array()
+	for point in ISLAND_RIM:
+		boundary.append(point*LANDSCAPE_SCALE*.98)
+	for i in range(2100):
+		var p := Vector3(rng.randf_range(-16.5,16.5),.012,rng.randf_range(-9.1,14.6))
+		if not Geometry2D.is_point_in_polygon(Vector2(p.x,p.z),boundary):
+			continue
+		if p.x > -15.9 and p.x < -13.1 and p.z > .5 and p.z < 7.5:
+			continue
+		if absf(p.x)>12.5 and p.x>0 and p.z<12:
+			continue # Wetland water remains clear.
+		if absf(p.x-sin(p.z*.25)*1.3)<2.8 or absf(p.z+.4-sin(p.x*.28)*1.1)<2.05:
+			continue
+		if sin(p.x*.7)+cos(p.z*.8)<.2:
+			continue
+		for blade in range(3):
+			var a := rng.randf()*TAU
+			var side := Vector3(cos(a),0,sin(a))*.022
+			var tip := p+Vector3(sin(a)*.07,rng.randf_range(.08,.23),cos(a)*.07)
+			tri(grass_faces,p-side,p+side,tip)
+			tri(grass_faces,p+side,p-side,tip)
+		if i%4==0:
+			var q := p+Vector3(.16,.003,0)
+			tri(petal_faces,q+Vector3(-.055,0,0),q+Vector3(0,0,.04),q+Vector3(.055,0,0))
+			tri(petal_faces,q+Vector3(-.055,0,0),q+Vector3(.055,0,0),q+Vector3(0,0,-.04))
+	surface(details,"MeadowGrassAndCreviceShoots",grass_faces,"Grass")
+	surface(details,"WindblownPetals",petal_faces,"BlossomDark")
+	# Rubble and ferns feather the terrain into the garden rather than framing a board.
+	for i in range(42):
+		var side := -1 if i%2 else 1
+		var p := Vector3(side*rng.randf_range(11.7,12.35),.02,rng.randf_range(-7.5,11.2))
+		var slab := rock(details,"BuriedStone%02d"%i,p,Vector3(rng.randf_range(.15,.45),.08,rng.randf_range(.2,.5)),"Stone")
+		slab.rotation.z = rng.randf_range(-.13,.13)
+		if i%3==0:
+			fern(details,"EdgeFern%02d"%i,p+Vector3(.1,0,.1),.48)
+	# Fallen carved stones beside the approach echo the concept's reclaimed ruins.
+	for side in [-1,1]:
+		for i in range(4):
+			var p := Vector3(side*(4.5+i*.55),.15,13.1+sin(i)*.8)
+			var block := box(details,"ApproachRubble%d_%d"%[side,i],p,Vector3(.6,.3,.7),"Stone")
+			block.rotation.y = i*.43
+			fern(details,"ApproachFern%d_%d"%[side,i],p+Vector3(.3,0,.2),.65)

@@ -12,20 +12,9 @@ height = 0.025
 radial_segments = 10
 rings = 1
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n1rru"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xsesi"]
 resource_name = "Blossom"
 albedo_color = Color(0.84705883, 0.5294118, 0.7254902, 1)
-roughness = 0.84
-
-[sub_resource type="SphereMesh" id="SphereMesh_xsesi"]
-radius = 1.0
-height = 2.0
-radial_segments = 7
-rings = 3
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xtnma"]
-resource_name = "BlossomLight"
-albedo_color = Color(0.95686275, 0.73333335, 0.84313726, 1)
 roughness = 0.84
 
 [sub_resource type="SphereMesh" id="SphereMesh_x7ign"]
@@ -34,11 +23,10 @@ height = 2.0
 radial_segments = 7
 rings = 3
 
-[sub_resource type="SphereMesh" id="SphereMesh_c7phw"]
-radius = 1.0
-height = 2.0
-radial_segments = 7
-rings = 3
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c7phw"]
+resource_name = "BlossomLight"
+albedo_color = Color(0.95686275, 0.73333335, 0.84313726, 1)
+roughness = 0.84
 
 [sub_resource type="SphereMesh" id="SphereMesh_mxqdp"]
 radius = 1.0
@@ -70,7 +58,19 @@ height = 2.0
 radial_segments = 7
 rings = 3
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wxtbc"]
+[sub_resource type="SphereMesh" id="SphereMesh_2y7pf"]
+radius = 1.0
+height = 2.0
+radial_segments = 7
+rings = 3
+
+[sub_resource type="SphereMesh" id="SphereMesh_njxl4"]
+radius = 1.0
+height = 2.0
+radial_segments = 7
+rings = 3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c3kfg"]
 resource_name = "Amber"
 albedo_color = Color(1, 0.62352943, 0.25882354, 1)
 roughness = 0.84
@@ -78,61 +78,61 @@ emission_enabled = true
 emission = Color(1, 0.62352943, 0.25882354, 1)
 emission_energy_multiplier = 0.8
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_2y7pf"]
+[sub_resource type="CylinderMesh" id="CylinderMesh_nmh3g"]
 top_radius = 0.045
 bottom_radius = 0.085
 height = 0.13
 radial_segments = 8
 rings = 1
 
-[node name="Lotus" type="Node3D" unique_id=1229341067]
+[node name="Lotus" type="Node3D" unique_id=1943006195]
 
-[node name="LilyPad" type="MeshInstance3D" parent="." unique_id=2126637924]
+[node name="LilyPad" type="MeshInstance3D" parent="." unique_id=1496184243]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
 material_override = SubResource("StandardMaterial3D_vjyny")
 mesh = SubResource("CylinderMesh_jg6gv")
 
-[node name="Petal0" type="MeshInstance3D" parent="." unique_id=1739812823]
+[node name="Petal0" type="MeshInstance3D" parent="." unique_id=282260918]
 transform = Transform3D(0.1, 0, 0, 0, 0.14030705, -0.12422135, 0, 0.09598923, 0.18157384, 0.15, 0.13, 0)
-material_override = SubResource("StandardMaterial3D_n1rru")
-mesh = SubResource("SphereMesh_xsesi")
-
-[node name="Petal1" type="MeshInstance3D" parent="." unique_id=1789822287]
-transform = Transform3D(0.07642394, -0.0043871333, 0.14177153, 0.03751541, 0.1411925, -0.090563044, -0.052459266, 0.09458029, 0.14177153, 0.10606602, 0.13, 0.10606602)
-material_override = SubResource("StandardMaterial3D_xtnma")
+material_override = SubResource("StandardMaterial3D_xsesi")
 mesh = SubResource("SphereMesh_x7ign")
 
-[node name="Petal2" type="MeshInstance3D" parent="." unique_id=214316319]
-transform = Transform3D(-3.6076568e-09, 4.1958224e-09, 0.22, 0.05646425, 0.14030705, -8.082669e-18, -0.08253356, 0.09598923, -9.616506e-09, 9.184851e-18, 0.13, 0.15)
-material_override = SubResource("StandardMaterial3D_n1rru")
-mesh = SubResource("SphereMesh_c7phw")
-
-[node name="Petal3" type="MeshInstance3D" parent="." unique_id=1034280529]
-transform = Transform3D(-0.07642394, 0.0043871333, 0.14177153, 0.03751541, 0.1411925, 0.090563044, -0.052459266, 0.09458029, -0.14177153, -0.10606602, 0.13, 0.10606602)
-material_override = SubResource("StandardMaterial3D_xtnma")
+[node name="Petal1" type="MeshInstance3D" parent="." unique_id=841843489]
+transform = Transform3D(0.07642394, -0.0043871333, 0.14177153, 0.03751541, 0.1411925, -0.090563044, -0.052459266, 0.09458029, 0.14177153, 0.10606602, 0.13, 0.10606602)
+material_override = SubResource("StandardMaterial3D_c7phw")
 mesh = SubResource("SphereMesh_mxqdp")
 
-[node name="Petal4" type="MeshInstance3D" parent="." unique_id=542821104]
-transform = Transform3D(-0.1, 8.391645e-09, -1.587369e-08, 6.064468e-18, 0.14030705, 0.12422135, 8.742278e-09, 0.09598923, -0.18157384, -0.15, 0.13, 1.8369703e-17)
-material_override = SubResource("StandardMaterial3D_n1rru")
+[node name="Petal2" type="MeshInstance3D" parent="." unique_id=58489215]
+transform = Transform3D(-3.6076568e-09, 4.1958224e-09, 0.22, 0.05646425, 0.14030705, -8.082669e-18, -0.08253356, 0.09598923, -9.616506e-09, 9.184851e-18, 0.13, 0.15)
+material_override = SubResource("StandardMaterial3D_xsesi")
 mesh = SubResource("SphereMesh_uctxv")
 
-[node name="Petal5" type="MeshInstance3D" parent="." unique_id=262327865]
-transform = Transform3D(-0.07642395, -0.004387143, -0.14177151, -0.03751541, 0.1411925, 0.090563044, 0.05245925, 0.09458029, -0.14177154, -0.10606602, 0.13, -0.10606602)
-material_override = SubResource("StandardMaterial3D_xtnma")
+[node name="Petal3" type="MeshInstance3D" parent="." unique_id=1261048140]
+transform = Transform3D(-0.07642394, 0.0043871333, 0.14177153, 0.03751541, 0.1411925, 0.090563044, -0.052459266, 0.09458029, -0.14177153, -0.10606602, 0.13, 0.10606602)
+material_override = SubResource("StandardMaterial3D_c7phw")
 mesh = SubResource("SphereMesh_5h8ao")
 
-[node name="Petal6" type="MeshInstance3D" parent="." unique_id=1307144747]
-transform = Transform3D(9.842028e-10, 1.14466e-09, -0.22, -0.05646425, 0.14030705, 2.4248006e-17, 0.08253356, 0.09598923, 2.6234737e-09, -2.7554553e-17, 0.13, -0.15)
-material_override = SubResource("StandardMaterial3D_n1rru")
+[node name="Petal4" type="MeshInstance3D" parent="." unique_id=1632679863]
+transform = Transform3D(-0.1, 8.391645e-09, -1.587369e-08, 6.064468e-18, 0.14030705, 0.12422135, 8.742278e-09, 0.09598923, -0.18157384, -0.15, 0.13, 1.8369703e-17)
+material_override = SubResource("StandardMaterial3D_xsesi")
 mesh = SubResource("SphereMesh_65wf1")
 
-[node name="Petal7" type="MeshInstance3D" parent="." unique_id=1364657666]
-transform = Transform3D(0.076423936, 0.004387113, -0.14177155, -0.03751541, 0.1411925, -0.090563044, 0.052459277, 0.09458029, 0.1417715, 0.10606602, 0.13, -0.10606602)
-material_override = SubResource("StandardMaterial3D_xtnma")
+[node name="Petal5" type="MeshInstance3D" parent="." unique_id=360610955]
+transform = Transform3D(-0.07642395, -0.004387143, -0.14177151, -0.03751541, 0.1411925, 0.090563044, 0.05245925, 0.09458029, -0.14177154, -0.10606602, 0.13, -0.10606602)
+material_override = SubResource("StandardMaterial3D_c7phw")
 mesh = SubResource("SphereMesh_chahu")
 
-[node name="GoldenHeart" type="MeshInstance3D" parent="." unique_id=1080840666]
+[node name="Petal6" type="MeshInstance3D" parent="." unique_id=1276094968]
+transform = Transform3D(9.842028e-10, 1.14466e-09, -0.22, -0.05646425, 0.14030705, 2.4248006e-17, 0.08253356, 0.09598923, 2.6234737e-09, -2.7554553e-17, 0.13, -0.15)
+material_override = SubResource("StandardMaterial3D_xsesi")
+mesh = SubResource("SphereMesh_2y7pf")
+
+[node name="Petal7" type="MeshInstance3D" parent="." unique_id=1128627320]
+transform = Transform3D(0.076423936, 0.004387113, -0.14177155, -0.03751541, 0.1411925, -0.090563044, 0.052459277, 0.09458029, 0.1417715, 0.10606602, 0.13, -0.10606602)
+material_override = SubResource("StandardMaterial3D_c7phw")
+mesh = SubResource("SphereMesh_njxl4")
+
+[node name="GoldenHeart" type="MeshInstance3D" parent="." unique_id=570374555]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.16, 0)
-material_override = SubResource("StandardMaterial3D_wxtbc")
-mesh = SubResource("CylinderMesh_2y7pf")
+material_override = SubResource("StandardMaterial3D_c3kfg")
+mesh = SubResource("CylinderMesh_nmh3g")
