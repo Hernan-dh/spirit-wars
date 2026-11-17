@@ -63,14 +63,14 @@ asset tools or packages are required.
 - **R** restores the opening position, angle, and zoom.
 - **Left click** a unit from either team to select or inspect it. Click empty space or press **Esc** to clear selection.
 - During the active team's turn, **click a gold-ringed hex** to move the selected unit up to three hexes in one move. Gold rings mark every empty destination reachable within three steps; units cannot move through occupied hexes or off the field.
-- **Spirit Pulse** uses the selected unit's ability: a team-colored expanding burst (visual starter ability; no damage yet).
+- **Spirit Pulse / Attack** enters targeting mode. Click a red-ringed enemy within three hexes to deal one damage. **Cancel Attack** exits targeting without spending the attack; **Esc** clears selection. Invalid targets spend no action.
 - **End Turn** hands local control to the other team, even if actions remain. Jade starts.
 
 Two jade pawns face two ember pawns on rows 12 and 3 of the field. Each has a
-team-colored body and base plus a team/name label. Selection adds a gold ground
+team-colored body and base plus a team/name label and visible health. Every unit starts with **3 HP**; health persists between turns. A unit at zero health is removed and its hex becomes available. Selection adds a gold ground
 ring and overhead pointer, while the top-right panel names the selected unit.
 Only one unit is selected at a time; both teams can be inspected. Only the active
-team can act. Each unit can move once and use one ability, in either order, per
+team can act. Each unit can move once and attack once, in either order, per
 team turn. Selecting another unit does not reset those allowances. Ending the
 turn clears selection and refreshes only the incoming team's actions. The panel
 shows the turn, active team, and selected unit's remaining actions. Both teams
@@ -87,8 +87,9 @@ inspect the field closely or see the whole expanded landscape.
 Zoom and tilt are limited to keep the view usable and above the battlefield.
 Speeds, pan limits, and zoom limits are adjustable on `CameraRig` in the inspector;
 keyboard bindings live in Project Settings → Input Map. The small title and
-control legend appear only at runtime. Combat, health, and victory rules are not
-implemented yet. Turn and movement rules live in `scripts/unit_selection.gd`;
+control legend appear only at runtime. Attacks use axial hex distance (at most three),
+including adjacent targets, and can pass over occupied hexes; no line-of-sight
+restriction is applied. Victory rules are not implemented yet. Turn, combat, and movement rules live in `scripts/unit_selection.gd`;
 pawns store their own action allowances in `scripts/placeholder_unit.gd`.
 
 ## Rebuilding the initial layout

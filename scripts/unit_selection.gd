@@ -6,6 +6,8 @@ signal state_changed
 
 const NEIGHBORS := [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1), Vector2i(1, -1), Vector2i(-1, 1)]
 const MOVE_RANGE := 3
+const ATTACK_RANGE := 3
+const ATTACK_DAMAGE := 1
 
 var selected_unit: PlaceholderUnit
 var active_team: PlaceholderUnit.Team = PlaceholderUnit.Team.JADE
@@ -16,6 +18,7 @@ var tiles: Dictionary[Vector2i, Node3D] = {}
 var unit_tiles: Dictionary[PlaceholderUnit, Vector2i] = {}
 var _highlights: Dictionary[Vector2i, MeshInstance3D] = {}
 var _pending_clicks: Array[Vector2] = []
+var targeting_attack := false
 
 func _ready() -> void:
 	for tile: Node3D in get_parent().get_node("BattlefieldGrid").get_children():
@@ -56,10 +59,45 @@ func active_team_name() -> String:
 	return "Jade" if active_team == PlaceholderUnit.Team.JADE else "Ember"
 
 func can_act(unit: PlaceholderUnit) -> bool:
-	return is_instance_valid(unit) and unit in units and unit.team == active_team
+	return is_instance_valid(unit) and unit in units and unit.health > 0 and unit.team == active_team
 
 func can_use_ability(unit: PlaceholderUnit) -> bool:
 	return can_act(unit) and not unit.ability_used
+
+func hex_distance(a: Vector2i, b: Vector2i) -> int:
+	var delta := a - b
+	return maxi(absi(delta.x), maxi(absi(delta.y), absi(delta.x + delta.y)))
+
+func available_targets(unit: PlaceholderUnit) -> Array[PlaceholderUnit]:
+	var result: Array[PlaceholderUnit] = []
+	if not can_use_ability(unit):
+		return result
+	for target in units:
+		if target.team != unit.team and target.health > 0 and hex_distance(unit_tiles[unit], unit_tiles[target]) <= ATTACK_RANGE:
+			result.append(target)
+	return result
+
+func try_attack(unit: PlaceholderUnit, target: PlaceholderUnit) -> bool:
+	if not target in available_targets(unit):
+		feedback = "Choose an enemy within %d hexes with an unused attack." % ATTACK_RANGE
+		state_changed.emit()
+		return false
+	unit.ability_used = true
+	unit.play_spirit_pulse(target.global_position)
+	target.take_damage(ATTACK_DAMAGE)
+	feedback = "%s hit %s for %d damage." % [unit.display_name(), target.display_name(), ATTACK_DAMAGE]
+	if target.health == 0:
+		feedback += " Defeated!"
+		units.erase(target)
+		unit_tiles.erase(target)
+		if selected_unit == target:
+			target.set_selected(false)
+			selected_unit = null
+			selection_changed.emit(null)
+		target.queue_free()
+	targeting_attack = false
+	_refresh()
+	return true
 
 func available_moves(unit: PlaceholderUnit) -> Array[Vector2i]:
 	var result: Array[Vector2i] = []
@@ -108,9 +146,13 @@ func try_move(unit: PlaceholderUnit, cell: Vector2i) -> bool:
 func use_selected_ability() -> bool:
 	if not can_use_ability(selected_unit):
 		return false
-	selected_unit.ability_used = true
-	selected_unit.play_spirit_pulse()
-	feedback = "%s used Spirit Pulse." % selected_unit.display_name()
+	targeting_attack = not targeting_attack
+	if targeting_attack:
+		feedback = "Click a red-ringed enemy to deal %d damage." % ATTACK_DAMAGE
+		if available_targets(selected_unit).is_empty():
+			feedback = "No enemies within %d hexes. Cancel to move." % ATTACK_RANGE
+	else:
+		feedback = "Attack cancelled. Click a gold-ringed hex to move."
 	_refresh()
 	return true
 
@@ -145,7 +187,13 @@ func _physics_process(_delta: float) -> void:
 		var query := PhysicsRayQueryParameters3D.create(origin, end, 3)
 		var hit := get_world_3d().direct_space_state.intersect_ray(query)
 		var collider := hit.get("collider") as Node
-		if collider is PlaceholderUnit:
+		if targeting_attack:
+			if collider is PlaceholderUnit:
+				try_attack(selected_unit, collider)
+			else:
+				feedback = "Click a red-ringed enemy, or cancel the attack."
+				state_changed.emit()
+		elif collider is PlaceholderUnit:
 			select_unit(collider)
 		elif collider != null and collider.get_parent().has_meta("axial_q") and can_act(selected_unit):
 			var tile := collider.get_parent()
@@ -155,7 +203,11 @@ func _physics_process(_delta: float) -> void:
 	_pending_clicks.clear()
 
 func select_unit(unit: PlaceholderUnit) -> void:
+	targeting_attack = false
+	if is_instance_valid(unit) and (not unit in units or unit.health <= 0):
+		unit = null
 	if selected_unit == unit:
+		_refresh()
 		return
 	if is_instance_valid(selected_unit):
 		selected_unit.set_selected(false)
@@ -169,7 +221,7 @@ func select_unit(unit: PlaceholderUnit) -> void:
 		elif unit.has_moved and unit.ability_used:
 			feedback = "All actions used. Select another unit or end turn."
 		elif unit.has_moved:
-			feedback = "Move used. Spirit Pulse is still available."
+			feedback = "Move used. Spirit Pulse attack is still available."
 		elif available_moves(unit).is_empty():
 			feedback = "No reachable empty hexes to move to."
 		else:
@@ -179,6 +231,12 @@ func select_unit(unit: PlaceholderUnit) -> void:
 
 func _refresh() -> void:
 	var moves := available_moves(selected_unit)
+	var target_cells: Array[Vector2i] = []
+	if targeting_attack:
+		for target in available_targets(selected_unit):
+			target_cells.append(unit_tiles[target])
 	for cell: Vector2i in _highlights:
-		_highlights[cell].visible = cell in moves
+		_highlights[cell].visible = cell in target_cells if targeting_attack else cell in moves
+		var material := _highlights[cell].material_override as StandardMaterial3D
+		material.albedo_color = Color("ff625e") if targeting_attack else Color("ffe08a")
 	state_changed.emit()

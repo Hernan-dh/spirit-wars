@@ -74,14 +74,14 @@ func _ready() -> void:
 	ability_button = Button.new()
 	ability_button.name = "SpiritPulse"
 	ability_button.custom_minimum_size.y = 40
-	ability_button.tooltip_text = "Release a visible spirit burst. No damage yet.\nUses this unit's ability for the turn."
+	ability_button.tooltip_text = "Choose an enemy within three hexes to deal one damage.\nOne attack per turn; move and attack in either order."
 	ability_button.pressed.connect(skirmish.use_selected_ability)
 	rows.add_child(ability_button)
-	add_status_row(rows, "Spirit Pulse: a visible spirit burst.\nMove and ability in either order.", 13, Color("a7bbc3"))
+	add_status_row(rows, "Spirit Pulse: 1 damage / 3 hex range\nMove and attack in either order.", 13, Color("a7bbc3"))
 	feedback_label = add_status_row(rows, "", 14, Color("ffe08a"))
 	feedback_label.custom_minimum_size = Vector2(276, 48)
 	feedback_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	add_status_row(rows, "Click unit to select / inspect\nGold rings: reachable within %d hexes\nEmpty space / Esc to clear" % SkirmishController.MOVE_RANGE, 13, Color("a7bbc3"))
+	add_status_row(rows, "Click unit to select / inspect\nGold rings: move up to %d hexes\nRed rings: enemies in attack range\nEmpty space / Esc to clear selection" % SkirmishController.MOVE_RANGE, 13, Color("a7bbc3"))
 	skirmish.state_changed.connect(_refresh_status)
 	_refresh_status()
 
@@ -90,15 +90,17 @@ func _refresh_status() -> void:
 	turn_label.modulate = Color("52e0c0") if skirmish.active_team == PlaceholderUnit.Team.JADE else Color("ff825e")
 	end_turn_button.text = "End Turn  →  %s" % ("Ember" if skirmish.active_team == PlaceholderUnit.Team.JADE else "Jade")
 	var unit := skirmish.selected_unit
-	selection_label.text = "Selected: %s" % unit.display_name() if unit != null else "No unit selected"
+	selection_label.text = "%s  /  %d of %d HP" % [unit.display_name(), unit.health, PlaceholderUnit.MAX_HEALTH] if unit != null else "No unit selected"
 	ability_button.disabled = not skirmish.can_use_ability(unit)
-	ability_button.text = "Spirit Pulse" if unit == null or not unit.ability_used else "Spirit Pulse  /  Used"
+	ability_button.text = "Spirit Pulse  /  Attack" if unit == null or not unit.ability_used else "Spirit Pulse  /  Used"
+	if skirmish.targeting_attack:
+		ability_button.text = "Cancel Attack"
 	if unit == null:
-		actions_label.text = "Each unit: 1 move + 1 ability"
+		actions_label.text = "Each unit: 3 HP / 1 move + 1 attack"
 	elif unit.team != skirmish.active_team:
 		actions_label.text = "Waiting for %s's turn" % unit.team_name()
 	else:
-		actions_label.text = "Move: %s   /   Ability: %s" % ["used" if unit.has_moved else "ready", "used" if unit.ability_used else "ready"]
+		actions_label.text = "Move: %s   /   Attack: %s" % ["used" if unit.has_moved else "ready", "used" if unit.ability_used else "ready"]
 	feedback_label.text = skirmish.feedback
 
 func add_status_row(parent: Control, text: String, size: int, color: Color) -> Label:
