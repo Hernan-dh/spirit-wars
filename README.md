@@ -1,12 +1,12 @@
 # Spirit Wars — The Moonwell
 
-The first battlefield is a compact, moonlit shrine courtyard inspired by
+The first battlefield is a moonlit sanctuary landscape inspired by
 `references/sw_concept_1.png`: cool stone and jade, warm lanterns, pink blossoms,
 lotus water, bamboo, swept roofs, and cyan spirit inscriptions.
 
 Open `project.godot` in Godot 4.7 and press **F6** on
 `scenes/battlefields/moonwell_courtyard.tscn`, or **F5** to run the project.
-The scene is the project's main scene and uses the configured Forward+ renderer.
+The scene is the project's main scene and uses the configured Compatibility renderer.
 
 ## Editing the battlefield
 
@@ -18,8 +18,27 @@ coordinates for future tactics logic. The pointy-top hexes use an odd-row offset
 layout with a 0.94-unit grid radius, small seams, and level walking surfaces at
 y = 0.35. Each tile includes a matching convex collision shape.
 
-`NorthernSanctuary`, `Gardens`, `LotusPools`, `GardenBridge`, and
-`IslandFoundation` organize the surroundings. Reusable lantern, blossom tree,
+The landscape footprint is approximately **37.4 × 36.2 units**, twice the original
+width and depth (four times its ground area). The playable board remains 7×7 at
+its original tile size and elevation; the expansion adds scenery around it.
+
+Named groups organize the surroundings:
+
+- `HighlandTerraces`: five individually editable moss-capped landforms, eroded rock buttresses, hanging vines, and a rear mountain ridge.
+- `HighlandShrines`: hilltop temple, tea pavilion, pilgrim staircase, prayer silks, and offering braziers.
+- `EasternWetlands`: irregular lake and stream, two waterfall stages, lotus clusters, stepping stones, and an arched crossing.
+- `OuterGardens`: cherry groves, bamboo thickets, ferns, mossy outcrops, and fallen blossoms.
+- `WesternRuins`: broken paving, carved pillars, vines, and an inscribed spirit monolith.
+- `PilgrimApproach`: weathered flagstones, lanterns, and prayer banners.
+- `NorthernSanctuary`, `Gardens`, `LotusPools`, `GardenBridge`, and `IslandFoundation`: the central courtyard surroundings and expanded island base.
+
+Terrace crowns, rock strata, shore water, and roofs are saved native meshes;
+they can be moved, scaled, duplicated, or given different materials in the
+inspector. The lake outline and terrace profiles are also defined in the authoring
+script for geometry changes. Scenery is decorative; movement and picking remain
+on the board. Waterfall ribbons and ripples are static editable meshes.
+
+Reusable lantern, blossom tree,
 bamboo grove, lotus, and spirit gate scenes live in `scenes/props/`. Edit those
 source scenes to change their instances, or use Godot's **Editable Children**
 for local changes. Meshes and materials are native Godot resources; no external
@@ -53,7 +72,9 @@ assignments. `scenes/units/placeholder_unit.tscn` is the reusable pawn; its `tea
 and `unit_number` properties also update its appearance in the editor. Selection
 uses 3D collision picking on physics layer 2, with board occlusion on layer 1.
 
-Panning stays within eight world units of the opening focus on each ground axis.
+Panning stays within 18 world units of the opening focus on each ground axis.
+The opening orthographic size is 39 units; zoom spans 10–58 units so you can
+inspect the board closely or see the whole expanded landscape.
 Zoom and tilt are limited to keep the view usable and above the battlefield.
 Speeds, pan limits, and zoom limits are adjustable on `CameraRig` in the inspector;
 keyboard bindings live in Project Settings → Input Map. The small title and

@@ -72,11 +72,11 @@ rings = 3
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wxtbc"]
 resource_name = "Amber"
-albedo_color = Color(1, 0.7882353, 0.48235294, 1)
+albedo_color = Color(1, 0.62352943, 0.25882354, 1)
 roughness = 0.84
 emission_enabled = true
-emission = Color(1, 0.7882353, 0.48235294, 1)
-emission_energy_multiplier = 3.0
+emission = Color(1, 0.62352943, 0.25882354, 1)
+emission_energy_multiplier = 0.8
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_2y7pf"]
 top_radius = 0.045

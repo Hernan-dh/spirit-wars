@@ -2,6 +2,9 @@ extends SceneTree
 ## Rebuild the authored courtyard: godot --headless --path . --script tools/build_battlefield.gd
 ## Generated scenes contain ordinary, individually editable Godot nodes.
 
+const ISLAND_RIM := [Vector2(-8.8,-6.6),Vector2(-6.8,-9.2),Vector2(5.4,-9.7),Vector2(8.9,-6.8),Vector2(9.4,3.7),Vector2(7.1,7.8),Vector2(3.6,8.4),Vector2(-6.2,7.9),Vector2(-9.3,4.5)]
+const LANDSCAPE_SCALE := 2.0
+
 var rng := RandomNumberGenerator.new()
 var palette: Dictionary = {}
 var prop_scenes: Dictionary = {}
@@ -32,7 +35,13 @@ func make_materials() -> void:
 	material("StoneDark", "334956")
 	material("Foundation", "233846")
 	material("Earth", "344e50")
-	material("Moss", "537568")
+	material("Moss", "506a48")
+	material("Cliff", "3e5262")
+	material("CliffLight", "647782")
+	material("Grass", "718a53")
+	material("Sand", "7c8c86")
+	material("Foam", "a8e4e1", 0.35)
+	material("FallingWater", "62b6c6", 0.4, 0.25)
 	material("MossLight", "8aab75")
 	material("Jade", "30736c")
 	material("Leaf", "3f7967")
@@ -51,7 +60,7 @@ func make_materials() -> void:
 	material("Ripple", "70c9c7", 0.5)
 	material("Spirit", "6ef5ed", 2.0)
 	material("SpiritDim", "338d96", 0.8)
-	material("Amber", "ffc97b", 3.0)
+	material("Amber", "ff9f42", 0.8)
 	for i in range(6):
 		var m := material("Paving%d" % i, "71858f")
 		m.albedo_color = Color("71858f").darkened(i * 0.032)
@@ -204,7 +213,7 @@ func make_props() -> void:
 	light.name = "WarmLanternLight"
 	light.position.y = 1.8
 	light.light_color = Color("ffb963")
-	light.light_energy = 2.0
+	light.light_energy = 1.1
 	light.omni_range = 4.3
 	lantern.add_child(light)
 	prop_scenes["lantern"] = save_scene(lantern,"res://scenes/props/stone_lantern.tscn")
@@ -372,19 +381,19 @@ func make_tile(parent: Node, row: int, column: int) -> void:
 func build_battlefield() -> void:
 	var root := Node3D.new()
 	root.name = "MoonwellCourtyard"
-	root.set_meta("description","A 7 × 7 moonlit shrine courtyard. All tiles and scenery are editable scene nodes.")
+	root.set_meta("description","A 37 × 36 moonlit sanctuary landscape surrounding a 7 × 7 tactical courtyard. All terrain and scenery are editable scene nodes.")
 	var board := node(root,"Board_7x7")
 	for row in range(7):
 		for column in range(7):
 			make_tile(board,row,column)
 	var land := node(root,"IslandFoundation")
-	var rim := [Vector2(-8.8,-6.6),Vector2(-6.8,-9.2),Vector2(5.4,-9.7),Vector2(8.9,-6.8),Vector2(9.4,3.7),Vector2(7.1,7.8),Vector2(3.6,8.4),Vector2(-6.2,7.9),Vector2(-9.3,4.5)]
+	var rim := ISLAND_RIM
 	var top_faces: Array = []
 	var side_faces: Array = []
 	var base_faces: Array = []
 	for i in range(rim.size()):
-		var p: Vector2 = rim[i]
-		var q: Vector2 = rim[(i+1)%rim.size()]
+		var p: Vector2 = rim[i] * LANDSCAPE_SCALE
+		var q: Vector2 = rim[(i+1)%rim.size()] * LANDSCAPE_SCALE
 		var a := Vector3(p.x,-.08,p.y)
 		var b := Vector3(q.x,-.08,q.y)
 		var c := Vector3(p.x*.97,-.65,p.y*.97)
@@ -459,12 +468,13 @@ func build_battlefield() -> void:
 		var seal := box(marker,"JadeSeal",Vector3(0,.48,.185),Vector3(.15,.15,.025),"Jade")
 		seal.rotation.z = PI/4
 	make_bridge(root)
+	make_expanded_landscape(root)
 	make_atmosphere(root)
 	make_camera(root)
 	var skirmish := preload("res://scenes/units/skirmish.tscn").instantiate()
 	root.add_child(skirmish)
 	var packed := save_scene(root,"res://scenes/battlefields/moonwell_courtyard.tscn")
-	print("Saved Moonwell Courtyard: 49 hexes, editable scenery, camera and lighting.")
+	print("Saved Moonwell: fourfold landscape footprint, 49 playable hexes, editable terraces, wetlands and shrines.")
 
 func make_bridge(root: Node3D) -> void:
 	var bridge := node(root,"GardenBridge",Vector3(-7.0,.18,1.0))
@@ -488,10 +498,11 @@ func make_atmosphere(root: Node3D) -> void:
 	var env := Environment.new()
 	env.background_mode = Environment.BG_COLOR
 	env.background_color = Color("101e30")
+	env.background_energy_multiplier = 0.22
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	env.ambient_light_color = Color("9ac4dd")
 	env.ambient_light_energy = .38
-	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
+	env.tonemap_mode = Environment.TONE_MAPPER_LINEAR
 	env.glow_enabled = true
 	env.glow_intensity = .7
 	env.ssao_enabled = true
@@ -503,15 +514,15 @@ func make_atmosphere(root: Node3D) -> void:
 	key.name = "Moonlight"
 	key.rotation_degrees = Vector3(-52,-28,0)
 	key.light_color = Color("b8d8f5")
-	key.light_energy = 1.1
+	key.light_energy = .7
 	key.shadow_enabled = true
-	key.directional_shadow_max_distance = 55
+	key.directional_shadow_max_distance = 100
 	root.add_child(key)
 	var fill := DirectionalLight3D.new()
 	fill.name = "SoftDuskFill"
 	fill.rotation_degrees = Vector3(-28,130,0)
 	fill.light_color = Color("d5a3c0")
-	fill.light_energy = .28
+	fill.light_energy = .18
 	root.add_child(fill)
 
 func make_camera(root: Node3D) -> void:
@@ -520,13 +531,300 @@ func make_camera(root: Node3D) -> void:
 	var camera := Camera3D.new()
 	camera.name = "Camera3D"
 	camera.projection = Camera3D.PROJECTION_ORTHOGONAL
-	camera.size = 24.5
+	camera.size = 39.0
 	camera.far = 150
 	camera.current = true
 	rig.add_child(camera)
-	camera.position = Vector3(15.3,21.0,23.8)
-	camera.basis = Basis.looking_at(Vector3(0,.6,-.6)-camera.position)
+	camera.position = Vector3(24.3,33.0,37.4)
+	camera.basis = Basis.looking_at(Vector3(0,1.0,-1.8)-camera.position)
 	var hud := CanvasLayer.new()
 	hud.name = "CourtyardLabels"
 	hud.set_script(load("res://scripts/courtyard_labels.gd"))
 	root.add_child(hud)
+
+# The expanded landscape is baked to ordinary scene nodes by this authoring tool.
+# Nothing here runs in the game; each named terrace, rock and plant can be edited.
+func terrace(parent: Node, title: String, center: Vector3, radius: Vector2, height: float) -> Node3D:
+	var n := node(parent, title, center)
+	var rings: Array = []
+	for layer in range(3):
+		var points: Array = []
+		for i in range(10):
+			var a := TAU * i / 10.0
+			var r := 1.0 + sin(i * 13.7) * .10
+			var inset: float = [1.1, 1.0, .92][layer]
+			points.append(Vector3(cos(a)*radius.x*r*inset, [-.12, height*.78, height][layer], sin(a)*radius.y*r*inset))
+		rings.append(points)
+	for layer in range(2):
+		var faces: Array = []
+		for i in range(10):
+			var j := (i+1)%10
+			tri(faces, rings[layer][i], rings[layer+1][i], rings[layer][j])
+			tri(faces, rings[layer][j], rings[layer+1][i], rings[layer+1][j])
+		surface(n, "Bedrock" if layer == 0 else "WeatheredRim", faces, "Cliff" if layer == 0 else "CliffLight")
+	var top: Array = []
+	for i in range(10):
+		tri(top, Vector3(0,height,0), rings[2][(i+1)%10], rings[2][i])
+	surface(n,"MossyCrown",top,"Moss")
+	for i in range(8):
+		if i == 2 and title in ["EasternCascadePlateau", "CascadeShelf"]:
+			continue # Keep the spring and spillway free of crown boulders.
+		var a := TAU*i/8
+		var p := Vector3(cos(a)*radius.x*.86, height-.12, sin(a)*radius.y*.86)
+		rock(n,"CrownBoulder%02d"%i,p,Vector3(.65,.3,.48),"Moss" if i%3 else "Stone")
+	# Offset facets, shelves and vines break up the large, smooth cliff faces.
+	for i in range(16):
+		var a := TAU*i/16
+		var h := height*(.4+.4*(sin(i*2.8)*.5+.5))
+		var p := Vector3(cos(a)*radius.x*.94,h*.5,sin(a)*radius.y*.94)
+		var buttress := cylinder(n,"ErodedButtress%02d"%i,p,.55,.32,h,"CliffLight" if i%3 else "Cliff",5)
+		buttress.rotation.y = a
+		rock(n,"MossShelf%02d"%i,p+Vector3(0,h*.5,0),Vector3(.46,.10,.43),"Moss")
+		if i%2 == 0:
+			var start := Vector3(cos(a)*radius.x*.9,height,sin(a)*radius.y*.9)
+			line(n,"CliffVine%02d"%i,[start,start+Vector3(.05,-.45,.12),start+Vector3(.12,-minf(height*.55,1.4),.15)],.035,"Leaf")
+	return n
+
+func ring_mesh(parent: Node, title: String, center: Vector3, radius: float, thickness: float, mat: String) -> MeshInstance3D:
+	var torus := TorusMesh.new()
+	torus.inner_radius = radius-thickness
+	torus.outer_radius = radius+thickness
+	torus.rings = 40
+	torus.ring_segments = 6
+	return mesh(parent,title,torus,mat,center)
+
+func fern(parent: Node, title: String, pos: Vector3, size := 1.0) -> void:
+	var n := node(parent,title,pos)
+	n.scale *= size
+	for i in range(7):
+		var a := i*TAU/7
+		var d := Vector3(cos(a),0,sin(a))
+		var side := Vector3(-sin(a),0,cos(a))*.12
+		var mid := d*.27+Vector3.UP*.48
+		var tip := d*.65+Vector3.UP*.28
+		surface(n,"Frond%d"%i,[Vector3.ZERO,mid+side,tip,Vector3.ZERO,tip,mid-side],"Grass" if i%2 else "LeafLight")
+
+func banner(parent: Node, title: String, pos: Vector3, yaw := 0.0) -> void:
+	var n := node(parent,title,pos)
+	n.rotation.y = yaw
+	for side in [-1,1]:
+		cylinder(n,"StoneFoot%d"%side,Vector3(side*1.55,.18,0),.32,.25,.36,"StoneDark")
+		rod(n,"Pole%d"%side,Vector3(side*1.55,.3,0),Vector3(side*1.55,3.5,0),.055,"Wood")
+		rock(n,"Finial%d"%side,Vector3(side*1.55,3.6,0),Vector3(.12,.2,.12),"Gold")
+	line(n,"Suspension",[Vector3(-1.55,3.45,0),Vector3(0,3.15,0),Vector3(1.55,3.45,0)],.025,"Gold")
+	for i in range(3):
+		var x := (i-1)*.85
+		var y := 3.18+absf(x)*.14
+		var cloth := [Vector3(x-.25,y,0),Vector3(x+.25,y,0),Vector3(x+.27,y-1.25,.14),Vector3(x-.25,y,0),Vector3(x+.27,y-1.25,.14),Vector3(x-.18,y-1.45,.10)]
+		var flag := surface(n,"HangingSilk%d"%i,cloth,"Cloth")
+		var m: StandardMaterial3D = flag.material_override.duplicate()
+		m.cull_mode = BaseMaterial3D.CULL_DISABLED
+		flag.material_override = m
+		for j in range(3):
+			var seal := box(n,"GoldStitch%d_%d"%[i,j],Vector3(x,y-.35-j*.25,.09),Vector3(.11,.16,.025),"Gold")
+			seal.rotation.z = PI/4
+
+func brazier(parent: Node, title: String, pos: Vector3) -> void:
+	var n := node(parent,title,pos)
+	cylinder(n,"Plinth",Vector3(0,.15,0),.52,.43,.3,"StoneDark")
+	cylinder(n,"Stem",Vector3(0,.55,0),.24,.16,.65,"Gold")
+	cylinder(n,"BronzeBowl",Vector3(0,.94,0),.23,.52,.35,"Gold")
+	cylinder(n,"Coals",Vector3(0,1.11,0),.43,.40,.04,"Amber")
+	for i in range(5):
+		var a := i*TAU/5
+		var flame := rock(n,"SpiritFlame%d"%i,Vector3(cos(a)*.19,1.4,sin(a)*.19),Vector3(.12,.43+i*.04,.13),"Amber")
+		flame.rotation.z = sin(a)*.3
+
+func pavilion(parent: Node, title: String, pos: Vector3, size := 1.0) -> void:
+	var n := node(parent,title,pos)
+	n.scale *= size
+	box(n,"Foundation",Vector3(0,.18,0),Vector3(4.5,.36,3.7),"StoneDark")
+	box(n,"StoneFloor",Vector3(0,.41,0),Vector3(4.7,.14,3.9),"StoneLight")
+	for x in [-1,1]:
+		for z in [-1,1]:
+			var p := Vector3(x*1.75,1.85,z*1.35)
+			cylinder(n,"Pillar%d_%d"%[x,z],p,.13,.11,2.8,"Wood")
+			cylinder(n,"GiltFoot%d_%d"%[x,z],Vector3(p.x,.63,p.z),.22,.19,.3,"Gold")
+	box(n,"LintelFront",Vector3(0,3.15,1.35),Vector3(3.8,.24,.18),"WoodLight")
+	box(n,"LintelRear",Vector3(0,3.15,-1.35),Vector3(3.8,.24,.18),"WoodLight")
+	var r := roof(n,"SweptRoof",Vector3(0,3.3,0),2.6,1.05)
+	r.scale.z = .8
+	roof(n,"UpperRoof",Vector3(0,4.15,0),1.45,.85)
+	place(n,"lantern","OfferingLantern",Vector3(0,.48,0),0,.68)
+	for side in [-1,1]:
+		box(n,"Balustrade%d"%side,Vector3(side*1.8,1,-.2),Vector3(.12,.12,2.7),"WoodLight")
+		for j in range(6):
+			box(n,"RailSpindle%d_%d"%[side,j],Vector3(side*1.8,.75,-1.25+j*.43),Vector3(.07,.55,.07),"Wood")
+
+func waterfall(parent: Node, title: String, pos: Vector3, height: float, width: float) -> void:
+	var n := node(parent,title,pos)
+	# Opaque ribbons avoid sorting artifacts in the project's Compatibility renderer.
+	for i in range(5):
+		var x := (i-2)*width/5
+		var z := .07*sin(i*1.8)
+		box(n,"FallingRibbon%d"%i,Vector3(x,height*.5,z),Vector3(width/5*.94,height,.045),"FallingWater" if i%2 else "Ripple")
+		rod(n,"Whitewater%d"%i,Vector3(x,height,.04+z),Vector3(x+.04,.12,.15+z),.012,"Foam")
+	for i in range(3):
+		var ripple := ring_mesh(n,"SplashRing%d"%i,Vector3(0,.035+i*.012,.3),width*.45+i*.26,.02,"Foam")
+		ripple.scale.z = .42
+	for i in range(7):
+		rock(n,"Spray%d"%i,Vector3(rng.randf_range(-width*.6,width*.6),rng.randf_range(.05,.42),rng.randf_range(.05,.6)),Vector3(.04,.07,.04),"Foam")
+
+func make_expanded_landscape(root: Node3D) -> void:
+	var terrain := node(root,"HighlandTerraces")
+	terrace(terrain,"WesternGardenTerrace",Vector3(-12.1,0,-4.5),Vector2(4.8,5.3),1.0)
+	terrace(terrain,"WesternUpperTerrace",Vector3(-13.1,0,-10.2),Vector2(3.9,3.8),2.6)
+	terrace(terrain,"TemplePlateau",Vector3(-5.8,0,-14.0),Vector2(5.8,3.6),5.0)
+	terrace(terrain,"EasternCascadePlateau",Vector3(10.7,0,-12),Vector2(4.7,3.9),4.4)
+	terrace(terrain,"CascadeShelf",Vector3(11.0,0,-8.2),Vector2(3.3,2.1),1.8)
+	# Narrow, irregular columns read as eroded mountain strata, rather than walls.
+	for i in range(27):
+		var x := -16.0+i*1.22
+		var z := -15.8 + sin(i*.8)*.65
+		var h := 3.8 + (sin(i*1.9)+1)*2.3
+		if x > -10 and x < -.5:
+			h = 4.3
+		var column := cylinder(terrain,"RidgeColumn%02d"%i,Vector3(x,h*.5-.1,z),.9,.57,h,"Cliff" if i%3 else "CliffLight",5)
+		column.rotation.y = i*.7
+		rock(terrain,"RidgeMoss%02d"%i,Vector3(x,h-.1,z),Vector3(.62,.13,.66),"Moss")
+	# Separated tall peaks give the rear silhouette the concept's vertical rhythm.
+	for i in range(6):
+		var x := -14+i*5.1
+		var h := 7.5+sin(i*2.3)*1.8
+		var peak := cylinder(terrain,"DistantSpire%d"%i,Vector3(x,h*.5,-17),1.0,.35,h,"Cliff",5)
+		peak.rotation.z = .06*sin(i)
+		rock(terrain,"PeakCap%d"%i,Vector3(x,h,-17),Vector3(.45,.12,.46),"Moss")
+	var shrines := node(root,"HighlandShrines")
+	pavilion(shrines,"HilltopTemple",Vector3(-5.7,5,-14),1.22)
+	pavilion(shrines,"EastTeaPavilion",Vector3(12.1,4.4,-12.6),.85)
+	place(shrines,"tree","HilltopCherry",Vector3(-10.6,2.6,-11.5),.6,.9)
+	place(shrines,"tree","CascadeCherry",Vector3(7.9,4.4,-12.1),1,.8)
+	# Broad stone stairs link the main gate to the elevated sanctuary.
+	for i in range(19):
+		var y := (i+1)*5.0/19
+		box(shrines,"PilgrimStair%02d"%i,Vector3(-5.7,y*.5,-6.3-i*.38),Vector3(2.1,y,.4),"Stone" if i%2 else "StoneLight")
+		if i%4 == 0:
+			for side in [-1,1]:
+				box(shrines,"StairPost%d_%d"%[i,side],Vector3(-5.7+side*1.25,y+.35,-6.3-i*.38),Vector3(.24,.7,.24),"StoneDark")
+	for side in [-1,1]:
+		place(shrines,"lantern","TempleLantern%d"%side,Vector3(-5.7+side*2.0,5,-12),0,.8)
+	banner(shrines,"TemplePrayerSilks",Vector3(-9,5,-14.3),.2)
+	brazier(shrines,"WesternOffering",Vector3(-3.2,0,-6.5))
+	brazier(shrines,"EasternOffering",Vector3(3.2,0,-6.5))
+
+	var wetlands := node(root,"EasternWetlands")
+	# An irregular shoreline and winding stream replace the tiny rectangular pond edge.
+	var shore := [Vector2(8,-7.5),Vector2(12.4,-8.7),Vector2(14.6,-5),Vector2(13.9,-1),Vector2(16.6,2),Vector2(16,8),Vector2(12.7,12.7),Vector2(8.4,11.9),Vector2(6.4,8.2),Vector2(7.5,5.1),Vector2(10,3),Vector2(10,-1.9)]
+	var faces: Array = []
+	var polygon := PackedVector2Array(shore)
+	var indices := Geometry2D.triangulate_polygon(polygon)
+	for i in range(0,indices.size(),3):
+		var a := polygon[indices[i]]
+		var b := polygon[indices[i+1]]
+		var c := polygon[indices[i+2]]
+		tri(faces,Vector3(a.x,-.015,a.y),Vector3(c.x,-.015,c.y),Vector3(b.x,-.015,b.y))
+	surface(wetlands,"LotusLakeAndStream",faces,"Water")
+	for i in range(shore.size()):
+		var a: Vector2 = shore[i]
+		var b: Vector2 = shore[(i+1)%shore.size()]
+		for j in range(5):
+			var p := a.lerp(b,j/5.0)
+			rock(wetlands,"ShoreRock%d_%d"%[i,j],Vector3(p.x,.02,p.y),Vector3(.45,.22,.39),"StoneDark" if j%3 else "Moss")
+	for i in range(25):
+		var p := Vector3(rng.randf_range(8.4,14.8),.025,rng.randf_range(1,10))
+		if not Geometry2D.is_point_in_polygon(Vector2(p.x,p.z),polygon):
+			continue
+		place(wetlands,"lotus","LotusCluster%02d"%i,p,rng.randf()*TAU,rng.randf_range(.7,1.25))
+		if i%3 == 0:
+			ring_mesh(wetlands,"WaterRipple%02d"%i,p,.65,.008,"Ripple")
+		cylinder(wetlands,"LilyPad%02d"%i,p+Vector3(.5,0,.1),.24,.24,.02,"Leaf",10)
+	# Water starts in a visible upper basin and falls over two successive cliff ledges.
+	box(wetlands,"UpperSpring",Vector3(10.8,4.42,-9.4),Vector3(1.7,.04,3.4),"Water")
+	box(wetlands,"MiddleBasin",Vector3(10.8,1.82,-7.1),Vector3(2.1,.04,2.8),"Water")
+	for side in [-1,1]:
+		for i in range(5):
+			rock(wetlands,"SpringBank%d_%d"%[side,i],Vector3(10.8+side*.98,4.4,-10.6+i*.64),Vector3(.22,.18,.38),"Moss" if i%2 else "StoneDark")
+		for i in range(4):
+			rock(wetlands,"ShelfBank%d_%d"%[side,i],Vector3(10.8+side*1.16,1.8,-7.9+i*.65),Vector3(.22,.16,.36),"StoneDark")
+	waterfall(wetlands,"UpperFalls",Vector3(10.8,1.84,-7.7),2.58,1.6)
+	waterfall(wetlands,"LowerFalls",Vector3(10.8,.02,-5.7),1.8,1.9)
+	# The second bridge crosses the stream between the shore paths.
+	var crossing := node(wetlands,"StreamCrossing",Vector3(11.7,.12,-1.8))
+	make_bridge(crossing)
+	var bridge := crossing.get_node("GardenBridge") as Node3D
+	bridge.position = Vector3.ZERO
+	bridge.scale = Vector3(1.5,1.25,1.4)
+	for side in [-1,1]:
+		place(wetlands,"lantern","BridgeLantern%d"%side,Vector3(11.7+side*2.7,0,-1.8),0,.75)
+	for i in range(9):
+		var p := Vector3(6.1+i*.3,.07,6+i*.65)
+		cylinder(wetlands,"WetlandSteppingStone%d"%i,p,.53,.51,.16,"Stone",6)
+
+	var gardens := node(root,"OuterGardens")
+	var trees := [Vector3(-14,1,-3),Vector3(-11.6,1,-6.5),Vector3(-13.7,2.6,-10.4),Vector3(15.8,0,-5),Vector3(-10,0,6.6),Vector3(5.8,0,11.7)]
+	for i in range(trees.size()):
+		place(gardens,"tree","CherryGrove%d"%i,trees[i],i*.7,.72+(i%3)*.14)
+	var bamboo_positions := [Vector3(-16,1,-5),Vector3(-14,1,-7),Vector3(-15,0,1),Vector3(-13,0,3),Vector3(16,0,-2),Vector3(17,0,1),Vector3(16,0,7),Vector3(3,0,-14)]
+	for i in range(bamboo_positions.size()):
+		place(gardens,"bamboo","BambooThicket%d"%i,bamboo_positions[i],i*1.3,1.0+(i%3)*.2)
+	var planted_boundary := PackedVector2Array()
+	for point in ISLAND_RIM:
+		planted_boundary.append(point * LANDSCAPE_SCALE * .96)
+	for i in range(100):
+		var p := Vector3(rng.randf_range(-16,16),0,rng.randf_range(-11,14))
+		if not Geometry2D.is_point_in_polygon(Vector2(p.x,p.z),planted_boundary):
+			continue
+		# Keep the tactical board, shore water and terraces clear of scattered props.
+		if (absf(p.x)<9 and p.z<8) or (p.x>6 and p.z<12) or (p.x<-8 and p.z<0) or (absf(p.x)<2 and p.z>5):
+			continue
+		fern(gardens,"GroundFern%03d"%i,p,rng.randf_range(.65,1.5))
+		if i%3 == 0:
+			rock(gardens,"MossyOutcrop%03d"%i,p,Vector3(.65,.35,.5),"Moss")
+	for i in range(22):
+		var p := Vector3(-14+rng.randf()*5,1.03,-7+rng.randf()*7)
+		fern(gardens,"TerraceFern%02d"%i,p,.8)
+		if i%2 == 0:
+			rock(gardens,"BlossomCarpet%02d"%i,p,Vector3(.16,.025,.13),"BlossomDark")
+	# A worn approach remains low in the foreground, preserving the board silhouette.
+	var approach := node(root,"PilgrimApproach")
+	for i in range(13):
+		var z := 7.5+i*.55
+		box(approach,"OldFlagstone%02d"%i,Vector3(sin(i*.35)*.35,.03,z),Vector3(2.25,.17,.49),"Stone" if i%3 else "StoneLight")
+		if i%4 == 0:
+			for side in [-1,1]:
+				place(approach,"lantern","PathLight%d_%d"%[i,side],Vector3(side*1.9,0,z),0,.58)
+	banner(approach,"EntryPrayerFlags",Vector3(-3.8,0,11),-.2)
+	banner(approach,"EasternPrayerFlags",Vector3(4,0,8.4),.3)
+	make_ruins(root)
+
+func make_ruins(root: Node3D) -> void:
+	var ruins := node(root,"WesternRuins",Vector3(-11,0,8.7))
+	for i in range(9):
+		var slab := box(ruins,"BrokenPaving%d"%i,Vector3((i%3-1)*1.1,.04,(i/3-1)*1.05),Vector3(1,.17,.94),"StoneDark" if i%2 else "Stone")
+		slab.rotation.y = rng.randf_range(-.14,.14)
+	for side in [-1,1]:
+		var pillar := node(ruins,"CarvedPillar%d"%side,Vector3(side*2.1,0,-.4))
+		box(pillar,"Foot",Vector3(0,.2,0),Vector3(1.2,.4,1.2),"StoneDark")
+		box(pillar,"Shaft",Vector3(0,1.6,0),Vector3(.7,2.7,.8),"Stone")
+		for y in [.5,2.3,2.9]:
+			box(pillar,"Collar%s"%y,Vector3(0,y,0),Vector3(.9,.15,1),"StoneLight")
+		for j in range(3):
+			var glyph := box(pillar,"InsetRune%d"%j,Vector3(0,1+j*.46,.411),Vector3(.18,.24,.02),"SpiritDim")
+			glyph.rotation.z = PI/4
+		rock(pillar,"Overgrowth",Vector3(.1,3.04,0),Vector3(.55,.12,.54),"Moss")
+		for j in range(4):
+			line(pillar,"HangingVine%d"%j,[Vector3((j-1.5)*.17,3,.48),Vector3((j-1.5)*.17+.05,2.7,.49),Vector3((j-1.5)*.17,2.15-j*.15,.47)],.026,"Leaf")
+	var fallen := box(ruins,"FallenLintel",Vector3(.4,.36,-1.7),Vector3(3.6,.65,.9),"Stone")
+	fallen.rotation = Vector3(.1,.22,-.12)
+	var monolith := rock(ruins,"SpiritMonolith",Vector3(0,1.25,-.5),Vector3(.72,1.35,.48),"StoneDark")
+	monolith.rotation = Vector3.ZERO
+	var spiral: Array = []
+	for i in range(25):
+		var t := i/24.0
+		spiral.append(Vector3(sin(t*TAU*1.5)*.22,.55+t*1.45,.005))
+	line(ruins,"MonolithInscription",spiral,.023,"Spirit")
+	ring_mesh(ruins,"OfferingCircle",Vector3(0,.15,1),.9,.018,"SpiritDim")
+	place(ruins,"lantern","RuinLantern",Vector3(-2.7,0,1.4),0,.7)
+	for i in range(12):
+		var a := i*TAU/12
+		fern(ruins,"ReclaimedFern%d"%i,Vector3(cos(a)*2.9,0,sin(a)*2.5),.8)

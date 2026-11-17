@@ -1,19 +1,19 @@
 extends Node3D
 ## Angled battlefield view. Pan and orbit share a movable, bounded focus point.
 @export_range(4.0, 40.0) var minimum_zoom := 10.0
-@export_range(20.0, 60.0) var maximum_zoom := 34.0
+@export_range(20.0, 60.0) var maximum_zoom := 58.0
 @export var pan_speed := 10.0
 @export var fast_pan_multiplier := 2.0
-@export var pan_limits := Vector2(8.0, 8.0)
+@export var pan_limits := Vector2(18.0, 18.0)
 @export var orbit_sensitivity := 0.006
 @export var keyboard_rotation_speed := 1.5
 @onready var camera: Camera3D = $Camera3D
 
-const DEFAULT_FOCUS := Vector3(0, 0.6, -0.6)
+const DEFAULT_FOCUS := Vector3(0, 1.0, -1.8)
 const DEFAULT_YAW := 0.57
 const DEFAULT_ELEVATION := 0.63
-const DEFAULT_ZOOM := 24.5
-const ORBIT_DISTANCE := 34.0
+const DEFAULT_ZOOM := 39.0
+const ORBIT_DISTANCE := 54.0
 const MIN_ELEVATION := 0.55
 const MAX_ELEVATION := 1.25
 
