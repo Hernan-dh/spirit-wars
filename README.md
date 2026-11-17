@@ -65,6 +65,7 @@ asset tools or packages are required.
 - During the active team's turn, **click a gold-ringed hex** to move the selected unit up to three hexes in one move. Gold rings mark every empty destination reachable within three steps; units cannot move through occupied hexes or off the field.
 - **Spirit Pulse / Attack** enters targeting mode. Click a red-ringed enemy within three hexes to deal one damage. **Cancel Attack** exits targeting without spending the attack; **Esc** clears selection. Invalid targets spend no action.
 - **End Turn** hands local control to the other team, even if actions remain. Jade starts.
+- Defeating a team's last surviving unit ends the battle and displays the winner. Movement, attacks, selection, and turn changes stop. Choose **Restart Encounter** (or press Enter with the button focused) to restore the starting encounter, including all four units at full health, Jade's first turn, and the opening camera.
 
 Two jade pawns face two ember pawns on rows 12 and 3 of the field. Each has a
 team-colored body and base plus a team/name label and visible health. Every unit starts with **3 HP**; health persists between turns. A unit at zero health is removed and its hex becomes available. Selection adds a gold ground
@@ -89,7 +90,7 @@ Speeds, pan limits, and zoom limits are adjustable on `CameraRig` in the inspect
 keyboard bindings live in Project Settings → Input Map. The small title and
 control legend appear only at runtime. Attacks use axial hex distance (at most three),
 including adjacent targets, and can pass over occupied hexes; no line-of-sight
-restriction is applied. Victory rules are not implemented yet. Turn, combat, and movement rules live in `scripts/unit_selection.gd`;
+restriction is applied. The battle ends as soon as either team has no surviving units. Turn, victory, combat, and movement rules live in `scripts/unit_selection.gd`;
 pawns store their own action allowances in `scripts/placeholder_unit.gd`.
 
 ## Rebuilding the initial layout

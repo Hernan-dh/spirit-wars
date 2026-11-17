@@ -19,6 +19,10 @@ var unit_tiles: Dictionary[PlaceholderUnit, Vector2i] = {}
 var _highlights: Dictionary[Vector2i, MeshInstance3D] = {}
 var _pending_clicks: Array[Vector2] = []
 var targeting_attack := false
+var battle_over := false
+# -1 represents no winner (including an empty encounter).
+var winner := -1
+var _restarting := false
 
 func _ready() -> void:
 	for tile: Node3D in get_parent().get_node("BattlefieldGrid").get_children():
@@ -54,12 +58,52 @@ func _ready() -> void:
 			unit_tiles[unit] = closest
 			unit.global_position = tile_position(closest)
 			unit.reset_actions()
+	_check_battle_result()
 
 func active_team_name() -> String:
 	return "Jade" if active_team == PlaceholderUnit.Team.JADE else "Ember"
 
 func can_act(unit: PlaceholderUnit) -> bool:
-	return is_instance_valid(unit) and unit in units and unit.health > 0 and unit.team == active_team
+	return not battle_over and is_instance_valid(unit) and unit in units and unit.health > 0 and unit.team == active_team
+
+func result_text() -> String:
+	if winner == -1:
+		return "Draw — no surviving units"
+	return "%s wins!" % ("Jade" if winner == PlaceholderUnit.Team.JADE else "Ember")
+
+func _check_battle_result() -> void:
+	if battle_over:
+		return
+	var jade_alive := false
+	var ember_alive := false
+	for unit in units:
+		if unit.health > 0:
+			if unit.team == PlaceholderUnit.Team.JADE:
+				jade_alive = true
+			else:
+				ember_alive = true
+	if jade_alive and ember_alive:
+		return
+	battle_over = true
+	winner = PlaceholderUnit.Team.JADE if jade_alive else (PlaceholderUnit.Team.EMBER if ember_alive else -1)
+	targeting_attack = false
+	_pending_clicks.clear()
+	if is_instance_valid(selected_unit):
+		selected_unit.set_selected(false)
+	selected_unit = null
+	feedback = result_text()
+	selection_changed.emit(null)
+	_refresh()
+
+func restart_encounter() -> void:
+	if not battle_over or _restarting:
+		return
+	_restarting = true
+	var error := get_tree().reload_current_scene()
+	if error != OK:
+		_restarting = false
+		feedback = "Could not restart the encounter. Please try again."
+		state_changed.emit()
 
 func can_use_ability(unit: PlaceholderUnit) -> bool:
 	return can_act(unit) and not unit.ability_used
@@ -78,6 +122,8 @@ func available_targets(unit: PlaceholderUnit) -> Array[PlaceholderUnit]:
 	return result
 
 func try_attack(unit: PlaceholderUnit, target: PlaceholderUnit) -> bool:
+	if battle_over:
+		return false
 	if not target in available_targets(unit):
 		feedback = "Choose an enemy within %d hexes with an unused attack." % ATTACK_RANGE
 		state_changed.emit()
@@ -96,6 +142,7 @@ func try_attack(unit: PlaceholderUnit, target: PlaceholderUnit) -> bool:
 			selection_changed.emit(null)
 		target.queue_free()
 	targeting_attack = false
+	_check_battle_result()
 	_refresh()
 	return true
 
@@ -127,6 +174,8 @@ func tile_position(cell: Vector2i) -> Vector3:
 	return tiles[cell].to_global(Vector3(0, float(tiles[cell].get_meta("surface_height", 0.35)), 0))
 
 func try_move(unit: PlaceholderUnit, cell: Vector2i) -> bool:
+	if battle_over:
+		return false
 	if not cell in available_moves(unit):
 		if not can_act(unit):
 			feedback = "Select a %s unit to act." % active_team_name()
@@ -157,6 +206,8 @@ func use_selected_ability() -> bool:
 	return true
 
 func end_turn() -> void:
+	if battle_over:
+		return
 	# Discard clicks queued before the handoff so they cannot act for the new team.
 	_pending_clicks.clear()
 	active_team = PlaceholderUnit.Team.EMBER if active_team == PlaceholderUnit.Team.JADE else PlaceholderUnit.Team.JADE
@@ -169,6 +220,8 @@ func end_turn() -> void:
 	_refresh()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if battle_over:
+		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		_pending_clicks.append(event.position)
 		get_viewport().set_input_as_handled()
@@ -178,7 +231,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func _physics_process(_delta: float) -> void:
-	for screen_position in _pending_clicks:
+	# A lethal attack may clear the queue during this loop.
+	while not _pending_clicks.is_empty() and not battle_over:
+		var screen_position: Vector2 = _pending_clicks.pop_front()
 		var camera := get_viewport().get_camera_3d()
 		if camera == null:
 			continue
@@ -203,6 +258,8 @@ func _physics_process(_delta: float) -> void:
 	_pending_clicks.clear()
 
 func select_unit(unit: PlaceholderUnit) -> void:
+	if battle_over:
+		return
 	targeting_attack = false
 	if is_instance_valid(unit) and (not unit in units or unit.health <= 0):
 		unit = null

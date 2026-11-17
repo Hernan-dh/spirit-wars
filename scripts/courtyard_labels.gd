@@ -6,6 +6,10 @@ var actions_label: Label
 var feedback_label: Label
 var ability_button: Button
 var end_turn_button: Button
+var result_overlay: ColorRect
+var result_label: Label
+var result_details: Label
+var restart_button: Button
 var skirmish: SkirmishController
 
 func _ready() -> void:
@@ -82,11 +86,54 @@ func _ready() -> void:
 	feedback_label.custom_minimum_size = Vector2(276, 48)
 	feedback_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_status_row(rows, "Click unit to select / inspect\nGold rings: move up to %d hexes\nRed rings: enemies in attack range\nEmpty space / Esc to clear selection" % SkirmishController.MOVE_RANGE, 13, Color("a7bbc3"))
+	result_overlay = ColorRect.new()
+	result_overlay.name = "BattleResult"
+	result_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	result_overlay.color = Color(0.015, 0.03, 0.045, 0.65)
+	result_overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	result_overlay.hide()
+	frame.add_child(result_overlay)
+	var center := CenterContainer.new()
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	result_overlay.add_child(center)
+	var result_panel := PanelContainer.new()
+	result_panel.custom_minimum_size = Vector2(420, 0)
+	result_panel.add_theme_stylebox_override("panel", style.duplicate())
+	center.add_child(result_panel)
+	var result_rows := VBoxContainer.new()
+	result_rows.add_theme_constant_override("separation", 18)
+	result_panel.add_child(result_rows)
+	var heading := add_status_row(result_rows, "B A T T L E   C O M P L E T E", 14, Color("cbb58e"))
+	heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	result_label = add_status_row(result_rows, "", 36, Color.WHITE)
+	result_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	result_details = add_status_row(result_rows, "", 16, Color("d6e1e2"))
+	result_details.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	restart_button = Button.new()
+	restart_button.name = "RestartEncounter"
+	restart_button.text = "Restart Encounter"
+	restart_button.custom_minimum_size.y = 48
+	restart_button.pressed.connect(skirmish.restart_encounter)
+	result_rows.add_child(restart_button)
 	skirmish.state_changed.connect(_refresh_status)
 	_refresh_status()
 
 func _refresh_status() -> void:
+	var show_result := skirmish.battle_over and not result_overlay.visible
+	result_overlay.visible = skirmish.battle_over
+	end_turn_button.disabled = skirmish.battle_over
+	if skirmish.battle_over:
+		result_label.text = skirmish.result_text()
+		result_label.modulate = Color("52e0c0") if skirmish.winner == PlaceholderUnit.Team.JADE else Color("ff825e")
+		if skirmish.winner == -1:
+			result_label.modulate = Color.WHITE
+		result_details.text = "Encounter ended on turn %d.\nRestart to play again from the beginning." % skirmish.turn_number
+		if show_result:
+			restart_button.grab_focus()
 	turn_label.text = "TURN %d  /  %s" % [skirmish.turn_number, skirmish.active_team_name().to_upper()]
+	if skirmish.battle_over:
+		turn_label.text = "BATTLE COMPLETE"
 	turn_label.modulate = Color("52e0c0") if skirmish.active_team == PlaceholderUnit.Team.JADE else Color("ff825e")
 	end_turn_button.text = "End Turn  →  %s" % ("Ember" if skirmish.active_team == PlaceholderUnit.Team.JADE else "Jade")
 	var unit := skirmish.selected_unit
