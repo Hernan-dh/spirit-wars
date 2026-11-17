@@ -53,11 +53,21 @@ The lake outline and terrace profiles are also defined in the authoring
 script for geometry changes. Scenery is decorative; movement and picking use
 the ground hexes. Waterfall ribbons and ripples are static editable meshes.
 
-Reusable lantern, blossom tree,
-bamboo grove, lotus, and spirit gate scenes live in `scenes/props/`. Edit those
-source scenes to change their instances, or use Godot's **Editable Children**
-for local changes. Meshes and materials are native Godot resources; no external
-asset tools or packages are required.
+Reusable lantern, blossom tree, bamboo grove, lotus, and spirit gate scenes live
+in `scenes/props/`. Their static parts are combined by material and shadow mode.
+Lanterns and the gate remain scene instances with individually editable lights;
+use Godot's **Editable Children** for local changes.
+
+Trees, bamboo, lotus, and ferns are saved as `MultiMeshInstance3D` scenery.
+Nonuniformly scaled rocks are merged into static surfaces to preserve their lighting.
+Batches stay within their named landscape group and an eight-unit local X/Z cell,
+so distant regions can still be culled separately. Batch `instance_names` metadata
+maps each instance index to its authored placement name; transforms live in the
+MultiMesh resource. To change repeated scenery geometry or placements, edit the
+authoring script and rebuild. Batches contain baked mesh resources rather than
+live prop scene instances. All 196 tile roots, metadata, collisions, and gameplay nodes remain
+independent. Tile seals and static lines are combined meshes, with no segment nodes.
+Meshes and materials are native Godot resources; no external asset tools are required.
 
 `MoonlitAtmosphere`, `Moonlight`, and `SoftDuskFill` control the lighting.
 `CameraRig/Camera3D` gives the angled orthographic opening view. Runtime controls:
@@ -102,7 +112,9 @@ pawns store their own action allowances in `scripts/placeholder_unit.gd`.
 ## Rebuilding the initial layout
 
 `tools/build_battlefield.gd` is the deterministic authoring source for the
-layout and reusable props. `GRID_SIZE`, `HEX_RADIUS`, `GRID_CENTER_Z`, and
+layout and reusable props. `tools/static_geometry.gd` merges static surfaces and
+batches repeated scenery during authoring; normal game/editor use does no conversion.
+`GRID_SIZE`, `HEX_RADIUS`, `GRID_CENTER_Z`, and
 `grid_position()` define the grid; `ground_material()` labels approximate terrain zones.
 `materials/sanctuary_ground.gdshader` defines continuous paths, stone joints, and
 moss coverage in world coordinates. `materials/weathered_surface.gdshader` controls
@@ -114,8 +126,13 @@ and cell count, and the movement controller discovers all cells in `BattlefieldG
 To regenerate them:
 
 ```sh
-godot --headless --path . --script tools/build_battlefield.gd
+godot --path . --rendering-method gl_compatibility --script tools/build_battlefield.gd
 ```
+
+Regeneration requires a working graphics display and the Compatibility renderer.
+The generator rejects `--headless` before changing files because Godot's dummy
+renderer does not serialize MultiMesh transform buffers. On a machine with Xvfb
+installed, prefix the command with `xvfb-run -a` for an unattended rebuild.
 
 Regeneration **overwrites the battlefield and prop scene files**, including any
 manual scene edits. Normal game/editor use does not run this script. Temporary

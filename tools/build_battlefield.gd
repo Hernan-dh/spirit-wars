@@ -1,6 +1,8 @@
 extends SceneTree
-## Rebuild the authored courtyard: godot --headless --path . --script tools/build_battlefield.gd
-## Generated scenes contain ordinary, individually editable Godot nodes.
+## Rebuild the authored courtyard: godot --path . --rendering-method gl_compatibility --script tools/build_battlefield.gd
+## Generated scenes keep editable tiles/props and baked static scenery batches.
+
+const StaticGeometry = preload("res://tools/static_geometry.gd")
 
 const ISLAND_RIM := [Vector2(-8.8,-6.6),Vector2(-6.8,-9.2),Vector2(5.4,-9.7),Vector2(8.9,-6.8),Vector2(9.4,3.7),Vector2(7.1,7.8),Vector2(3.6,8.4),Vector2(-6.2,7.9),Vector2(-9.3,4.5)]
 const LANDSCAPE_SCALE := 2.0
@@ -11,8 +13,18 @@ const GRID_CENTER_Z := 1.4
 var rng := RandomNumberGenerator.new()
 var palette: Dictionary = {}
 var prop_scenes: Dictionary = {}
+var rock_geometry: SphereMesh
+var fern_geometry: Mesh
+var two_sided_materials: Dictionary = {}
+var flower_material: StandardMaterial3D
 
 func _initialize() -> void:
+	# The dummy renderer drops MultiMesh buffers when saving. Fail before overwriting
+	# assets; use Compatibility with a display (or xvfb-run) for offline generation.
+	if DisplayServer.get_name() == "headless":
+		push_error("Rebuild requires the Compatibility renderer to save MultiMesh transforms. Run without --headless; use xvfb-run on a display-less machine.")
+		quit(1)
+		return
 	rng.seed = 72819
 	make_materials()
 	make_props()
@@ -124,12 +136,14 @@ func cylinder(parent: Node, title: String, pos: Vector3, bottom: float, top: flo
 	return mesh(parent, title, g, mat, pos)
 
 func rock(parent: Node, title: String, pos: Vector3, size: Vector3, mat: String) -> MeshInstance3D:
-	var g := SphereMesh.new()
-	g.radius = 1.0
-	g.height = 2.0
-	g.radial_segments = 7
-	g.rings = 3
-	var n := mesh(parent, title, g, mat, pos)
+	if rock_geometry == null:
+		rock_geometry = SphereMesh.new()
+		rock_geometry.radius = 1.0
+		rock_geometry.height = 2.0
+		rock_geometry.radial_segments = 7
+		rock_geometry.rings = 3
+	var n := mesh(parent, title, rock_geometry, mat, pos)
+	# Bake these nonuniform scales into merged surfaces for correct Compatibility normals.
 	n.scale = size
 	n.rotation = Vector3(rng.randf_range(-0.2, 0.2), rng.randf() * TAU, rng.randf_range(-0.15, 0.15))
 	return n
@@ -141,10 +155,23 @@ func rod(parent: Node, title: String, a: Vector3, b: Vector3, radius: float, mat
 	return n
 
 func line(parent: Node, title: String, points: Array, radius: float, mat: String) -> Node3D:
-	var n := node(parent, title)
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	for i in range(points.size() - 1):
-		rod(n, "Segment%02d" % i, points[i], points[i + 1], radius, mat)
-	return n
+		var a: Vector3 = points[i]
+		var b: Vector3 = points[i + 1]
+		if a.is_equal_approx(b):
+			continue
+		var segment := CylinderMesh.new()
+		segment.bottom_radius = radius
+		segment.top_radius = radius
+		segment.height = a.distance_to(b)
+		segment.radial_segments = 6
+		segment.rings = 1
+		var transform := Transform3D(Basis(Quaternion(Vector3.UP, (b - a).normalized())), (a + b) * 0.5)
+		StaticGeometry.append_surface(st, segment, 0, transform)
+	st.index()
+	return mesh(parent, title, st.commit(), mat)
 
 func circle(parent: Node, title: String, center: Vector3, radius: float, mat: String, thickness := 0.018, vertical := false, count := 48) -> void:
 	var points: Array = []
@@ -231,6 +258,8 @@ func own_recursive(n: Node, root: Node) -> void:
 		own_recursive(child, root)
 
 func save_scene(root: Node, path: String) -> PackedScene:
+	if path.begins_with("res://scenes/props/"):
+		StaticGeometry.merge_prop(root)
 	own_recursive(root, root)
 	var packed := PackedScene.new()
 	packed.pack(root)
@@ -246,7 +275,17 @@ func place(parent: Node, key: String, title: String, pos: Vector3, yaw := 0.0, s
 	n.rotation.y = yaw
 	n.scale *= size
 	parent.add_child(n)
+	# Light-bearing lanterns and the gate remain individually editable scene instances.
+	if key in ["tree", "bamboo", "lotus"]:
+		n.set_meta("batch_scenery", true)
 	return n
+
+func two_sided(source: StandardMaterial3D) -> StandardMaterial3D:
+	if not two_sided_materials.has(source):
+		var result := source.duplicate() as StandardMaterial3D
+		result.cull_mode = BaseMaterial3D.CULL_DISABLED
+		two_sided_materials[source] = result
+	return two_sided_materials[source]
 
 func make_props() -> void:
 	var lantern := Node3D.new()
@@ -310,9 +349,7 @@ func make_props() -> void:
 					var tip_leaf := base + Vector3(direction.x*.42,-.12,(k-2)*.21)
 					var side := Vector3(.025,.045,.07)
 					var leaf := surface(bamboo,"Leaf%d_%d_%d" % [i,j,k],[base,base.lerp(tip_leaf,.5)+side,tip_leaf,base,tip_leaf,base.lerp(tip_leaf,.5)-side],"LeafLight" if k%2 else "Leaf")
-					var m: StandardMaterial3D = leaf.material_override.duplicate()
-					m.cull_mode = BaseMaterial3D.CULL_DISABLED
-					leaf.material_override = m
+					leaf.material_override = two_sided(leaf.material_override)
 	prop_scenes["bamboo"] = save_scene(bamboo,"res://scenes/props/bamboo_grove.tscn")
 
 	var lotus := Node3D.new()
@@ -519,6 +556,7 @@ func build_battlefield() -> void:
 		box(margins,"WestPath%d"%i,p,Vector3(.36,.09,.65),"MossPaving")
 	make_expanded_landscape(root)
 	make_sanctuary_details(root)
+	StaticGeometry.optimize_details(root)
 	make_atmosphere(root)
 	make_camera(root)
 	var skirmish := preload("res://scenes/units/skirmish.tscn").instantiate()
@@ -646,6 +684,10 @@ func ring_mesh(parent: Node, title: String, center: Vector3, radius: float, thic
 func fern(parent: Node, title: String, pos: Vector3, size := 1.0) -> void:
 	var n := node(parent,title,pos)
 	n.scale *= size
+	n.set_meta("batch_scenery", true)
+	if fern_geometry != null:
+		mesh(n, "FeatheredFronds", fern_geometry, "LeafLight")
+		return
 	var fronds: Array = []
 	for i in range(9):
 		var a := i*TAU/9
@@ -664,7 +706,7 @@ func fern(parent: Node, title: String, pos: Vector3, size := 1.0) -> void:
 				tri(fronds,mid,tip,middle+d*.04)
 				tri(fronds,mid,tip,middle-d*.04)
 				tri(fronds,mid,middle+d*.04,tip)
-	surface(n,"FeatheredFronds",fronds,"LeafLight")
+	fern_geometry = surface(n,"FeatheredFronds",fronds,"LeafLight").mesh
 
 func banner(parent: Node, title: String, pos: Vector3, yaw := 0.0) -> void:
 	var n := node(parent,title,pos)
@@ -679,9 +721,7 @@ func banner(parent: Node, title: String, pos: Vector3, yaw := 0.0) -> void:
 		var y := 3.18+absf(x)*.14
 		var cloth := [Vector3(x-.25,y,0),Vector3(x+.25,y,0),Vector3(x+.27,y-1.25,.14),Vector3(x-.25,y,0),Vector3(x+.27,y-1.25,.14),Vector3(x-.18,y-1.45,.10)]
 		var flag := surface(n,"HangingSilk%d"%i,cloth,"Cloth")
-		var m: StandardMaterial3D = flag.material_override.duplicate()
-		m.cull_mode = BaseMaterial3D.CULL_DISABLED
-		flag.material_override = m
+		flag.material_override = two_sided(flag.material_override)
 		for j in range(3):
 			var seal := box(n,"GoldStitch%d_%d"%[i,j],Vector3(x,y-.35-j*.25,.09),Vector3(.11,.16,.025),"Gold")
 			seal.rotation.z = PI/4
@@ -912,8 +952,8 @@ func roof_point(rings: Array, side: int, next: int, u: float, t: float) -> Vecto
 	return (eave.lerp(middle,t/.62) if t<.62 else middle.lerp(peak,(t-.62)/.38)) + Vector3.UP*.012
 
 func flower_cluster(parent: Node, title: String, pos: Vector3, shade: int) -> void:
-	# Bake petals into an ArrayMesh: unlike renderer-owned MultiMesh buffers this
-	# serializes correctly when regenerating with the headless dummy renderer.
+	# Each crown uses baked petals and a shared vertex-color material so all crowns
+	# can become one prop surface before the trees are instanced with MultiMesh.
 	var bloom := SphereMesh.new()
 	bloom.radius = 1.0
 	bloom.height = 2.0
@@ -941,10 +981,12 @@ func flower_cluster(parent: Node, title: String, pos: Vector3, shade: int) -> vo
 	n.name = title
 	n.position = pos
 	n.mesh = st.commit()
-	var mat := StandardMaterial3D.new()
-	mat.vertex_color_use_as_albedo = true
-	mat.roughness = .95
-	n.material_override = mat
+	if flower_material == null:
+		flower_material = StandardMaterial3D.new()
+		flower_material.resource_name = "BlossomPetals"
+		flower_material.vertex_color_use_as_albedo = true
+		flower_material.roughness = .95
+	n.material_override = flower_material
 	parent.add_child(n)
 
 func guardian(parent: Node, title: String, pos: Vector3, yaw: float) -> void:
