@@ -26,8 +26,18 @@ for local changes. Meshes and materials are native Godot resources; no external
 asset tools or packages are required.
 
 `MoonlitAtmosphere`, `Moonlight`, and `SoftDuskFill` control the lighting.
-`CameraRig/Camera3D` gives the opening view. Runtime controls are right/middle
-mouse drag to orbit, mouse wheel to zoom, and **R** to reset. The small title and
+`CameraRig/Camera3D` gives the angled orthographic opening view. Runtime controls:
+
+- **WASD / arrow keys** pan relative to the current camera heading; hold **Shift** for faster movement.
+- **Middle-mouse drag** grabs and pans the battlefield.
+- **Right-mouse drag** rotates and tilts around the current focus; **Q / E** rotate horizontally.
+- **Mouse wheel** zooms in and out.
+- **R** restores the opening position, angle, and zoom.
+
+Panning stays within eight world units of the opening focus on each ground axis.
+Zoom and tilt are limited to keep the view usable and above the battlefield.
+Speeds, pan limits, and zoom limits are adjustable on `CameraRig` in the inspector;
+keyboard bindings live in Project Settings → Input Map. The small title and
 control legend appear only at runtime. There are no units, combat systems,
 turn rules, or tile-selection behavior.
 

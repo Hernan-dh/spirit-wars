@@ -15,11 +15,11 @@ func _ready() -> void:
 	line.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	frame.add_child(line)
 	var footer := Label.new()
-	footer.text = "DRAG RMB  Orbit     /     SCROLL  Zoom     /     R  Reset view"
+	footer.text = "WASD / ARROWS / DRAG MMB  Pan     /     SHIFT  Fast pan\nDRAG RMB / Q E  Rotate     /     SCROLL  Zoom     /     R  Reset view"
 	footer.add_theme_font_size_override("font_size", 13)
 	footer.add_theme_color_override("font_color", Color("a7bbc3"))
 	footer.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
-	footer.position = Vector2(38, -43)
+	footer.position = Vector2(38, -64)
 	footer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	frame.add_child(footer)
 	var count := Label.new()
