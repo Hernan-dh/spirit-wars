@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/unit_selection.gd" id="1_selection"]
 [ext_resource type="PackedScene" path="res://scenes/units/lantern_spirit.tscn" id="2_unit"]
+[ext_resource type="PackedScene" path="res://scenes/units/celestial_kitsune.tscn" id="3_kitsune"]
 
 [node name="Skirmish" type="Node3D"]
 script = ExtResource("1_selection")
@@ -9,7 +10,7 @@ script = ExtResource("1_selection")
 [node name="Jade01" parent="." instance=ExtResource("2_unit")]
 position = Vector3(-2.0351597, 0, 7.7450000)
 
-[node name="Jade02" parent="." instance=ExtResource("2_unit")]
+[node name="Jade02" parent="." instance=ExtResource("3_kitsune")]
 position = Vector3(2.8492236, 0, 7.7450000)
 unit_number = 2
 
@@ -17,7 +18,7 @@ unit_number = 2
 position = Vector3(-2.8492236, 0, -4.9450000)
 team = 1
 
-[node name="Ember02" parent="." instance=ExtResource("2_unit")]
+[node name="Ember02" parent="." instance=ExtResource("3_kitsune")]
 position = Vector3(2.0351597, 0, -4.9450000)
 team = 1
 unit_number = 2

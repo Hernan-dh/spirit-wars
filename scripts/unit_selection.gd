@@ -185,8 +185,10 @@ func try_move(unit: PlaceholderUnit, cell: Vector2i) -> bool:
 			feedback = "Choose a highlighted hex within %d steps." % MOVE_RANGE
 		state_changed.emit()
 		return false
+	var origin := unit.global_position
 	unit_tiles[unit] = cell
 	unit.global_position = tile_position(cell)
+	unit.play_move(origin)
 	unit.has_moved = true
 	feedback = "%s moved." % unit.display_name()
 	_refresh()
@@ -278,7 +280,7 @@ func select_unit(unit: PlaceholderUnit) -> void:
 		elif unit.has_moved and unit.ability_used:
 			feedback = "All actions used. Select another unit or end turn."
 		elif unit.has_moved:
-			feedback = "Move used. Spirit Pulse attack is still available."
+			feedback = "Move used. %s attack is still available." % unit.ability_name()
 		elif available_moves(unit).is_empty():
 			feedback = "No reachable empty hexes to move to."
 		else:

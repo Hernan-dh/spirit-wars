@@ -1,7 +1,7 @@
 @tool
 class_name PlaceholderUnit
 extends StaticBody3D
-## Shared placeholder pawn. Team identity stays visible while selected.
+## Shared tactical pawn. Team identity stays visible while selected.
 enum Team { JADE, EMBER }
 const MAX_HEALTH := 3
 
@@ -33,6 +33,12 @@ func team_color() -> Color:
 
 func display_name() -> String:
 	return "%s %02d" % [team_name(), unit_number]
+
+func ability_name() -> String:
+	return "Spirit Pulse"
+
+func play_move(_origin: Vector3) -> void:
+	pass
 
 func _update_identity() -> void:
 	var material := StandardMaterial3D.new()

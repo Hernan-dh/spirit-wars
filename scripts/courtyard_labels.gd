@@ -81,7 +81,7 @@ func _ready() -> void:
 	ability_button.tooltip_text = "Choose an enemy within three hexes to deal one damage.\nOne attack per turn; move and attack in either order."
 	ability_button.pressed.connect(skirmish.use_selected_ability)
 	rows.add_child(ability_button)
-	add_status_row(rows, "Spirit Pulse: 1 damage / 3 hex range\nMove and attack in either order.", 13, Color("a7bbc3"))
+	add_status_row(rows, "Attack: 1 damage / 3 hex range\nMove and attack in either order.", 13, Color("a7bbc3"))
 	feedback_label = add_status_row(rows, "", 14, Color("ffe08a"))
 	feedback_label.custom_minimum_size = Vector2(276, 48)
 	feedback_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -139,7 +139,9 @@ func _refresh_status() -> void:
 	var unit := skirmish.selected_unit
 	selection_label.text = "%s  /  %d of %d HP" % [unit.display_name(), unit.health, PlaceholderUnit.MAX_HEALTH] if unit != null else "No unit selected"
 	ability_button.disabled = not skirmish.can_use_ability(unit)
-	ability_button.text = "Spirit Pulse  /  Attack" if unit == null or not unit.ability_used else "Spirit Pulse  /  Used"
+	ability_button.text = "Attack"
+	if unit != null:
+		ability_button.text = "%s  /  %s" % [unit.ability_name(), "Used" if unit.ability_used else "Attack"]
 	if skirmish.targeting_attack:
 		ability_button.text = "Cancel Attack"
 	if unit == null:
