@@ -3,6 +3,12 @@ const AuthoringContext = preload("res://tools/battlefield/authoring_context.gd")
 const GroundZones = preload("res://tools/battlefield/ground_zones.gd")
 ## Authored palette for the Moonwell courtyard.
 
+const PAVING_DARKEN_STEP := 0.032
+const WEATHERED_MATERIAL_KEYS := ["Stone", "StoneLight", "StoneDark", "Foundation", "Cliff", "CliffLight", "Moss", "MossLight", "Jade", "Wood", "WoodLight", "Roof"]
+const HIGH_GRAIN_MATERIAL_KEYS := ["Wood", "WoodLight", "Roof"]
+const STRATA_MATERIAL_KEYS := ["Cliff", "CliffLight", "Foundation"]
+const MOSS_MATERIAL_KEYS := ["Cliff", "CliffLight", "Stone", "Moss"]
+
 static func build(ctx: AuthoringContext) -> void:
 	ctx.material("Stone", "657d88")
 	ctx.material("StoneLight", "91a0a4")
@@ -40,9 +46,9 @@ static func build(ctx: AuthoringContext) -> void:
 	ctx.material("Spirit", "6ef5ed", 2.0)
 	ctx.material("SpiritDim", "338d96", 0.8)
 	ctx.material("Amber", "ff9f42", 0.8)
-	for i in range(6):
+	for i in range(GroundZones.PAVING_VARIANTS):
 		var m := ctx.material("Paving%d" % i, "71858f")
-		m.albedo_color = Color("71858f").darkened(i * 0.032)
+		m.albedo_color = Color("71858f").darkened(i * PAVING_DARKEN_STEP)
 
 	# One shared world-space material makes the ground continuous through the grid.
 	var ground := ShaderMaterial.new()
@@ -54,13 +60,13 @@ static func build(ctx: AuthoringContext) -> void:
 	water.resource_name = "Jade pool ripples"
 	water.shader = load("res://materials/lotus_water.gdshader")
 	ctx.palette["Water"] = water
-	for key in ["Stone", "StoneLight", "StoneDark", "Foundation", "Cliff", "CliffLight", "Moss", "MossLight", "Jade", "Wood", "WoodLight", "Roof"]:
+	for key in WEATHERED_MATERIAL_KEYS:
 		var original: StandardMaterial3D = ctx.palette[key]
 		var weathered := ShaderMaterial.new()
 		weathered.resource_name = key + " weathered grain"
 		weathered.shader = load("res://materials/weathered_surface.gdshader")
 		weathered.set_shader_parameter("base_color", original.albedo_color)
-		weathered.set_shader_parameter("grain_scale", 18.0 if key in ["Wood", "WoodLight", "Roof"] else 9.0)
-		weathered.set_shader_parameter("strata_amount", .38 if key in ["Cliff", "CliffLight", "Foundation"] else .12)
-		weathered.set_shader_parameter("moss_amount", .7 if key in ["Cliff", "CliffLight", "Stone", "Moss"] else .15)
+		weathered.set_shader_parameter("grain_scale", 18.0 if key in HIGH_GRAIN_MATERIAL_KEYS else 9.0)
+		weathered.set_shader_parameter("strata_amount", .38 if key in STRATA_MATERIAL_KEYS else .12)
+		weathered.set_shader_parameter("moss_amount", .7 if key in MOSS_MATERIAL_KEYS else .15)
 		ctx.palette[key] = weathered

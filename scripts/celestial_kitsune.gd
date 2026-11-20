@@ -6,6 +6,11 @@ const VISUAL := preload("res://scenes/units/kitsune_visual.tscn")
 var _time := 0.0
 var _flare := 0.0
 var _move_tween: Tween
+var _visual: Node3D
+var _body: Node3D
+var _tails: Array[Node3D] = []
+var _motes: Node3D
+var _spirit_light: OmniLight3D
 
 func display_name() -> String:
 	return "%s Kitsune %02d" % [team_name(), unit_number]
@@ -16,31 +21,36 @@ func ability_name() -> String:
 func _ready() -> void:
 	super._ready()
 	_time = unit_number * 1.3 + float(team) * 2.1
-	$KitsuneVisual.rotation.y = -.45 if team == Team.JADE else PI - .45
+	_visual = $KitsuneVisual as Node3D
+	_body = _visual.get_node("FoxBody") as Node3D
+	_motes = _visual.get_node("Motes") as Node3D
+	_spirit_light = _visual.get_node("SpiritLight") as OmniLight3D
+	for child in _visual.get_node("Tails").get_children():
+		if child is Node3D:
+			_tails.append(child)
+	_visual.rotation.y = -.45 if team == Team.JADE else PI - .45
 
 func _process(delta: float) -> void:
 	_time += delta
 	_flare = move_toward(_flare, 0.0, delta * 2.0)
-	var visual := $KitsuneVisual as Node3D
-	visual.get_node("FoxBody").scale = Vector3(1.0, 1.0 + sin(_time * 1.8) * .012, 1.0)
-	for i in 9:
-		var tail := visual.get_node("Tails/Tail%d" % i) as Node3D
+	_body.scale = Vector3(1.0, 1.0 + sin(_time * 1.8) * .012, 1.0)
+	for i in _tails.size():
+		var tail := _tails[i]
 		tail.rotation.z = sin(_time * 1.5 + i * .65) * .045
 		tail.rotation.y = sin(_time * 1.2 + i * .8) * .055
-	visual.get_node("Motes").rotation.y = sin(_time * .5) * .16
-	visual.get_node("SpiritLight").light_energy = .35 + sin(_time * 2.4) * .06 + _flare
+	_motes.rotation.y = sin(_time * .5) * .16
+	_spirit_light.light_energy = .35 + sin(_time * 2.4) * .06 + _flare
 
 func play_move(origin: Vector3) -> void:
-	var visual := $KitsuneVisual as Node3D
 	if _move_tween and _move_tween.is_valid():
 		_move_tween.kill()
 	var direction := global_position - origin
-	visual.rotation.y = atan2(-direction.x, -direction.z)
-	visual.position = origin - global_position + Vector3(0,.04,0)
-	var start := visual.position
+	_visual.rotation.y = atan2(-direction.x, -direction.z)
+	_visual.position = origin - global_position + Vector3(0,.04,0)
+	var start := _visual.position
 	_move_tween = create_tween()
 	_move_tween.tween_method(func(t: float) -> void:
-		visual.position = start.lerp(Vector3(0,.04,0), t) + Vector3.UP * sin(t * PI) * .22
+		_visual.position = start.lerp(Vector3(0,.04,0), t) + Vector3.UP * sin(t * PI) * .22
 	, 0.0, 1.0, .28)
 
 func play_spirit_pulse(target_position: Vector3) -> void:
@@ -48,7 +58,7 @@ func play_spirit_pulse(target_position: Vector3) -> void:
 	var direction := (target_position - global_position).normalized()
 	var side := direction.cross(Vector3.UP)
 	var heading := atan2(-direction.x, -direction.z)
-	$KitsuneVisual.rotation.y = heading
+	_visual.rotation.y = heading
 	# A trio of small luminous fox illusions converges on the chosen enemy.
 	# Encounter-owned effects survive a lethal hit and disappear after their tweens.
 	for i in 3:

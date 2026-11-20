@@ -9,10 +9,25 @@ const MOVE_RANGE := 3
 const ATTACK_RANGE := 3
 const ATTACK_DAMAGE := 1
 
+const NO_WINNER := -1
+const GROUND_LAYER := 1
+const UNIT_LAYER := 2
+const PICK_MASK := GROUND_LAYER | UNIT_LAYER
+const BATTLEFIELD_NODE := "BattlefieldGrid"
+const DEFAULT_SURFACE_HEIGHT := 0.35
+
+const HIGHLIGHT_INNER_RADIUS := 0.58
+const HIGHLIGHT_OUTER_RADIUS := 0.65
+const HIGHLIGHT_RINGS := 24
+const HIGHLIGHT_RING_SEGMENTS := 6
+const HIGHLIGHT_HEIGHT_OFFSET := 0.04
+const HIGHLIGHT_MOVE_COLOR := Color("ffe08a")
+const HIGHLIGHT_TARGET_COLOR := Color("ff625e")
+
 var selected_unit: PlaceholderUnit
 var active_team: PlaceholderUnit.Team = PlaceholderUnit.Team.JADE
 var turn_number := 1
-var feedback := "Select a Jade unit to begin."
+var feedback := ""
 var units: Array[PlaceholderUnit] = []
 var tiles: Dictionary[Vector2i, Node3D] = {}
 var unit_tiles: Dictionary[PlaceholderUnit, Vector2i] = {}
@@ -20,30 +35,16 @@ var _highlights: Dictionary[Vector2i, MeshInstance3D] = {}
 var _pending_clicks: Array[Vector2] = []
 var targeting_attack := false
 var battle_over := false
-# -1 represents no winner (including an empty encounter).
-var winner := -1
+# NO_WINNER represents no winner (including an empty encounter).
+var winner := NO_WINNER
 var _restarting := false
 
 func _ready() -> void:
-	for tile: Node3D in get_parent().get_node("BattlefieldGrid").get_children():
-		var cell := Vector2i(tile.get_meta("axial_q"), tile.get_meta("axial_r"))
+	feedback = "Select a %s unit to begin." % active_team_name()
+	for tile: Node3D in get_parent().get_node(BATTLEFIELD_NODE).get_children():
+		var cell := _cell_of(tile)
 		tiles[cell] = tile
-		var marker := MeshInstance3D.new()
-		var ring := TorusMesh.new()
-		ring.inner_radius = 0.58
-		ring.outer_radius = 0.65
-		ring.rings = 24
-		ring.ring_segments = 6
-		marker.mesh = ring
-		var material := StandardMaterial3D.new()
-		material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-		material.albedo_color = Color("ffe08a")
-		marker.material_override = material
-		marker.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		tile.add_child(marker)
-		marker.position.y = float(tile.get_meta("surface_height", 0.35)) + 0.04
-		marker.visible = false
-		_highlights[cell] = marker
+		_highlights[cell] = _make_highlight(tile)
 	for child in get_children():
 		if child is PlaceholderUnit:
 			var unit := child as PlaceholderUnit
@@ -60,32 +61,56 @@ func _ready() -> void:
 			unit.reset_actions()
 	_check_battle_result()
 
+func _cell_of(tile: Node) -> Vector2i:
+	return Vector2i(int(tile.get_meta("axial_q")), int(tile.get_meta("axial_r")))
+
+func _surface_height(tile: Node) -> float:
+	return float(tile.get_meta("surface_height", DEFAULT_SURFACE_HEIGHT))
+
+func _make_highlight(tile: Node3D) -> MeshInstance3D:
+	var marker := MeshInstance3D.new()
+	var ring := TorusMesh.new()
+	ring.inner_radius = HIGHLIGHT_INNER_RADIUS
+	ring.outer_radius = HIGHLIGHT_OUTER_RADIUS
+	ring.rings = HIGHLIGHT_RINGS
+	ring.ring_segments = HIGHLIGHT_RING_SEGMENTS
+	marker.mesh = ring
+	var material := StandardMaterial3D.new()
+	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	material.albedo_color = HIGHLIGHT_MOVE_COLOR
+	marker.material_override = material
+	marker.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	tile.add_child(marker)
+	marker.position.y = _surface_height(tile) + HIGHLIGHT_HEIGHT_OFFSET
+	marker.visible = false
+	return marker
+
 func active_team_name() -> String:
-	return "Jade" if active_team == PlaceholderUnit.Team.JADE else "Ember"
+	return PlaceholderUnit.name_for(active_team)
 
 func can_act(unit: PlaceholderUnit) -> bool:
 	return not battle_over and is_instance_valid(unit) and unit in units and unit.health > 0 and unit.team == active_team
 
 func result_text() -> String:
-	if winner == -1:
+	if winner == NO_WINNER:
 		return "Draw — no surviving units"
-	return "%s wins!" % ("Jade" if winner == PlaceholderUnit.Team.JADE else "Ember")
+	return "%s wins!" % PlaceholderUnit.name_for(winner)
+
+func _team_has_survivors(team: PlaceholderUnit.Team) -> bool:
+	for unit in units:
+		if unit.health > 0 and unit.team == team:
+			return true
+	return false
 
 func _check_battle_result() -> void:
 	if battle_over:
 		return
-	var jade_alive := false
-	var ember_alive := false
-	for unit in units:
-		if unit.health > 0:
-			if unit.team == PlaceholderUnit.Team.JADE:
-				jade_alive = true
-			else:
-				ember_alive = true
+	var jade_alive := _team_has_survivors(PlaceholderUnit.Team.JADE)
+	var ember_alive := _team_has_survivors(PlaceholderUnit.Team.EMBER)
 	if jade_alive and ember_alive:
 		return
 	battle_over = true
-	winner = PlaceholderUnit.Team.JADE if jade_alive else (PlaceholderUnit.Team.EMBER if ember_alive else -1)
+	winner = PlaceholderUnit.Team.JADE if jade_alive else (PlaceholderUnit.Team.EMBER if ember_alive else NO_WINNER)
 	targeting_attack = false
 	_pending_clicks.clear()
 	if is_instance_valid(selected_unit):
@@ -171,7 +196,8 @@ func available_moves(unit: PlaceholderUnit) -> Array[Vector2i]:
 	return result
 
 func tile_position(cell: Vector2i) -> Vector3:
-	return tiles[cell].to_global(Vector3(0, float(tiles[cell].get_meta("surface_height", 0.35)), 0))
+	var tile := tiles[cell]
+	return tile.to_global(Vector3(0, _surface_height(tile), 0))
 
 func try_move(unit: PlaceholderUnit, cell: Vector2i) -> bool:
 	if battle_over:
@@ -212,7 +238,7 @@ func end_turn() -> void:
 		return
 	# Discard clicks queued before the handoff so they cannot act for the new team.
 	_pending_clicks.clear()
-	active_team = PlaceholderUnit.Team.EMBER if active_team == PlaceholderUnit.Team.JADE else PlaceholderUnit.Team.JADE
+	active_team = PlaceholderUnit.other_team(active_team)
 	turn_number += 1
 	for unit in units:
 		if unit.team == active_team:
@@ -241,7 +267,7 @@ func _physics_process(_delta: float) -> void:
 			continue
 		var origin := camera.project_ray_origin(screen_position)
 		var end := origin + camera.project_ray_normal(screen_position) * camera.far
-		var query := PhysicsRayQueryParameters3D.create(origin, end, 3)
+		var query := PhysicsRayQueryParameters3D.create(origin, end, PICK_MASK)
 		var hit := get_world_3d().direct_space_state.intersect_ray(query)
 		var collider := hit.get("collider") as Node
 		if targeting_attack:
@@ -253,8 +279,7 @@ func _physics_process(_delta: float) -> void:
 		elif collider is PlaceholderUnit:
 			select_unit(collider)
 		elif collider != null and collider.get_parent().has_meta("axial_q") and can_act(selected_unit):
-			var tile := collider.get_parent()
-			try_move(selected_unit, Vector2i(tile.get_meta("axial_q"), tile.get_meta("axial_r")))
+			try_move(selected_unit, _cell_of(collider.get_parent()))
 		else:
 			select_unit(null)
 	_pending_clicks.clear()
@@ -297,5 +322,5 @@ func _refresh() -> void:
 	for cell: Vector2i in _highlights:
 		_highlights[cell].visible = cell in target_cells if targeting_attack else cell in moves
 		var material := _highlights[cell].material_override as StandardMaterial3D
-		material.albedo_color = Color("ff625e") if targeting_attack else Color("ffe08a")
+		material.albedo_color = HIGHLIGHT_TARGET_COLOR if targeting_attack else HIGHLIGHT_MOVE_COLOR
 	state_changed.emit()

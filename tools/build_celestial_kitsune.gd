@@ -1,42 +1,12 @@
-extends SceneTree
+extends "res://tools/unit_visual_builder.gd"
 ## Deterministic, editable native mesh authoring. No runtime generation or imports.
 ## godot --headless --path . --script tools/build_celestial_kitsune.gd
-const GeneratedResources = preload("res://tools/generated_resources.gd")
-var visual: Node3D
 var fur: StandardMaterial3D
 var warm_fur: StandardMaterial3D
 var red: StandardMaterial3D
 var gold: StandardMaterial3D
 var dark: StandardMaterial3D
 var light: StandardMaterial3D
-
-func material(color: String, emission := 0.0, metallic := 0.0) -> StandardMaterial3D:
-	var m := StandardMaterial3D.new()
-	m.albedo_color = Color(color)
-	m.roughness = .48
-	m.metallic = metallic
-	if emission > 0.0:
-		m.emission_enabled = true
-		m.emission = Color(color)
-		m.emission_energy_multiplier = emission
-	return m
-
-func node(parent: Node, label: String, pos := Vector3.ZERO) -> Node3D:
-	var n := Node3D.new()
-	n.name = label
-	parent.add_child(n)
-	n.owner = visual
-	n.position = pos
-	return n
-
-func mesh(parent: Node3D, label: String, geometry: Mesh, mat: Material) -> MeshInstance3D:
-	var n := MeshInstance3D.new()
-	n.name = label
-	n.mesh = geometry
-	n.material_override = mat
-	parent.add_child(n)
-	n.owner = visual
-	return n
 
 func oval(parent: Node3D, label: String, pos: Vector3, size: Vector3, mat: Material) -> MeshInstance3D:
 	var sphere := SphereMesh.new()
@@ -181,9 +151,8 @@ func tail(parent: Node3D, index: int, controls: Array[Vector3], tint: Color) -> 
 		strand(n,"Fork%d" % j,[p,p+Vector3(widths[j]*.55,.05,-.005),p+Vector3(widths[j]*.85,.14,0)],.008,light)
 
 func _initialize() -> void:
-	GeneratedResources.reset()
-	visual = Node3D.new()
-	visual.name = "KitsuneVisual"
+	material_roughness = .48
+	begin_visual("KitsuneVisual")
 	fur = material("f3edff",.035)
 	warm_fur = material("c5b8e0")
 	red = material("d83258",.06)
@@ -275,12 +244,4 @@ func _initialize() -> void:
 	glow.light_color = Color("b186ff")
 	glow.light_energy = .35
 	glow.omni_range = 2.5
-	GeneratedResources.externalize(visual, "res://scenes/units/kitsune_visual.tscn")
-	var packed := PackedScene.new()
-	var error := packed.pack(visual)
-	if error == OK:
-		error = ResourceSaver.save(packed,"res://scenes/units/kitsune_visual.tscn")
-	if error == OK:
-		GeneratedResources.cleanup_scene("res://scenes/units/kitsune_visual.tscn")
-	visual.free()
-	quit(error)
+	save_visual("res://scenes/units/kitsune_visual.tscn")

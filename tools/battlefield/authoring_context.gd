@@ -6,6 +6,10 @@ extends RefCounted
 const StaticGeometry = preload("res://tools/static_geometry.gd")
 const GeneratedResources = preload("res://tools/generated_resources.gd")
 
+const PROP_SCENE_DIR := "res://scenes/props/"
+const BATCHED_PROP_KEYS := ["tree", "bamboo", "lotus"]
+const OCTAGON_CORNER_SCALE := 1.4142
+
 var rng := RandomNumberGenerator.new()
 var palette: Dictionary = {}
 var prop_scenes: Dictionary = {}
@@ -131,7 +135,7 @@ func roof(parent: Node, title: String, pos: Vector3, radius: float, height: floa
 		var scale_factor: float = [1.0, 0.62, 0.12][level]
 		for i in range(8):
 			var a := PI/4 + i * TAU/8
-			var r := radius * scale_factor * (1.4142 if i % 2 == 0 else 1.0)
+			var r := radius * scale_factor * (OCTAGON_CORNER_SCALE if i % 2 == 0 else 1.0)
 			var y: float = [0.18 if i % 2 == 0 else 0.0, height * 0.38, height][level]
 			pts.append(Vector3(cos(a)*r, y, sin(a)*r))
 		rings.append(pts)
@@ -185,7 +189,7 @@ func own_recursive(n: Node, root: Node) -> void:
 		own_recursive(child, root)
 
 func save_scene(root: Node, path: String) -> PackedScene:
-	if path.begins_with("res://scenes/props/"):
+	if path.begins_with(PROP_SCENE_DIR):
 		StaticGeometry.merge_prop(root)
 	GeneratedResources.externalize(root, path)
 	own_recursive(root, root)
@@ -205,7 +209,7 @@ func place(parent: Node, key: String, title: String, pos: Vector3, yaw := 0.0, s
 	n.scale *= size
 	parent.add_child(n)
 	# Light-bearing lanterns and the gate remain individually editable scene instances.
-	if key in ["tree", "bamboo", "lotus"]:
+	if key in BATCHED_PROP_KEYS:
 		n.set_meta("batch_scenery", true)
 	return n
 

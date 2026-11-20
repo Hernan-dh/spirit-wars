@@ -16,6 +16,8 @@ const PLAZA_CENTER := Vector2(0.0, 1.4)
 const PLAZA_RADIUS := 3.8
 # Keep vegetation slightly clear of the paved footprint.
 const VEGETATION_CLEARANCE := .3
+# Number of painted flagstone variants authored in materials.gd.
+const PAVING_VARIANTS := 6
 
 # Meadow bands and the eastern/western edges of the authored field.
 const MEADOW_X_FREQUENCY := .36
@@ -51,7 +53,7 @@ static func meadow_value(pos: Vector2) -> float:
 
 static func material_for(pos: Vector2, rng: RandomNumberGenerator) -> String:
 	if is_paving(pos):
-		return "Paving%d" % rng.randi_range(0, 5)
+		return "Paving%d" % rng.randi_range(0, PAVING_VARIANTS - 1)
 	if pos.x > EAST_BANK_START + sin(pos.y * EAST_BANK_Z_FREQUENCY):
 		return "BankPaving"
 	var meadow := meadow_value(pos)

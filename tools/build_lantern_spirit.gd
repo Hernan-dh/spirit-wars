@@ -1,41 +1,11 @@
-extends SceneTree
+extends "res://tools/unit_visual_builder.gd"
 ## Author the reusable native-mesh Lantern Spirit; no external asset imports required.
 ## godot --headless --path . --script tools/build_lantern_spirit.gd
-const GeneratedResources = preload("res://tools/generated_resources.gd")
-var visual: Node3D
 var gold: StandardMaterial3D
 var red: StandardMaterial3D
 var paper: StandardMaterial3D
 var blue: StandardMaterial3D
 var ink: StandardMaterial3D
-
-func mat(color: String, glow := 0.0, metal := 0.0) -> StandardMaterial3D:
-	var m := StandardMaterial3D.new()
-	m.albedo_color = Color(color)
-	m.roughness = 0.5
-	m.metallic = metal
-	if glow > 0:
-		m.emission_enabled = true
-		m.emission = Color(color)
-		m.emission_energy_multiplier = glow
-	return m
-
-func node(parent: Node, label: String) -> Node3D:
-	var n := Node3D.new()
-	n.name = label
-	parent.add_child(n)
-	n.owner = visual
-	return n
-
-func mesh(parent: Node3D, label: String, geometry: Mesh, material: Material, position := Vector3.ZERO) -> MeshInstance3D:
-	var n := MeshInstance3D.new()
-	n.name = label
-	n.mesh = geometry
-	n.material_override = material
-	parent.add_child(n)
-	n.owner = visual
-	n.position = position
-	return n
 
 func lathe(parent: Node3D, label: String, profile: Array[Vector2], material: Material, segments := 32) -> MeshInstance3D:
 	var st := SurfaceTool.new()
@@ -84,14 +54,12 @@ func ribbon(parent: Node3D, label: String, points: Array[Vector3], width: float,
 	mesh(parent,label,st.commit(),m)
 
 func _initialize() -> void:
-	GeneratedResources.reset()
-	visual = Node3D.new()
-	visual.name = "LanternVisual"
-	gold = mat("dca94e",0.12,0.65)
-	red = mat("ba302d")
-	paper = mat("ffb348",0.8)
-	blue = mat("193d5a",0.0,0.28)
-	ink = mat("b84a20",0.1)
+	begin_visual("LanternVisual")
+	gold = material("dca94e",0.12,0.65)
+	red = material("ba302d")
+	paper = material("ffb348",0.8)
+	blue = material("193d5a",0.0,0.28)
+	ink = material("b84a20",0.1)
 	var body := node(visual,"FloatingBody")
 	lathe(body,"PaperLantern",[Vector2(0,0.83),Vector2(.19,.83),Vector2(.36,.94),Vector2(.46,1.18),Vector2(.47,1.43),Vector2(.37,1.66),Vector2(.22,1.72),Vector2(0,1.72)],paper,32)
 	for i in 12:
@@ -128,7 +96,7 @@ func _initialize() -> void:
 		var charm := node(body,"Talisman%d"%i)
 		charm.rotation.y = TAU*i/4
 		ribbon(charm,"VermilionBorder",[Vector3(.25,1.7,.40),Vector3(.28,1.46,.50),Vector3(.34,1.16,.53)],.16,red)
-		ribbon(charm,"PrayerPaper",[Vector3(.25,1.68,.408),Vector3(.28,1.46,.508),Vector3(.34,1.18,.538)],.125,mat("ffd482",.15))
+		ribbon(charm,"PrayerPaper",[Vector3(.25,1.68,.408),Vector3(.28,1.46,.508),Vector3(.34,1.18,.538)],.125,material("ffd482",.15))
 		for j in 4:
 			var y := 1.57-j*.085
 			var x := .265+j*.017
@@ -139,8 +107,8 @@ func _initialize() -> void:
 		var stream := node(body,"Streamer%d"%i)
 		stream.rotation.y = PI*i
 		ribbon(stream,"Silk",[Vector3(-.48,1.75,0),Vector3(-.66,1.48,.03),Vector3(-.60,1.14,.10),Vector3(-.83,.90,.18),Vector3(-.68,.79,.22)],.10,red if i == 0 else gold)
-	var fire := mat("ff7629",1.4)
-	var core := mat("ffe6a0",1.2)
+	var fire := material("ff7629",1.4)
+	var core := material("ffe6a0",1.2)
 	for i in 2:
 		var wisp := node(visual,"Wisp%d"%i)
 		wisp.position = Vector3(-.81 if i==0 else .83,1.10 if i==0 else .76,.04)
@@ -156,11 +124,4 @@ func _initialize() -> void:
 	light.light_energy = .65
 	light.omni_range = 2.8
 	light.shadow_enabled = false
-	GeneratedResources.externalize(visual, "res://scenes/units/lantern_visual.tscn")
-	var packed := PackedScene.new()
-	packed.pack(visual)
-	var error := ResourceSaver.save(packed,"res://scenes/units/lantern_visual.tscn")
-	if error == OK:
-		GeneratedResources.cleanup_scene("res://scenes/units/lantern_visual.tscn")
-	visual.free()
-	quit(error)
+	save_visual("res://scenes/units/lantern_visual.tscn")

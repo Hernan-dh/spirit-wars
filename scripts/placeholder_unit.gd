@@ -4,6 +4,21 @@ extends StaticBody3D
 ## Shared tactical pawn. Team identity stays visible while selected.
 enum Team { JADE, EMBER }
 const MAX_HEALTH := 3
+const TEAM_NAMES := ["Jade", "Ember"]
+const TEAM_COLORS := [Color("52e0c0"), Color("ff825e")]
+
+static func name_for(value: int) -> String:
+	if value < 0 or value >= TEAM_NAMES.size():
+		return "Unknown"
+	return String(TEAM_NAMES[value])
+
+static func color_for(value: int) -> Color:
+	if value < 0 or value >= TEAM_COLORS.size():
+		return Color.WHITE
+	return TEAM_COLORS[value]
+
+static func other_team(value: Team) -> Team:
+	return Team.EMBER if value == Team.JADE else Team.JADE
 
 @export var team: Team = Team.JADE:
 	set(value):
@@ -26,10 +41,10 @@ func _ready() -> void:
 	set_selected(false)
 
 func team_name() -> String:
-	return "Jade" if team == Team.JADE else "Ember"
+	return name_for(team)
 
 func team_color() -> Color:
-	return Color("52e0c0") if team == Team.JADE else Color("ff825e")
+	return color_for(team)
 
 func display_name() -> String:
 	return "%s %02d" % [team_name(), unit_number]

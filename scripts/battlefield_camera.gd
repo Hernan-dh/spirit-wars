@@ -13,9 +13,12 @@ const DEFAULT_FOCUS := Vector3(0, 1.0, -1.8)
 const DEFAULT_YAW := 0.57
 const DEFAULT_ELEVATION := 0.63
 const DEFAULT_ZOOM := 39.0
+const DEFAULT_FAR := 150.0
+const DEFAULT_CAMERA_POSITION := Vector3(24.3, 33.0, 37.4)
 const ORBIT_DISTANCE := 54.0
 const MIN_ELEVATION := 0.55
 const MAX_ELEVATION := 1.25
+const ZOOM_STEP := 1.1
 
 var focus := DEFAULT_FOCUS
 var yaw := DEFAULT_YAW
@@ -66,7 +69,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				panning = false
 			MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN:
 				var direction := -1.0 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1.0
-				camera.size = clampf(camera.size * pow(1.1, direction * event.factor), minimum_zoom, maximum_zoom)
+				camera.size = clampf(camera.size * pow(ZOOM_STEP, direction * event.factor), minimum_zoom, maximum_zoom)
 			_:
 				return
 		get_viewport().set_input_as_handled()

@@ -2,8 +2,15 @@
 class_name LanternSpirit
 extends PlaceholderUnit
 ## Lantern soul with a floating paper body and independent silk / wisp motion.
+const WISP_BASE_HEIGHTS := [1.10, .76]
+
 var _time := 0.0
 var _flare := 0.0
+var _body: Node3D
+var _tassel: Node3D
+var _wisps: Array[Node3D] = []
+var _streamers: Array[Node3D] = []
+var _inner_light: OmniLight3D
 
 func display_name() -> String:
 	return "%s Lantern %02d" % [team_name(), unit_number]
@@ -11,21 +18,27 @@ func display_name() -> String:
 func _ready() -> void:
 	super._ready()
 	_time = unit_number * 1.7 + float(team) * 2.4
+	var visual := $LanternVisual as Node3D
+	_body = visual.get_node("FloatingBody") as Node3D
+	_tassel = _body.get_node("Tassel") as Node3D
+	_inner_light = _body.get_node("InnerLight") as OmniLight3D
+	for i in WISP_BASE_HEIGHTS.size():
+		_wisps.append(visual.get_node("Wisp%d" % i) as Node3D)
+		_streamers.append(_body.get_node("Streamer%d" % i) as Node3D)
 
 func _process(delta: float) -> void:
 	_time += delta
 	_flare = move_toward(_flare, 0.0, delta * 3.0)
-	var body := $LanternVisual/FloatingBody as Node3D
-	body.position.y = sin(_time * 1.8) * .065
-	body.rotation.z = sin(_time * 1.2) * .045
-	body.rotation.y = sin(_time * .65) * .09
-	body.get_node("Tassel").rotation.z = sin(_time * 2.2) * .09
-	for i in 2:
-		var wisp := $LanternVisual.get_node("Wisp%d" % i) as Node3D
-		wisp.position.y = (1.10 if i == 0 else .76) + sin(_time * 2.8 + i * PI) * .10
+	_body.position.y = sin(_time * 1.8) * .065
+	_body.rotation.z = sin(_time * 1.2) * .045
+	_body.rotation.y = sin(_time * .65) * .09
+	_tassel.rotation.z = sin(_time * 2.2) * .09
+	for i in _wisps.size():
+		var wisp := _wisps[i]
+		wisp.position.y = WISP_BASE_HEIGHTS[i] + sin(_time * 2.8 + i * PI) * .10
 		wisp.rotation.y = _time * .5
-		body.get_node("Streamer%d" % i).rotation.z = sin(_time * 1.9 + i) * .08
-	body.get_node("InnerLight").light_energy = .65 + sin(_time * 7.0) * .055 + _flare
+		_streamers[i].rotation.z = sin(_time * 1.9 + i) * .08
+	_inner_light.light_energy = .65 + sin(_time * 7.0) * .055 + _flare
 
 func play_spirit_pulse(target_position: Vector3) -> void:
 	_flare = 1.5

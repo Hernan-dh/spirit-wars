@@ -6,11 +6,23 @@ const AuthoringContext = preload("res://tools/battlefield/authoring_context.gd")
 const StaticGeometry = preload("res://tools/static_geometry.gd")
 const Field = preload("res://tools/battlefield/field.gd")
 const Landscape = preload("res://tools/battlefield/landscape.gd")
+const CameraScript = preload("res://scripts/battlefield_camera.gd")
+const LabelsScript = preload("res://scripts/courtyard_labels.gd")
+const SkirmishScene = preload("res://scenes/units/skirmish.tscn")
+
+const SHORE_HEIGHT := -0.025
+const UPPER_STRATUM_Y := -0.65
+const BEDROCK_Y := -1.7
+const UPPER_STRATUM_INSET := 0.97
+const BEDROCK_INSET := 0.89
+const FIELD_DESCRIPTION := "A %d × %d battlefield embedded in a moonlit sanctuary landscape. All %d hexes and surrounding terrain are editable scene nodes."
+const SAVED_MESSAGE := "Saved Moonwell: %d ground-level playable hexes, editable terraces, wetlands and shrines."
 
 static func build(ctx: AuthoringContext) -> void:
 	var root := Node3D.new()
 	root.name = "MoonwellCourtyard"
-	root.set_meta("description","A 14 × 14 battlefield embedded in a moonlit sanctuary landscape. All 196 hexes and surrounding terrain are editable scene nodes.")
+	var cell_count := Field.GRID_SIZE * Field.GRID_SIZE
+	root.set_meta("description", FIELD_DESCRIPTION % [Field.GRID_SIZE, Field.GRID_SIZE, cell_count])
 	var board := ctx.node(root,"BattlefieldGrid")
 	board.set_meta("rows",Field.GRID_SIZE)
 	board.set_meta("columns",Field.GRID_SIZE)
@@ -25,13 +37,13 @@ static func build(ctx: AuthoringContext) -> void:
 	for i in range(rim.size()):
 		var p: Vector2 = rim[i] * Landscape.LANDSCAPE_SCALE
 		var q: Vector2 = rim[(i+1)%rim.size()] * Landscape.LANDSCAPE_SCALE
-		var a := Vector3(p.x,-.025,p.y)
-		var b := Vector3(q.x,-.025,q.y)
-		var c := Vector3(p.x*.97,-.65,p.y*.97)
-		var d := Vector3(q.x*.97,-.65,q.y*.97)
-		var e := Vector3(p.x*.89,-1.7,p.y*.89)
-		var f := Vector3(q.x*.89,-1.7,q.y*.89)
-		ctx.tri(top_faces,Vector3(0,-.025,0),b,a)
+		var a := Vector3(p.x,SHORE_HEIGHT,p.y)
+		var b := Vector3(q.x,SHORE_HEIGHT,q.y)
+		var c := Vector3(p.x*UPPER_STRATUM_INSET,UPPER_STRATUM_Y,p.y*UPPER_STRATUM_INSET)
+		var d := Vector3(q.x*UPPER_STRATUM_INSET,UPPER_STRATUM_Y,q.y*UPPER_STRATUM_INSET)
+		var e := Vector3(p.x*BEDROCK_INSET,BEDROCK_Y,p.y*BEDROCK_INSET)
+		var f := Vector3(q.x*BEDROCK_INSET,BEDROCK_Y,q.y*BEDROCK_INSET)
+		ctx.tri(top_faces,Vector3(0,SHORE_HEIGHT,0),b,a)
 		ctx.tri(side_faces,a,b,c)
 		ctx.tri(side_faces,b,d,c)
 		ctx.tri(base_faces,c,d,e)
@@ -74,10 +86,10 @@ static func build(ctx: AuthoringContext) -> void:
 	StaticGeometry.optimize_details(root)
 	make_atmosphere(ctx,root)
 	make_camera(ctx,root)
-	var skirmish := preload("res://scenes/units/skirmish.tscn").instantiate()
+	var skirmish := SkirmishScene.instantiate()
 	root.add_child(skirmish)
 	var packed := ctx.save_scene(root,"res://scenes/battlefields/moonwell_courtyard.tscn")
-	print("Saved Moonwell: 196 ground-level playable hexes, editable terraces, wetlands and shrines.")
+	print(SAVED_MESSAGE % cell_count)
 
 static func make_atmosphere(ctx: AuthoringContext, root: Node3D) -> void:
 	var world := WorldEnvironment.new()
@@ -114,17 +126,17 @@ static func make_atmosphere(ctx: AuthoringContext, root: Node3D) -> void:
 
 static func make_camera(ctx: AuthoringContext, root: Node3D) -> void:
 	var rig := ctx.node(root,"CameraRig")
-	rig.set_script(load("res://scripts/battlefield_camera.gd"))
+	rig.set_script(CameraScript)
 	var camera := Camera3D.new()
 	camera.name = "Camera3D"
 	camera.projection = Camera3D.PROJECTION_ORTHOGONAL
-	camera.size = 39.0
-	camera.far = 150
+	camera.size = CameraScript.DEFAULT_ZOOM
+	camera.far = CameraScript.DEFAULT_FAR
 	camera.current = true
 	rig.add_child(camera)
-	camera.position = Vector3(24.3,33.0,37.4)
-	camera.basis = Basis.looking_at(Vector3(0,1.0,-1.8)-camera.position)
+	camera.position = CameraScript.DEFAULT_CAMERA_POSITION
+	camera.basis = Basis.looking_at(CameraScript.DEFAULT_FOCUS - camera.position)
 	var hud := CanvasLayer.new()
 	hud.name = "CourtyardLabels"
-	hud.set_script(load("res://scripts/courtyard_labels.gd"))
+	hud.set_script(LabelsScript)
 	root.add_child(hud)

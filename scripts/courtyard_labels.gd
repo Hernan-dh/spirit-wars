@@ -1,5 +1,22 @@
 extends CanvasLayer
 ## Runtime presentation only; the battlefield stays clear in the 3D editor.
+
+const GRID_NODE := "BattlefieldGrid"
+const SKIRMISH_NODE := "Skirmish"
+
+const COLOR_ACCENT := Color("cbb58e")
+const COLOR_TITLE := Color("e5e6dc")
+const COLOR_SUBTITLE := Color("a0bcc4")
+const COLOR_HINT := Color("a7bbc3")
+const COLOR_GOLD := Color("ffe08a")
+const COLOR_BODY := Color("d6e1e2")
+const COLOR_PANEL := Color(0.035, 0.065, 0.09, 0.92)
+const COLOR_PANEL_BORDER := Color("52656d")
+const COLOR_OVERLAY := Color(0.015, 0.03, 0.045, 0.65)
+
+const FOOTER_TEXT := "WASD / ARROWS / DRAG MMB  Pan     /     SHIFT  Fast pan\nDRAG RMB / Q E  Rotate     /     SCROLL  Zoom     /     R  Reset view"
+const OVERLAY_HEADING := "B A T T L E   C O M P L E T E"
+
 var selection_label: Label
 var turn_label: Label
 var actions_label: Label
@@ -11,61 +28,68 @@ var result_label: Label
 var result_details: Label
 var restart_button: Button
 var skirmish: SkirmishController
+var frame: Control
 
 func _ready() -> void:
-	var frame := Control.new()
+	skirmish = get_parent().get_node(SKIRMISH_NODE)
+	frame = Control.new()
 	frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(frame)
-	add_label(frame, "S P I R I T   W A R S", Vector2(38, 27), 14, Color("cbb58e"))
-	add_label(frame, "The Moonwell", Vector2(36, 49), 34, Color("e5e6dc"))
-	add_label(frame, "S H R I N E   C O U R T Y A R D", Vector2(39, 94), 11, Color("a0bcc4"))
+	_build_header()
+	_build_footer()
+	_build_grid_count()
+	_build_status_panel()
+	_build_result_overlay()
+	skirmish.state_changed.connect(_refresh_status)
+	_refresh_status()
+
+func _build_header() -> void:
+	add_label(frame, "S P I R I T   W A R S", Vector2(38, 27), 14, COLOR_ACCENT)
+	add_label(frame, "The Moonwell", Vector2(36, 49), 34, COLOR_TITLE)
+	add_label(frame, "S H R I N E   C O U R T Y A R D", Vector2(39, 94), 11, COLOR_SUBTITLE)
 	var line := ColorRect.new()
 	line.position = Vector2(39, 122)
 	line.size = Vector2(48, 2)
-	line.color = Color("cbb58e")
+	line.color = COLOR_ACCENT
 	line.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	frame.add_child(line)
+
+func _build_footer() -> void:
 	var footer := Label.new()
-	footer.text = "WASD / ARROWS / DRAG MMB  Pan     /     SHIFT  Fast pan\nDRAG RMB / Q E  Rotate     /     SCROLL  Zoom     /     R  Reset view"
+	footer.text = FOOTER_TEXT
 	footer.add_theme_font_size_override("font_size", 13)
-	footer.add_theme_color_override("font_color", Color("a7bbc3"))
+	footer.add_theme_color_override("font_color", COLOR_HINT)
 	footer.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
 	footer.position = Vector2(38, -64)
 	footer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	frame.add_child(footer)
+
+func _build_grid_count() -> void:
+	var grid := get_parent().get_node(GRID_NODE)
 	var count := Label.new()
-	var grid := get_parent().get_node("BattlefieldGrid")
-	count.text = "%d × %d   /   %d HEXES" % [grid.get_meta("rows"), grid.get_meta("columns"), grid.get_child_count()]
+	count.text = "%d × %d   /   %d HEXES" % [int(grid.get_meta("rows")), int(grid.get_meta("columns")), grid.get_child_count()]
 	count.add_theme_font_size_override("font_size", 13)
-	count.add_theme_color_override("font_color", Color("cbb58e"))
+	count.add_theme_color_override("font_color", COLOR_ACCENT)
 	count.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
 	count.position = Vector2(-200, -43)
 	count.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	frame.add_child(count)
+
+func _build_status_panel() -> void:
 	var panel := PanelContainer.new()
 	panel.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
 	panel.position = Vector2(-350, 30)
 	panel.custom_minimum_size = Vector2(312, 0)
 	# Interactive panel blocks clicks from reaching the battlefield.
 	panel.mouse_filter = Control.MOUSE_FILTER_STOP
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.035, 0.065, 0.09, 0.92)
-	style.border_color = Color("52656d")
-	style.set_border_width_all(1)
-	style.set_corner_radius_all(6)
-	style.content_margin_left = 18
-	style.content_margin_right = 18
-	style.content_margin_top = 14
-	style.content_margin_bottom = 14
-	panel.add_theme_stylebox_override("panel", style)
+	panel.add_theme_stylebox_override("panel", _panel_style())
 	frame.add_child(panel)
 	var rows := VBoxContainer.new()
 	rows.add_theme_constant_override("separation", 8)
 	rows.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	panel.add_child(rows)
-	skirmish = get_parent().get_node("Skirmish")
-	add_status_row(rows, "LOCAL PLAY  /  BOTH TEAMS", 12, Color("cbb58e"))
+	add_status_row(rows, "LOCAL PLAY  /  BOTH TEAMS", 12, COLOR_ACCENT)
 	turn_label = add_status_row(rows, "", 22, Color.WHITE)
 	end_turn_button = Button.new()
 	end_turn_button.name = "EndTurn"
@@ -73,23 +97,25 @@ func _ready() -> void:
 	end_turn_button.pressed.connect(skirmish.end_turn)
 	rows.add_child(end_turn_button)
 	rows.add_child(HSeparator.new())
-	selection_label = add_status_row(rows, "", 16, Color("ffe08a"))
-	actions_label = add_status_row(rows, "", 14, Color("d6e1e2"))
+	selection_label = add_status_row(rows, "", 16, COLOR_GOLD)
+	actions_label = add_status_row(rows, "", 14, COLOR_BODY)
 	ability_button = Button.new()
 	ability_button.name = "SpiritPulse"
 	ability_button.custom_minimum_size.y = 40
-	ability_button.tooltip_text = "Choose an enemy within three hexes to deal one damage.\nOne attack per turn; move and attack in either order."
+	ability_button.tooltip_text = "Choose an enemy within %d hexes to deal %d damage.\nOne attack per turn; move and attack in either order." % [SkirmishController.ATTACK_RANGE, SkirmishController.ATTACK_DAMAGE]
 	ability_button.pressed.connect(skirmish.use_selected_ability)
 	rows.add_child(ability_button)
-	add_status_row(rows, "Attack: 1 damage / 3 hex range\nMove and attack in either order.", 13, Color("a7bbc3"))
-	feedback_label = add_status_row(rows, "", 14, Color("ffe08a"))
+	add_status_row(rows, "Attack: %d damage / %d hex range\nMove and attack in either order." % [SkirmishController.ATTACK_DAMAGE, SkirmishController.ATTACK_RANGE], 13, COLOR_HINT)
+	feedback_label = add_status_row(rows, "", 14, COLOR_GOLD)
 	feedback_label.custom_minimum_size = Vector2(276, 48)
 	feedback_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	add_status_row(rows, "Click unit to select / inspect\nGold rings: move up to %d hexes\nRed rings: enemies in attack range\nEmpty space / Esc to clear selection" % SkirmishController.MOVE_RANGE, 13, Color("a7bbc3"))
+	add_status_row(rows, "Click unit to select / inspect\nGold rings: move up to %d hexes\nRed rings: enemies in attack range\nEmpty space / Esc to clear selection" % SkirmishController.MOVE_RANGE, 13, COLOR_HINT)
+
+func _build_result_overlay() -> void:
 	result_overlay = ColorRect.new()
 	result_overlay.name = "BattleResult"
 	result_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	result_overlay.color = Color(0.015, 0.03, 0.045, 0.65)
+	result_overlay.color = COLOR_OVERLAY
 	result_overlay.mouse_filter = Control.MOUSE_FILTER_STOP
 	result_overlay.hide()
 	frame.add_child(result_overlay)
@@ -99,16 +125,16 @@ func _ready() -> void:
 	result_overlay.add_child(center)
 	var result_panel := PanelContainer.new()
 	result_panel.custom_minimum_size = Vector2(420, 0)
-	result_panel.add_theme_stylebox_override("panel", style.duplicate())
+	result_panel.add_theme_stylebox_override("panel", _panel_style())
 	center.add_child(result_panel)
 	var result_rows := VBoxContainer.new()
 	result_rows.add_theme_constant_override("separation", 18)
 	result_panel.add_child(result_rows)
-	var heading := add_status_row(result_rows, "B A T T L E   C O M P L E T E", 14, Color("cbb58e"))
+	var heading := add_status_row(result_rows, OVERLAY_HEADING, 14, COLOR_ACCENT)
 	heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	result_label = add_status_row(result_rows, "", 36, Color.WHITE)
 	result_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	result_details = add_status_row(result_rows, "", 16, Color("d6e1e2"))
+	result_details = add_status_row(result_rows, "", 16, COLOR_BODY)
 	result_details.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	restart_button = Button.new()
 	restart_button.name = "RestartEncounter"
@@ -116,8 +142,18 @@ func _ready() -> void:
 	restart_button.custom_minimum_size.y = 48
 	restart_button.pressed.connect(skirmish.restart_encounter)
 	result_rows.add_child(restart_button)
-	skirmish.state_changed.connect(_refresh_status)
-	_refresh_status()
+
+func _panel_style() -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = COLOR_PANEL
+	style.border_color = COLOR_PANEL_BORDER
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(6)
+	style.content_margin_left = 18
+	style.content_margin_right = 18
+	style.content_margin_top = 14
+	style.content_margin_bottom = 14
+	return style
 
 func _refresh_status() -> void:
 	var show_result := skirmish.battle_over and not result_overlay.visible
@@ -125,17 +161,15 @@ func _refresh_status() -> void:
 	end_turn_button.disabled = skirmish.battle_over
 	if skirmish.battle_over:
 		result_label.text = skirmish.result_text()
-		result_label.modulate = Color("52e0c0") if skirmish.winner == PlaceholderUnit.Team.JADE else Color("ff825e")
-		if skirmish.winner == -1:
-			result_label.modulate = Color.WHITE
+		result_label.modulate = Color.WHITE if skirmish.winner == SkirmishController.NO_WINNER else PlaceholderUnit.color_for(skirmish.winner)
 		result_details.text = "Encounter ended on turn %d.\nRestart to play again from the beginning." % skirmish.turn_number
 		if show_result:
 			restart_button.grab_focus()
 	turn_label.text = "TURN %d  /  %s" % [skirmish.turn_number, skirmish.active_team_name().to_upper()]
 	if skirmish.battle_over:
 		turn_label.text = "BATTLE COMPLETE"
-	turn_label.modulate = Color("52e0c0") if skirmish.active_team == PlaceholderUnit.Team.JADE else Color("ff825e")
-	end_turn_button.text = "End Turn  →  %s" % ("Ember" if skirmish.active_team == PlaceholderUnit.Team.JADE else "Jade")
+	turn_label.modulate = PlaceholderUnit.color_for(skirmish.active_team)
+	end_turn_button.text = "End Turn  →  %s" % PlaceholderUnit.name_for(PlaceholderUnit.other_team(skirmish.active_team))
 	var unit := skirmish.selected_unit
 	selection_label.text = "%s  /  %d of %d HP" % [unit.display_name(), unit.health, PlaceholderUnit.MAX_HEALTH] if unit != null else "No unit selected"
 	ability_button.disabled = not skirmish.can_use_ability(unit)
@@ -145,7 +179,7 @@ func _refresh_status() -> void:
 	if skirmish.targeting_attack:
 		ability_button.text = "Cancel Attack"
 	if unit == null:
-		actions_label.text = "Each unit: 3 HP / 1 move + 1 attack"
+		actions_label.text = "Each unit: %d HP / 1 move + 1 attack" % PlaceholderUnit.MAX_HEALTH
 	elif unit.team != skirmish.active_team:
 		actions_label.text = "Waiting for %s's turn" % unit.team_name()
 	else:
