@@ -1,0 +1,602 @@
+[gd_resource type="Resource" script_class="BattlefieldLevelPlan" format=3]
+
+[ext_resource type="Script" path="res://tools/battlefield/level_plan.gd" id="1_w0m1d"]
+
+[resource]
+script = ExtResource("1_w0m1d")
+island_rim = PackedVector2Array(-8.8, -6.6, -6.8, -9.2, 5.4, -9.7, 8.9, -6.8, 9.4, 3.7, 7.1, 7.8, 3.6, 8.4, -6.2, 7.9, -9.3, 4.5)
+foundation = {
+"bedrock_inset": 0.89,
+"bedrock_y": -1.7,
+"shore_height": -0.025,
+"upper_stratum_inset": 0.97,
+"upper_stratum_y": -0.65
+}
+bridge = {
+"cap_height": 0.86,
+"cap_size": Vector3(0.085, 0.085, 0.085),
+"deck_arch_height": 0.28,
+"deck_arch_radius": 1.7,
+"deck_half_span": 5,
+"deck_planks": 11,
+"deck_size": Vector3(0.27, 0.12, 1.35),
+"deck_spacing": 0.29,
+"post_offset_z": 0.67,
+"post_size": Vector3(0.1, 0.9, 0.1),
+"post_y_offset": 0.38,
+"rail_half_span": 2,
+"rail_height": 0.65,
+"rail_posts": 5,
+"rail_radius": 0.055,
+"rail_spacing": 0.72
+}
+terrain = {
+"bottom_y": -0.12,
+"boulder_drop": 0.12,
+"boulder_radius": 0.86,
+"boulder_size": Vector3(0.65, 0.3, 0.48),
+"boulder_skip_index": 2,
+"boulder_skip_titles": ["EasternCascadePlateau", "CascadeShelf"],
+"boulders": 8,
+"buttress_bottom_radius": 0.55,
+"buttress_height_frequency": 2.8,
+"buttress_height_min": 0.4,
+"buttress_height_span": 0.4,
+"buttress_radius": 0.94,
+"buttress_sides": 5,
+"buttress_top_radius": 0.32,
+"buttresses": 16,
+"insets": [1.1, 1.0, 0.92],
+"layers": 3,
+"middle_height": 0.78,
+"radius_frequency": 13.7,
+"radius_wave": 0.1,
+"shelf_offset_y": 0.5,
+"shelf_size": Vector3(0.46, 0.1, 0.43),
+"sides": 10,
+"vine_line_radius": 0.035,
+"vine_max_height": 1.4,
+"vine_radius": 0.9,
+"vine_step_1": Vector3(0.05, -0.45, 0.12),
+"vine_step_2": Vector3(0.12, -1.4, 0.15)
+}
+terraces = [{
+"center": Vector3(-15.5, 0, -4.5),
+"height": 1.0,
+"radius": Vector2(2.4, 4.1),
+"title": "WesternGardenTerrace"
+}, {
+"center": Vector3(-13.1, 0, -12.6),
+"height": 2.6,
+"radius": Vector2(3.2, 2.8),
+"title": "WesternUpperTerrace"
+}, {
+"center": Vector3(-5.8, 0, -15.8),
+"height": 5.0,
+"radius": Vector2(5.8, 3),
+"title": "TemplePlateau"
+}, {
+"center": Vector3(13.6, 0, -13.5),
+"height": 4.4,
+"radius": Vector2(3, 3.9),
+"title": "EasternCascadePlateau"
+}, {
+"center": Vector3(14.5, 0, -8),
+"height": 1.8,
+"radius": Vector2(1.7, 2.1),
+"title": "CascadeShelf"
+}]
+ridge = {
+"base_height": 3.8,
+"bottom_radius": 0.9,
+"center_height": 4.3,
+"center_max_x": -0.5,
+"center_min_x": -10.0,
+"column_y_offset": -0.1,
+"count": 27,
+"height_frequency": 1.9,
+"height_wave": 2.3,
+"ledge_count": 4,
+"ledge_size": Vector3(0.83, 0.19, 0.72),
+"ledge_start": 0.18,
+"ledge_step": 0.21,
+"ledge_tilt": 0.12,
+"ledge_x_wave": 0.18,
+"ledge_z_offset": 0.12,
+"moss_offset": Vector3(0, -0.1, 0),
+"moss_size": Vector3(0.62, 0.13, 0.66),
+"sides": 5,
+"spacing": 1.22,
+"start_x": -16.0,
+"top_radius": 0.57,
+"yaw_step": 0.7,
+"z": -15.8,
+"z_frequency": 0.8,
+"z_wave": 0.65
+}
+spires = {
+"base_height": 7.5,
+"bottom_radius": 1.0,
+"cap_size": Vector3(0.45, 0.12, 0.46),
+"count": 6,
+"height_frequency": 2.3,
+"height_wave": 1.8,
+"sides": 5,
+"spacing": 5.1,
+"start_x": -14.0,
+"tilt": 0.06,
+"top_radius": 0.35,
+"z": -17.0
+}
+pavilions = [{
+"position": Vector3(-5.7, 5, -15.8),
+"scale": 1.22,
+"title": "HilltopTemple"
+}, {
+"position": Vector3(14, 4.4, -13.8),
+"scale": 0.85,
+"title": "EastTeaPavilion"
+}]
+shrine_trees = [{
+"position": Vector3(-12.4, 2.6, -13.3),
+"scale": 0.9,
+"title": "HilltopCherry",
+"yaw": 0.6
+}, {
+"position": Vector3(11.8, 4.4, -14.1),
+"scale": 0.8,
+"title": "CascadeCherry",
+"yaw": 1.0
+}]
+shrine_stairs = {
+"count": 19,
+"depth": 0.4,
+"height": 5.0,
+"post_height": 0.7,
+"post_interval": 4,
+"post_offset_x": 1.25,
+"post_size": 0.24,
+"width": 2.1,
+"x": -5.7,
+"z_start": -9.4,
+"z_step": -0.34
+}
+shrine_lanterns = [{
+"position": Vector3(-7.7, 5, -13.8),
+"scale": 0.8,
+"title": "TempleLantern-1",
+"yaw": 0
+}, {
+"position": Vector3(-3.7, 5, -13.8),
+"scale": 0.8,
+"title": "TempleLantern1",
+"yaw": 0
+}]
+shrine_banners = [{
+"position": Vector3(-9, 5, -16.1),
+"title": "TemplePrayerSilks",
+"yaw": 0.2
+}]
+braziers = [{
+"position": Vector3(-3.2, 0, -9.7),
+"title": "WesternOffering"
+}, {
+"position": Vector3(3.2, 0, -9.7),
+"title": "EasternOffering"
+}]
+wetlands = {
+"bridge_lanterns": [{
+"position": Vector3(13.5, 0, -1.5),
+"scale": 0.6,
+"title": "BridgeLantern-1",
+"yaw": 0
+}, {
+"position": Vector3(15.3, 0, -1.5),
+"scale": 0.6,
+"title": "BridgeLantern1",
+"yaw": 0
+}],
+"crossing": {
+"bridge_position": Vector3(0, 0, 0),
+"bridge_scale": Vector3(1, 1.25, 1.2),
+"position": Vector3(14.4, 0.12, -0.4)
+},
+"lily_bottom": 0.24,
+"lily_height": 0.02,
+"lily_offset": Vector3(0.5, 0, 0.1),
+"lily_sides": 10,
+"lily_top": 0.24,
+"lotus_count": 25,
+"lotus_scale_range": Vector2(0.7, 1.25),
+"lotus_x_range": Vector2(13, 15.8),
+"lotus_y": 0.025,
+"lotus_z_range": Vector2(1, 10),
+"lower_falls": {
+"height": 1.8,
+"position": Vector3(14.4, 0.02, -5.5),
+"title": "LowerFalls",
+"width": 1.9
+},
+"middle_basin": {
+"position": Vector3(14.4, 1.82, -6.9),
+"size": Vector3(2.1, 0.04, 2.8)
+},
+"ripple_interval": 3,
+"ripple_radius": 0.65,
+"ripple_thickness": 0.008,
+"shelf_banks": {
+"count": 4,
+"offset": 1.16,
+"size": Vector3(0.22, 0.16, 0.36),
+"x": 14.4,
+"y": 1.8,
+"z_start": -7.7,
+"z_step": 0.65
+},
+"shore": PackedVector2Array(12.6, -9.6, 15.7, -9.6, 16.4, -5, 15.8, -1, 17.1, 2, 16, 8, 13.6, 12.2, 12.4, 11.7, 12.8, 8.2, 12.3, 5.1, 12.6, 3, 12.5, -1.9),
+"shore_rock_moss_interval": 3,
+"shore_rock_size": Vector3(0.45, 0.22, 0.39),
+"shore_rock_y": 0.02,
+"shore_rocks_per_edge": 5,
+"shore_y": -0.015,
+"spring_banks": {
+"count": 5,
+"offset": 0.98,
+"size": Vector3(0.22, 0.18, 0.38),
+"x": 14.4,
+"y": 4.4,
+"z_start": -11.8,
+"z_step": 0.6
+},
+"stepping_stones": {
+"bottom": 0.53,
+"count": 9,
+"height": 0.16,
+"sides": 6,
+"start": Vector3(12.6, 0.04, 6),
+"step": Vector3(0.1, 0, 0.65),
+"top": 0.51
+},
+"upper_falls": {
+"height": 2.58,
+"position": Vector3(14.4, 1.84, -9.2),
+"title": "UpperFalls",
+"width": 1.6
+},
+"upper_spring": {
+"position": Vector3(14.4, 4.42, -10.7),
+"size": Vector3(1.7, 0.04, 3)
+}
+}
+gardens = {
+"bamboo": [{
+"position": Vector3(-17, 1, -5),
+"scale": 1.0,
+"title": "BambooThicket0",
+"yaw": 0.0
+}, {
+"position": Vector3(-15, 1, -7),
+"scale": 1.2,
+"title": "BambooThicket1",
+"yaw": 1.3
+}, {
+"position": Vector3(-16.5, 0, 1),
+"scale": 1.4,
+"title": "BambooThicket2",
+"yaw": 2.6
+}, {
+"position": Vector3(-16.5, 0, 4),
+"scale": 1.0,
+"title": "BambooThicket3",
+"yaw": 3.9
+}, {
+"position": Vector3(17.3, 0, -2),
+"scale": 1.2,
+"title": "BambooThicket4",
+"yaw": 5.2
+}, {
+"position": Vector3(17.4, 0, 1),
+"scale": 1.4,
+"title": "BambooThicket5",
+"yaw": 6.5
+}, {
+"position": Vector3(16.6, 0, 7),
+"scale": 1.0,
+"title": "BambooThicket6",
+"yaw": 7.8
+}, {
+"position": Vector3(3, 0, -14),
+"scale": 1.2,
+"title": "BambooThicket7",
+"yaw": 9.1
+}],
+"blossom_interval": 2,
+"blossom_size": Vector3(0.16, 0.025, 0.13),
+"boundary_scale": 0.96,
+"clear_boxes": [{
+"use_abs_x": true,
+"x_max": 12.7,
+"x_min": -12.7,
+"z_max": 12.2,
+"z_min": -9.4
+}, {
+"x_max": 9999.0,
+"x_min": 12.0,
+"z_max": 12.0,
+"z_min": -9999.0
+}, {
+"x_max": -12.0,
+"x_min": -9999.0,
+"z_max": 0.0,
+"z_min": -9999.0
+}, {
+"use_abs_x": true,
+"x_max": 2.0,
+"x_min": -2.0,
+"z_max": 9999.0,
+"z_min": 5.0
+}],
+"fern_count": 100,
+"fern_scale_range": Vector2(0.65, 1.5),
+"fern_x_range": Vector2(-16, 16),
+"fern_z_range": Vector2(-11, 14),
+"outcrop_interval": 3,
+"outcrop_size": Vector3(0.65, 0.35, 0.5),
+"terrace_fern_count": 22,
+"terrace_fern_scale": 0.8,
+"terrace_fern_x_range": Vector2(-16.5, -14.5),
+"terrace_fern_y": 1.03,
+"terrace_fern_z_range": Vector2(-7, -1),
+"trees": [{
+"position": Vector3(-16, 1, -3),
+"scale": 0.72,
+"title": "CherryGrove0",
+"yaw": 0.0
+}, {
+"position": Vector3(-15.8, 1, -6.5),
+"scale": 0.86,
+"title": "CherryGrove1",
+"yaw": 0.7
+}, {
+"position": Vector3(-14.2, 2.6, -12.4),
+"scale": 1.0,
+"title": "CherryGrove2",
+"yaw": 1.4
+}, {
+"position": Vector3(17, 0, -4),
+"scale": 0.72,
+"title": "CherryGrove3",
+"yaw": 2.1
+}, {
+"position": Vector3(-14.4, 0, 8.4),
+"scale": 0.86,
+"title": "CherryGrove4",
+"yaw": 2.8
+}, {
+"position": Vector3(7.2, 0, 15.3),
+"scale": 0.42,
+"title": "CherryGrove5",
+"yaw": 3.5
+}]
+}
+approach = {
+"banners": [{
+"position": Vector3(-3.8, 0, 15.3),
+"scale": 0.65,
+"title": "EntryPrayerFlags",
+"yaw": -0.2
+}, {
+"position": Vector3(4, 0, 15.3),
+"scale": 0.65,
+"title": "EasternPrayerFlags",
+"yaw": 0.3
+}],
+"count": 13,
+"depth": 0.24,
+"height": 0.1,
+"lantern_offset_x": 1.9,
+"lantern_rows": [4, 12],
+"lantern_scale": 0.38,
+"lantern_z_offset": 0.6,
+"width": 2.25,
+"x_frequency": 0.35,
+"x_wave": 0.35,
+"y": 0.03,
+"z_start": 11.9,
+"z_step": 0.26
+}
+ruins = {
+"collar_heights": [0.5, 2.3, 2.9],
+"fallen_lintel": {
+"position": Vector3(0.4, 0.36, -1.7),
+"rotation": Vector3(0.1, 0.22, -0.12),
+"size": Vector3(3.6, 0.65, 0.9)
+},
+"fern_count": 12,
+"fern_radius_x": 2.9,
+"fern_radius_z": 2.5,
+"fern_scale": 0.8,
+"lantern": {
+"position": Vector3(-2.7, 0, 1.4),
+"scale": 0.7,
+"title": "RuinLantern",
+"yaw": 0
+},
+"monolith": {
+"position": Vector3(0, 1.25, -0.5),
+"size": Vector3(0.72, 1.35, 0.48)
+},
+"offering_circle": {
+"position": Vector3(0, 0.15, 1),
+"radius": 0.9,
+"thickness": 0.018
+},
+"paving_count": 9,
+"paving_rotation": 0.14,
+"paving_size": Vector3(1, 0.17, 0.94),
+"paving_x_step": 1.1,
+"paving_y": 0.04,
+"paving_z_step": 1.05,
+"pillar_offset": 2.1,
+"pillar_z": -0.4,
+"position": Vector3(-14, 0, 10.4),
+"rune_count": 3,
+"rune_size": Vector3(0.18, 0.24, 0.02),
+"rune_start_y": 1.0,
+"rune_step_y": 0.46,
+"rune_z": 0.411,
+"scale": 0.6,
+"spiral": {
+"count": 25,
+"height_span": 1.45,
+"height_start": 0.55,
+"line_radius": 0.023,
+"radius": 0.22,
+"z": 0.005
+},
+"vine_count": 4
+}
+sanctuary_details = {
+"approach_fern_offset": Vector3(0.3, 0, 0.2),
+"approach_fern_scale": 0.65,
+"approach_rubble_count": 4,
+"approach_rubble_size": Vector3(0.6, 0.3, 0.7),
+"approach_rubble_x_start": 4.5,
+"approach_rubble_x_step": 0.55,
+"approach_rubble_y": 0.15,
+"approach_rubble_yaw_step": 0.43,
+"approach_rubble_z": 13.1,
+"approach_rubble_z_wave": 0.8,
+"blade_height_range": Vector2(0.08, 0.23),
+"blade_radius": 0.07,
+"blade_side": 0.022,
+"blades": 3,
+"boundary_scale": 0.98,
+"grass_density_threshold": 0.2,
+"grass_frequency_x": 0.7,
+"grass_frequency_z": 0.8,
+"grass_samples": 2100,
+"grass_west_garden": {
+"x_max": -13.1,
+"x_min": -15.9,
+"z_max": 7.5,
+"z_min": 0.5
+},
+"grass_x_range": Vector2(-16.5, 16.5),
+"grass_y": 0.012,
+"grass_z_range": Vector2(-9.1, 14.6),
+"guardians": [{
+"position": Vector3(-4.95, 0, -9.5),
+"title": "WesternCloudLion",
+"yaw": 0.2
+}, {
+"position": Vector3(4.95, 0, -9.5),
+"title": "EasternCloudLion",
+"yaw": -0.2
+}],
+"petal_half_depth": 0.04,
+"petal_half_width": 0.055,
+"petal_interval": 4,
+"petal_offset": Vector3(0.16, 0.003, 0),
+"rubble_count": 42,
+"rubble_fern_interval": 3,
+"rubble_fern_offset": Vector3(0.1, 0, 0.1),
+"rubble_fern_scale": 0.48,
+"rubble_size_x_range": Vector2(0.15, 0.45),
+"rubble_size_y": 0.08,
+"rubble_size_z_range": Vector2(0.2, 0.5),
+"rubble_tilt": 0.13,
+"rubble_x_range": Vector2(11.7, 12.35),
+"rubble_y": 0.02,
+"rubble_z_range": Vector2(-7.5, 11.2),
+"wetland_clear": {
+"x_min": 12.5,
+"z_max": 12.0
+}
+}
+sanctuary = {
+"garden_bridge_position": Vector3(-14.3, 0.08, 2),
+"gate": {
+"position": Vector3(0, 0, -10.3),
+"title": "MoonGate"
+},
+"gate_cherries": [{
+"position": Vector3(-8.2, 0, -10.8),
+"scale": 0.65,
+"title": "GateCherry-1",
+"yaw": -0.4
+}, {
+"position": Vector3(8.2, 0, -10.8),
+"scale": 0.65,
+"title": "GateCherry1",
+"yaw": 0.4
+}],
+"gate_lanterns": [{
+"position": Vector3(-3.8, 0, -9.7),
+"scale": 0.85,
+"title": "GateLantern-1",
+"yaw": 0
+}, {
+"position": Vector3(3.8, 0, -9.7),
+"scale": 0.85,
+"title": "GateLantern1",
+"yaw": 0
+}],
+"margins": {
+"creeping_moss_count": 16,
+"creeping_size_x_range": Vector2(0.35, 0.7),
+"creeping_size_y": 0.025,
+"creeping_size_z_range": Vector2(0.35, 0.8),
+"creeping_x_base": 12.05,
+"creeping_x_jitter": 0.5,
+"creeping_y": -0.055,
+"creeping_z_jitter": 0.3,
+"creeping_z_start": -8.0,
+"creeping_z_step": 1.25,
+"ground_cover_count": 16,
+"ground_cover_size": Vector3(0.7, 0.035, 0.38),
+"ground_cover_x_start": -10.5,
+"ground_cover_x_step": 1.4,
+"ground_cover_y": -0.04,
+"ground_cover_z_back": -8.8,
+"ground_cover_z_front": 11.6,
+"west_path_count": 10,
+"west_path_size": Vector3(0.36, 0.09, 0.65),
+"west_path_start": Vector3(-12.1, -0.015, 2),
+"west_path_step": Vector3(-0.22, 0, 0)
+},
+"west_pool": {
+"bank_size": Vector3(0.26, 0.13, 0.3),
+"bank_stones": 13,
+"bank_x": 1.35,
+"bank_y": 0.02,
+"bank_z_start": -3.4,
+"bank_z_step": 0.55,
+"lotus_count": 7,
+"lotus_scale": 0.75,
+"lotus_x_range": Vector2(-0.9, 0.9),
+"lotus_y": 0.05,
+"lotus_z_range": Vector2(-2.8, 2.8),
+"name": "WestPool",
+"position": Vector3(-14.5, -0.02, 4),
+"water_size": Vector3(2.65, 0.055, 6.7)
+}
+}
+lighting = {
+"ambient_color": Color(0.6039216, 0.76862746, 0.8666667, 1),
+"ambient_energy": 0.38,
+"background_color": Color(0.0627451, 0.11764706, 0.1882353, 1),
+"background_energy": 0.22,
+"fill_color": Color(0.8352941, 0.6392157, 0.7529412, 1),
+"fill_energy": 0.18,
+"fill_rotation": Vector3(-28, 130, 0),
+"glow_enabled": true,
+"glow_intensity": 0.7,
+"moon_color": Color(0.72156864, 0.84705883, 0.9607843, 1),
+"moon_energy": 0.7,
+"moon_rotation": Vector3(-52, -28, 0),
+"moon_shadow_distance": 100.0,
+"ssao_enabled": true,
+"ssao_intensity": 1.4,
+"ssao_radius": 1.2
+}

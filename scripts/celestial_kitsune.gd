@@ -2,8 +2,26 @@
 class_name CelestialKitsune
 extends PlaceholderUnit
 ## Nine-tailed sacred fox. Combat uses the shared pawn's authoritative turn rules.
-const VISUAL := preload("res://scenes/units/kitsune_visual.tscn")
 const FACING_OFFSET := .45
+
+const ECHO_COUNT := 3
+const ECHO_SCALE := .38
+const ECHO_START_HEIGHT := .25
+const ECHO_SPREAD := .45
+const ECHO_ARC := .38
+const ECHO_STAGGER := .065
+const ECHO_FLIGHT_TIME := .48
+const ECHO_SHRINK := .12
+const ECHO_SIDE_WAVE := .35
+const IMPACT_INNER_RADIUS := .30
+const IMPACT_OUTER_RADIUS := .36
+const IMPACT_RINGS := 32
+const IMPACT_RING_SEGMENTS := 6
+const IMPACT_HEIGHT := .16
+const IMPACT_DELAY := .48
+const IMPACT_DURATION := .35
+const IMPACT_SCALE := Vector3(3, 1, 3)
+
 var _time := 0.0
 var _flare := 0.0
 var _move_tween: Tween
@@ -12,6 +30,8 @@ var _body: Node3D
 var _tails: Array[Node3D] = []
 var _motes: Node3D
 var _spirit_light: OmniLight3D
+var _echo_mesh: ArrayMesh
+var _echo_material: StandardMaterial3D
 
 func display_name() -> String:
 	return "%s Kitsune %02d" % [team_name(), unit_number]
@@ -60,60 +80,109 @@ func play_spirit_pulse(target_position: Vector3) -> void:
 	var side := direction.cross(Vector3.UP)
 	var heading := atan2(-direction.x, -direction.z)
 	_visual.rotation.y = heading
-	# A trio of small luminous fox illusions converges on the chosen enemy.
+	# Three cheap fox silhouettes share one mesh and material per attack.
 	# Encounter-owned effects survive a lethal hit and disappear after their tweens.
-	for i in 3:
-		var echo := VISUAL.instantiate() as Node3D
-		echo.name = "MirageFox"
-		_tint_echo(echo, SpiritPalette.KITSUNE_ECHO_PRIMARY if i != 1 else SpiritPalette.KITSUNE_ECHO_SECONDARY)
+	_ensure_echo_assets()
+	for echo_index in ECHO_COUNT:
+		var echo := MeshInstance3D.new()
+		echo.name = "MirageFox%d" % (echo_index + 1)
+		echo.mesh = _echo_mesh
+		echo.material_override = _echo_material
+		echo.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		get_parent().add_child(echo)
-		echo.scale = Vector3.ONE * .38
+		echo.scale = Vector3.ONE * ECHO_SCALE
 		echo.rotation.y = heading
-		var start := global_position + Vector3.UP * .25 + side * (i-1) * .45
-		var end := target_position + Vector3.UP * .25
+		var start := global_position + Vector3.UP * ECHO_START_HEIGHT + side * (echo_index - 1) * ECHO_SPREAD
+		var end := target_position + Vector3.UP * ECHO_START_HEIGHT
 		echo.global_position = start
 		var flight := echo.create_tween()
-		flight.tween_interval(i * .065)
+		flight.tween_interval(echo_index * ECHO_STAGGER)
 		flight.tween_method(func(t: float) -> void:
-			if is_instance_valid(echo):
-				echo.global_position = start.lerp(end,t) + Vector3.UP * sin(t * PI) * .38 + side * sin(t * PI) * (i-1) * .35
-				echo.scale = Vector3.ONE * (.38 - t * .12)
-				echo.get_node("FoxBody").rotation.x = sin(t * TAU * 2.0) * .09
-		, 0.0, 1.0, .48)
+			if not is_instance_valid(echo):
+				return
+			echo.global_position = start.lerp(end, t) + Vector3.UP * sin(t * PI) * ECHO_ARC + side * sin(t * PI) * (echo_index - 1) * ECHO_SIDE_WAVE
+			echo.scale = Vector3.ONE * (ECHO_SCALE - t * ECHO_SHRINK)
+		, 0.0, 1.0, ECHO_FLIGHT_TIME)
 		flight.tween_callback(echo.queue_free)
-	var pulse := MeshInstance3D.new()
-	pulse.name = "MirageImpact"
-	var ring := TorusMesh.new()
-	ring.inner_radius = .30
-	ring.outer_radius = .36
-	ring.rings = 32
-	ring.ring_segments = 6
-	pulse.mesh = ring
-	var glow := StandardMaterial3D.new()
-	glow.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	glow.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	glow.albedo_color = SpiritPalette.KITSUNE_IMPACT
-	pulse.material_override = glow
-	pulse.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	get_parent().add_child(pulse)
-	pulse.global_position = target_position + Vector3.UP * .16
-	pulse.hide()
-	var impact := pulse.create_tween()
-	impact.tween_interval(.48)
-	impact.tween_callback(pulse.show)
-	impact.tween_property(pulse,"scale",Vector3(3,1,3),.35)
-	impact.parallel().tween_property(glow,"albedo_color:a",0.0,.35)
-	impact.tween_callback(pulse.queue_free)
+	CombatEffects.play_impact_ring(
+		get_parent(),
+		target_position,
+		SpiritPalette.KITSUNE_IMPACT,
+		{
+			"inner_radius": IMPACT_INNER_RADIUS,
+			"outer_radius": IMPACT_OUTER_RADIUS,
+			"rings": IMPACT_RINGS,
+			"ring_segments": IMPACT_RING_SEGMENTS,
+			"height": IMPACT_HEIGHT,
+			"delay": IMPACT_DELAY,
+			"duration": IMPACT_DURATION,
+			"scale": IMPACT_SCALE,
+			"name": "MirageImpact",
+		}
+	)
 
-func _tint_echo(n: Node, color: Color) -> void:
-	if n is MeshInstance3D:
-		var glow := StandardMaterial3D.new()
-		glow.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-		glow.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-		glow.albedo_color = Color(color, .48)
-		n.material_override = glow
-		n.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	elif n is Light3D:
-		n.visible = false
-	for child in n.get_children():
-		_tint_echo(child, color)
+func _ensure_echo_assets() -> void:
+	if _echo_mesh != null:
+		return
+	_echo_mesh = _build_echo_mesh()
+	_echo_material = CombatEffects.transparent_unshaded_material(
+		Color(SpiritPalette.KITSUNE_ECHO_PRIMARY, .48),
+		"MirageEchoMaterial"
+	)
+
+func _build_echo_mesh() -> ArrayMesh:
+	var surface := SurfaceTool.new()
+	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var body := SphereMesh.new()
+	body.radius = .26
+	body.height = .62
+	body.radial_segments = 8
+	body.rings = 5
+	surface.append_from(body, 0, _part_transform(Vector3(0,.35,.04), Vector3(1,1,.8)))
+	var head := SphereMesh.new()
+	head.radius = .19
+	head.height = .40
+	head.radial_segments = 8
+	head.rings = 4
+	surface.append_from(head, 0, _part_transform(Vector3(0,.65,-.22)))
+	var snout := SphereMesh.new()
+	snout.radius = .10
+	snout.height = .22
+	snout.radial_segments = 6
+	snout.rings = 3
+	surface.append_from(snout, 0, _part_transform(Vector3(0,.61,-.41), Vector3(1.2,.8,1.5)))
+	for side in [-1, 1]:
+		surface.append_from(_echo_cone(.075, .24), 0, _part_transform(Vector3(side*.12,.84,-.18), Vector3.ONE, Vector3(0,0,side*.12)))
+		for z in [-.18, .18]:
+			surface.append_from(_echo_tube(.04, .28), 0, _part_transform(Vector3(side*.12,.14,z)))
+	for tail_index in 3:
+		surface.append_from(
+			_echo_cone(.065, .62),
+			0,
+			_part_transform(Vector3((tail_index - 1) * .17,.36,.42), Vector3.ONE, Vector3(1.15,0,0))
+		)
+	surface.generate_normals()
+	return surface.commit()
+
+func _echo_cone(bottom_radius: float, height: float) -> CylinderMesh:
+	var cone := CylinderMesh.new()
+	cone.bottom_radius = bottom_radius
+	cone.top_radius = 0.0
+	cone.height = height
+	cone.radial_segments = 6
+	cone.rings = 1
+	return cone
+
+func _echo_tube(radius: float, height: float) -> CylinderMesh:
+	var tube := CylinderMesh.new()
+	tube.bottom_radius = radius
+	tube.top_radius = radius
+	tube.height = height
+	tube.radial_segments = 5
+	tube.rings = 1
+	return tube
+
+func _part_transform(origin: Vector3, scale := Vector3.ONE, rotation := Vector3.ZERO) -> Transform3D:
+	var basis := Basis.from_scale(scale)
+	basis = basis.rotated(Vector3.RIGHT, rotation.x).rotated(Vector3.UP, rotation.y).rotated(Vector3.FORWARD, rotation.z)
+	return Transform3D(basis, origin)

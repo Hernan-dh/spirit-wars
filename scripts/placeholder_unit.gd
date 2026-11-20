@@ -3,6 +3,10 @@ class_name PlaceholderUnit
 extends StaticBody3D
 ## Shared tactical pawn. Team identity stays visible while selected.
 const SpiritPalette = preload("res://scripts/spirit_palette.gd")
+const CombatEffects = preload("res://scripts/combat_effects.gd")
+
+const PULSE_START_HEIGHT := 1.0
+const PULSE_END_HEIGHT := 1.0
 
 enum Team { JADE, EMBER }
 const MAX_HEALTH := 3
@@ -97,35 +101,7 @@ func reset_actions() -> void:
 	ability_used = false
 
 func play_spirit_pulse(target_position: Vector3) -> void:
-	var bolt := MeshInstance3D.new()
-	var sphere := SphereMesh.new()
-	sphere.radius = 0.16
-	sphere.height = 0.32
-	bolt.mesh = sphere
-	var glow := StandardMaterial3D.new()
-	glow.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	glow.albedo_color = team_color()
-	bolt.material_override = glow
-	bolt.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	get_parent().add_child(bolt)
-	bolt.global_position = global_position + Vector3.UP
-	var flight := bolt.create_tween()
-	flight.tween_property(bolt, "global_position", target_position + Vector3.UP, 0.22)
-	flight.tween_callback(bolt.queue_free)
-	var pulse := MeshInstance3D.new()
-	var ring := TorusMesh.new()
-	ring.inner_radius = 0.48
-	ring.outer_radius = 0.62
-	pulse.mesh = ring
-	var material := StandardMaterial3D.new()
-	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	material.albedo_color = team_color()
-	pulse.material_override = material
-	pulse.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	get_parent().add_child(pulse)
-	pulse.global_position = target_position + Vector3(0, 0.2, 0)
-	var tween := pulse.create_tween().set_parallel(true)
-	tween.tween_property(pulse, "scale", Vector3(3.0, 1.0, 3.0), 0.65)
-	tween.tween_property(material, "albedo_color:a", 0.0, 0.65)
-	tween.chain().tween_callback(pulse.queue_free)
+	var start := global_position + Vector3.UP * PULSE_START_HEIGHT
+	var end := target_position + Vector3.UP * PULSE_END_HEIGHT
+	CombatEffects.play_projectile(get_parent(), start, end, team_color())
+	CombatEffects.play_impact_ring(get_parent(), target_position, team_color())

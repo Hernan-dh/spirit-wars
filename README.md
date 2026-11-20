@@ -136,8 +136,9 @@ cache, RNG and primitive mesh helpers, then runs the modules in order:
 - `props.gd` builds the reusable lantern, blossom tree, bamboo, lotus and gate scenes.
 - `ground_zones.gd` defines the path, plaza and meadow zones shared by the field, shader and vegetation clearing.
 - `field.gd` builds tile contents from the shared grid coordinates and ground zones.
-- `landscape.gd` builds the island foundation, terraces, wetlands, gardens, ruins and sanctuary details.
-- `scene_assembly.gd` roots the field and landscape, then adds atmosphere, camera and starting units.
+- `level_plan.tres` stores the authored placements, counts, terraces, wetlands and lighting tuning; its exported fields are editable in the inspector.
+- `landscape.gd` consumes the level plan to build the island foundation, terraces, wetlands, gardens, ruins and sanctuary details.
+- `scene_assembly.gd` reads the same plan for the foundation, gate approach, margins, atmosphere and lighting, then adds the camera and starting units.
 
 `tools/static_geometry.gd` merges static surfaces and
 batches repeated scenery during authoring; `tools/generated_resources.gd` saves the
@@ -153,8 +154,9 @@ moss coverage in world coordinates. `materials/weathered_surface.gdshader` contr
 scenery grain and weathering, and `materials/lotus_water.gdshader` controls pool ripples.
 These procedural textures work in the configured Compatibility renderer and require
 no image imports or external packages. The scene root groups and grid cells remain editable directly
-in Godot without running the generator. The HUD reads the saved grid dimensions
-and cell count, and the movement controller discovers all cells in `BattlefieldGrid`.
+in Godot without running the generator. The HUD layout and presentation tuning live in
+`scripts/hud_style.gd`; the HUD reads the saved grid dimensions and cell count, and the
+movement controller discovers all cells in `BattlefieldGrid`.
 To regenerate them:
 
 ```sh
@@ -207,13 +209,15 @@ veins. The fox breathes, its tails sway independently, and small light motes hov
 around the fan. All geometry is referenced from `scenes/units/kitsune_visual.tscn`
 and is visible in the editor; no external textures or runtime mesh generation are needed.
 `materials/kitsune_spirit.gdshader` supplies the tail colors and gentle emission in
-the project's Compatibility renderer.
+the project's Compatibility renderer. Attack effects share the projectile and ring
+helpers and named tuning in `scripts/combat_effects.gd`.
 
 Each team starts with one Kitsune in slot 02. It retains the shared three HP,
 three-hex movement and attack range, and one move plus one attack per turn. Movement
 turns the fox toward its destination and plays a short bounding hop. Its attack,
-**Mirage Rush**, sends three violet-blue fox illusions toward the selected enemy,
-followed by a sacred-light impact ring. The trio represents a single attack dealing
+**Mirage Rush**, sends three violet-blue fox silhouettes toward the selected enemy,
+followed by a sacred-light impact ring. The trio shares one cached effect mesh and
+material instead of cloning the full visual, and represents a single attack dealing
 one damage. The HUD displays the selected unit's ability name; the Lantern keeps
 Spirit Pulse. Effects clean themselves up even after a lethal hit.
 

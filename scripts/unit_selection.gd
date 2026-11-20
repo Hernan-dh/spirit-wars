@@ -1,7 +1,6 @@
 class_name SkirmishController
 extends Node3D
 ## Local hot-seat turns, authoritative action checks, and physics-step picking.
-signal selection_changed(unit: PlaceholderUnit)
 signal state_changed
 
 const HexGrid = preload("res://scripts/hex_grid.gd")
@@ -74,6 +73,8 @@ func _ready() -> void:
 			unit.global_position = tile_position(closest)
 			unit.reset_actions()
 	_check_battle_result()
+	if not battle_over:
+		_refresh()
 
 func _build_highlight_resources() -> void:
 	_highlight_mesh = TorusMesh.new()
@@ -133,7 +134,6 @@ func _check_battle_result() -> void:
 		selected_unit.set_selected(false)
 	selected_unit = null
 	feedback = result_text()
-	selection_changed.emit(null)
 	_refresh()
 
 func restart_encounter() -> void:
@@ -179,7 +179,6 @@ func try_attack(unit: PlaceholderUnit, target: PlaceholderUnit) -> bool:
 		if selected_unit == target:
 			target.set_selected(false)
 			selected_unit = null
-			selection_changed.emit(null)
 		target.queue_free()
 	targeting_attack = false
 	_check_battle_result()
@@ -324,7 +323,6 @@ func select_unit(unit: PlaceholderUnit) -> void:
 			feedback = "No reachable empty hexes to move to."
 		else:
 			feedback = "Click a highlighted hex to move up to %d steps." % MOVE_RANGE
-	selection_changed.emit(selected_unit)
 	_refresh()
 
 func _refresh() -> void:

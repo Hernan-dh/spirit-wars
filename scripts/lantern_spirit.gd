@@ -4,6 +4,20 @@ extends PlaceholderUnit
 ## Lantern soul with a floating paper body and independent silk / wisp motion.
 const WISP_BASE_HEIGHTS := [1.10, .76]
 
+const PULSE_START := Vector3(0, 1.35, 0)
+const PULSE_END := Vector3(0, 1.1, 0)
+const PULSE_RADIUS := 0.18
+const PULSE_HEIGHT := 0.48
+const PULSE_FLIGHT_TIME := 0.22
+const PULSE_ARC := 0.45
+const PULSE_SPIN := TAU
+const IMPACT_INNER_RADIUS := 0.38
+const IMPACT_OUTER_RADIUS := 0.47
+const IMPACT_HEIGHT := 0.2
+const IMPACT_DELAY := 0.22
+const IMPACT_DURATION := 0.4
+const IMPACT_SCALE := Vector3(2.8, 1.0, 2.8)
+
 var _time := 0.0
 var _flare := 0.0
 var _body: Node3D
@@ -43,43 +57,31 @@ func _process(delta: float) -> void:
 func play_spirit_pulse(target_position: Vector3) -> void:
 	_flare = 1.5
 	# Effects live on the encounter so a lethal hit cannot delete their tweens.
-	var bolt := MeshInstance3D.new()
-	var sphere := SphereMesh.new()
-	sphere.radius = .18
-	sphere.height = .48
-	bolt.mesh = sphere
-	var glow := StandardMaterial3D.new()
-	glow.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	glow.albedo_color = SpiritPalette.LANTERN_FLAME
-	bolt.material_override = glow
-	bolt.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	get_parent().add_child(bolt)
-	var start := global_position + Vector3(0,1.35,0)
-	var end := target_position + Vector3(0,1.1,0)
-	bolt.global_position = start
-	var flight := bolt.create_tween()
-	flight.tween_method(func(t: float) -> void:
-		bolt.global_position = start.lerp(end,t) + Vector3.UP * sin(t*PI)*.45
-		bolt.rotation.z = t*TAU
-	,0.0,1.0,.22)
-	flight.tween_callback(bolt.queue_free)
-	var pulse := MeshInstance3D.new()
-	var ring := TorusMesh.new()
-	ring.inner_radius = .38
-	ring.outer_radius = .47
-	pulse.mesh = ring
-	var material := StandardMaterial3D.new()
-	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	material.albedo_color = SpiritPalette.LANTERN_IMPACT
-	pulse.material_override = material
-	pulse.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	get_parent().add_child(pulse)
-	pulse.global_position = target_position + Vector3(0,.2,0)
-	pulse.hide()
-	var impact := pulse.create_tween()
-	impact.tween_interval(.22)
-	impact.tween_callback(pulse.show)
-	impact.tween_property(pulse,"scale",Vector3(2.8,1,2.8),.4)
-	impact.parallel().tween_property(material,"albedo_color:a",0.0,.4)
-	impact.tween_callback(pulse.queue_free)
+	CombatEffects.play_projectile(
+		get_parent(),
+		global_position + PULSE_START,
+		target_position + PULSE_END,
+		SpiritPalette.LANTERN_FLAME,
+		{
+			"radius": PULSE_RADIUS,
+			"height": PULSE_HEIGHT,
+			"flight_time": PULSE_FLIGHT_TIME,
+			"arc": PULSE_ARC,
+			"spin": PULSE_SPIN,
+			"name": "LanternFirebolt",
+		}
+	)
+	CombatEffects.play_impact_ring(
+		get_parent(),
+		target_position,
+		SpiritPalette.LANTERN_IMPACT,
+		{
+			"inner_radius": IMPACT_INNER_RADIUS,
+			"outer_radius": IMPACT_OUTER_RADIUS,
+			"height": IMPACT_HEIGHT,
+			"delay": IMPACT_DELAY,
+			"duration": IMPACT_DURATION,
+			"scale": IMPACT_SCALE,
+			"name": "LanternImpact",
+		}
+	)

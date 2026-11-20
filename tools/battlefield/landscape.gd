@@ -1,69 +1,86 @@
 extends RefCounted
 const AuthoringContext = preload("res://tools/battlefield/authoring_context.gd")
 const GroundZones = preload("res://tools/battlefield/ground_zones.gd")
+const LevelPlan = preload("res://tools/battlefield/level_plan.gd")
 ## Surrounding landscape features: island rim, terraces, wetlands, gardens,
-## ruins and sanctuary details. Everything is baked into ordinary scene nodes.
-
-const ISLAND_RIM := [Vector2(-8.8,-6.6),Vector2(-6.8,-9.2),Vector2(5.4,-9.7),Vector2(8.9,-6.8),Vector2(9.4,3.7),Vector2(7.1,7.8),Vector2(3.6,8.4),Vector2(-6.2,7.9),Vector2(-9.3,4.5)]
-const LANDSCAPE_SCALE := 2.0
+## ruins and sanctuary details. Placement and tuning data lives in the shared
+## LevelPlan resource; everything generated here is baked into ordinary nodes.
 
 static func make_bridge(ctx: AuthoringContext, root: Node3D) -> void:
-	var bridge := ctx.node(root,"GardenBridge",Vector3(-7.0,.18,1.0))
-	for i in range(11):
-		var x := (i-5)*.29
-		var y := .28*(1.0-pow(x/1.7,2))
-		ctx.box(bridge,"DeckPlank%02d"%i,Vector3(x,y,0),Vector3(.27,.12,1.35),"WoodLight")
+	var plan := LevelPlan.load_default()
+	var data: Dictionary = plan.bridge
+	var bridge := ctx.node(root,"GardenBridge")
+	var deck_size: Vector3 = data["deck_size"]
+	for i in range(int(data["deck_planks"])):
+		var x := (i - int(data["deck_half_span"])) * float(data["deck_spacing"])
+		var y := float(data["deck_arch_height"])*(1.0-pow(x/float(data["deck_arch_radius"]),2))
+		ctx.box(bridge,"DeckPlank%02d"%i,Vector3(x,y,0),deck_size,"WoodLight")
 	for side in [-1,1]:
 		var rail: Array = []
-		for i in range(5):
-			var x := (i-2)*.72
-			var y := .28*(1.0-pow(x/1.7,2))
-			ctx.box(bridge,"Post%d_%d"%[side,i],Vector3(x,y+.38,side*.67),Vector3(.1,.9,.1),"Wood")
-			ctx.rock(bridge,"Cap%d_%d"%[side,i],Vector3(x,y+.86,side*.67),Vector3(.085,.085,.085),"Gold")
-			rail.append(Vector3(x,y+.65,side*.67))
-		ctx.line(bridge,"ArchedRail%d"%side,rail,.055,"WoodLight")
+		for i in range(int(data["rail_posts"])):
+			var x := (i - int(data["rail_half_span"])) * float(data["rail_spacing"])
+			var y := float(data["deck_arch_height"])*(1.0-pow(x/float(data["deck_arch_radius"]),2))
+			ctx.box(bridge,"Post%d_%d"%[side,i],Vector3(x,y+float(data["post_y_offset"]),side*float(data["post_offset_z"])),data["post_size"],"Wood")
+			ctx.rock(bridge,"Cap%d_%d"%[side,i],Vector3(x,y+float(data["cap_height"]),side*float(data["post_offset_z"])),data["cap_size"],"Gold")
+			rail.append(Vector3(x,y+float(data["rail_height"]),side*float(data["post_offset_z"])))
+		ctx.line(bridge,"ArchedRail%d"%side,rail,float(data["rail_radius"]),"WoodLight")
 
 # The expanded landscape is baked to ordinary scene nodes by this authoring tool.
 # Nothing here runs in the game; each named terrace, rock and plant can be edited.
 static func terrace(ctx: AuthoringContext, parent: Node, title: String, center: Vector3, radius: Vector2, height: float) -> Node3D:
+	var plan := LevelPlan.load_default()
+	var data: Dictionary = plan.terrain
+	var layers := int(data["layers"])
+	var sides := int(data["sides"])
+	var insets: Array = data["insets"]
 	var n := ctx.node(parent, title, center)
 	var rings: Array = []
-	for layer in range(3):
+	for layer in range(layers):
 		var points: Array = []
-		for i in range(10):
-			var a := TAU * i / 10.0
-			var r := 1.0 + sin(i * 13.7) * .10
-			var inset: float = [1.1, 1.0, .92][layer]
-			points.append(Vector3(cos(a)*radius.x*r*inset, [-.12, height*.78, height][layer], sin(a)*radius.y*r*inset))
+		for i in range(sides):
+			var a := TAU * i / float(sides)
+			var r := 1.0 + sin(i * float(data["radius_frequency"])) * float(data["radius_wave"])
+			var inset: float = insets[layer]
+			var y: float = [float(data["bottom_y"]), height*float(data["middle_height"]), height][layer]
+			points.append(Vector3(cos(a)*radius.x*r*inset, y, sin(a)*radius.y*r*inset))
 		rings.append(points)
-	for layer in range(2):
+	for layer in range(layers - 1):
 		var faces: Array = []
-		for i in range(10):
-			var j := (i+1)%10
+		for i in range(sides):
+			var j := (i+1)%sides
 			ctx.tri(faces, rings[layer][i], rings[layer+1][i], rings[layer][j])
 			ctx.tri(faces, rings[layer][j], rings[layer+1][i], rings[layer+1][j])
 		ctx.surface(n, "Bedrock" if layer == 0 else "WeatheredRim", faces, "Cliff" if layer == 0 else "CliffLight")
 	var top: Array = []
-	for i in range(10):
-		ctx.tri(top, Vector3(0,height,0), rings[2][(i+1)%10], rings[2][i])
+	for i in range(sides):
+		ctx.tri(top, Vector3(0,height,0), rings[layers-1][(i+1)%sides], rings[layers-1][i])
 	ctx.surface(n,"MossyCrown",top,"Moss")
-	for i in range(8):
-		if i == 2 and title in ["EasternCascadePlateau", "CascadeShelf"]:
+	var boulder_count := int(data["boulders"])
+	var boulder_size: Vector3 = data["boulder_size"]
+	var skip_titles: Array = data["boulder_skip_titles"]
+	for i in range(boulder_count):
+		if i == int(data["boulder_skip_index"]) and title in skip_titles:
 			continue # Keep the spring and spillway free of crown boulders.
-		var a := TAU*i/8
-		var p := Vector3(cos(a)*radius.x*.86, height-.12, sin(a)*radius.y*.86)
-		ctx.rock(n,"CrownBoulder%02d"%i,p,Vector3(.65,.3,.48),"Moss" if i%3 else "Stone")
+		var a := TAU*i/float(boulder_count)
+		var p := Vector3(
+			cos(a)*radius.x*float(data["boulder_radius"]),
+			height-float(data["boulder_drop"]),
+			sin(a)*radius.y*float(data["boulder_radius"])
+		)
+		ctx.rock(n,"CrownBoulder%02d"%i,p,boulder_size,"Moss" if i%3 else "Stone")
 	# Offset facets, shelves and vines break up the large, smooth cliff faces.
-	for i in range(16):
-		var a := TAU*i/16
-		var h := height*(.4+.4*(sin(i*2.8)*.5+.5))
-		var p := Vector3(cos(a)*radius.x*.94,h*.5,sin(a)*radius.y*.94)
-		var buttress := ctx.cylinder(n,"ErodedButtress%02d"%i,p,.55,.32,h,"CliffLight" if i%3 else "Cliff",5)
+	var buttress_count := int(data["buttresses"])
+	for i in range(buttress_count):
+		var a := TAU*i/float(buttress_count)
+		var h := height*(float(data["buttress_height_min"])+float(data["buttress_height_span"])*(sin(i*float(data["buttress_height_frequency"]))*.5+.5))
+		var p := Vector3(cos(a)*radius.x*float(data["buttress_radius"]),h*.5,sin(a)*radius.y*float(data["buttress_radius"]))
+		var buttress := ctx.cylinder(n,"ErodedButtress%02d"%i,p,float(data["buttress_bottom_radius"]),float(data["buttress_top_radius"]),h,"CliffLight" if i%3 else "Cliff",int(data["buttress_sides"]))
 		buttress.rotation.y = a
-		ctx.rock(n,"MossShelf%02d"%i,p+Vector3(0,h*.5,0),Vector3(.46,.10,.43),"Moss")
+		ctx.rock(n,"MossShelf%02d"%i,p+Vector3(0,h*float(data["shelf_offset_y"]),0),data["shelf_size"],"Moss")
 		if i%2 == 0:
-			var start := Vector3(cos(a)*radius.x*.9,height,sin(a)*radius.y*.9)
-			ctx.line(n,"CliffVine%02d"%i,[start,start+Vector3(.05,-.45,.12),start+Vector3(.12,-minf(height*.55,1.4),.15)],.035,"Leaf")
+			var start := Vector3(cos(a)*radius.x*float(data["vine_radius"]),height,sin(a)*radius.y*float(data["vine_radius"]))
+			var step_2: Vector3 = data["vine_step_2"]
+			ctx.line(n,"CliffVine%02d"%i,[start,start+data["vine_step_1"],start+Vector3(step_2.x,-minf(height*.55,float(data["vine_max_height"])),step_2.z)],float(data["vine_line_radius"]),"Leaf")
 	return n
 
 static func ring_mesh(ctx: AuthoringContext, parent: Node, title: String, center: Vector3, radius: float, thickness: float, mat: String) -> MeshInstance3D:
@@ -173,170 +190,210 @@ static func waterfall(ctx: AuthoringContext, parent: Node, title: String, pos: V
 		ctx.rock(n,"Spray%d"%i,Vector3(ctx.rng.randf_range(-width*.6,width*.6),ctx.rng.randf_range(.05,.42),ctx.rng.randf_range(.05,.6)),Vector3(.04,.07,.04),"Foam")
 
 static func make_expanded_landscape(ctx: AuthoringContext, root: Node3D) -> void:
+	var plan := LevelPlan.load_default()
 	var terrain := ctx.node(root,"HighlandTerraces")
-	terrace(ctx,terrain,"WesternGardenTerrace",Vector3(-15.5,0,-4.5),Vector2(2.4,4.1),1.0)
-	terrace(ctx,terrain,"WesternUpperTerrace",Vector3(-13.1,0,-12.6),Vector2(3.2,2.8),2.6)
-	terrace(ctx,terrain,"TemplePlateau",Vector3(-5.8,0,-15.8),Vector2(5.8,3.0),5.0)
-	terrace(ctx,terrain,"EasternCascadePlateau",Vector3(13.6,0,-13.5),Vector2(3.0,3.9),4.4)
-	terrace(ctx,terrain,"CascadeShelf",Vector3(14.5,0,-8.0),Vector2(1.7,2.1),1.8)
+	for spec: Dictionary in plan.terraces:
+		var center: Vector3 = spec["center"]
+		var radius: Vector2 = spec["radius"]
+		terrace(ctx,terrain,String(spec["title"]),center,radius,float(spec["height"]))
 	# Narrow, irregular columns read as eroded mountain strata, rather than walls.
-	for i in range(27):
-		var x := -16.0+i*1.22
-		var z := -15.8 + sin(i*.8)*.65
-		var h := 3.8 + (sin(i*1.9)+1)*2.3
-		if x > -10 and x < -.5:
-			h = 4.3
-		var column := ctx.cylinder(terrain,"RidgeColumn%02d"%i,Vector3(x,h*.5-.1,z),.9,.57,h,"Cliff" if i%3 else "CliffLight",5)
-		column.rotation.y = i*.7
-		for ledge in range(4):
-			var y := h*(.18+ledge*.21)
-			var shelf := ctx.rock(terrain,"RidgeLedge%d_%d"%[i,ledge],Vector3(x+.18*sin(i+ledge),y,z+.12),Vector3(.83,.19,.72),"CliffLight")
-			shelf.rotation.z = .12*sin(i)
-		ctx.rock(terrain,"RidgeMoss%02d"%i,Vector3(x,h-.1,z),Vector3(.62,.13,.66),"Moss")
+	var ridge: Dictionary = plan.ridge
+	for i in range(int(ridge["count"])):
+		var x := float(ridge["start_x"])+i*float(ridge["spacing"])
+		var z := float(ridge["z"]) + sin(i*float(ridge["z_frequency"]))*float(ridge["z_wave"])
+		var h := float(ridge["base_height"]) + (sin(i*float(ridge["height_frequency"]))+1.0)*float(ridge["height_wave"])
+		if x > float(ridge["center_min_x"]) and x < float(ridge["center_max_x"]):
+			h = float(ridge["center_height"])
+		var column := ctx.cylinder(terrain,"RidgeColumn%02d"%i,Vector3(x,h*.5+float(ridge["column_y_offset"]),z),float(ridge["bottom_radius"]),float(ridge["top_radius"]),h,"Cliff" if i%3 else "CliffLight",int(ridge["sides"]))
+		column.rotation.y = i*float(ridge["yaw_step"])
+		for ledge in range(int(ridge["ledge_count"])):
+			var y := h*(float(ridge["ledge_start"])+ledge*float(ridge["ledge_step"]))
+			var shelf := ctx.rock(terrain,"RidgeLedge%d_%d"%[i,ledge],Vector3(x+float(ridge["ledge_x_wave"])*sin(i+ledge),y,z+float(ridge["ledge_z_offset"])),ridge["ledge_size"],"CliffLight")
+			shelf.rotation.z = float(ridge["ledge_tilt"])*sin(i)
+		ctx.rock(terrain,"RidgeMoss%02d"%i,Vector3(x,h,z)+ridge["moss_offset"],ridge["moss_size"],"Moss")
 	# Separated tall peaks give the rear silhouette the concept's vertical rhythm.
-	for i in range(6):
-		var x := -14+i*5.1
-		var h := 7.5+sin(i*2.3)*1.8
-		var peak := ctx.cylinder(terrain,"DistantSpire%d"%i,Vector3(x,h*.5,-17),1.0,.35,h,"Cliff",5)
-		peak.rotation.z = .06*sin(i)
-		ctx.rock(terrain,"PeakCap%d"%i,Vector3(x,h,-17),Vector3(.45,.12,.46),"Moss")
+	var spires: Dictionary = plan.spires
+	for i in range(int(spires["count"])):
+		var x := float(spires["start_x"])+i*float(spires["spacing"])
+		var h := float(spires["base_height"])+sin(i*float(spires["height_frequency"]))*float(spires["height_wave"])
+		var peak := ctx.cylinder(terrain,"DistantSpire%d"%i,Vector3(x,h*.5,float(spires["z"])),float(spires["bottom_radius"]),float(spires["top_radius"]),h,"Cliff",int(spires["sides"]))
+		peak.rotation.z = float(spires["tilt"])*sin(i)
+		ctx.rock(terrain,"PeakCap%d"%i,Vector3(x,h,float(spires["z"])),spires["cap_size"],"Moss")
 	var shrines := ctx.node(root,"HighlandShrines")
-	pavilion(ctx,shrines,"HilltopTemple",Vector3(-5.7,5,-15.8),1.22)
-	pavilion(ctx,shrines,"EastTeaPavilion",Vector3(14,4.4,-13.8),.85)
-	ctx.place(shrines,"tree","HilltopCherry",Vector3(-12.4,2.6,-13.3),.6,.9)
-	ctx.place(shrines,"tree","CascadeCherry",Vector3(11.8,4.4,-14.1),1,.8)
+	for spec: Dictionary in plan.pavilions:
+		var position: Vector3 = spec["position"]
+		pavilion(ctx,shrines,String(spec["title"]),position,float(spec["scale"]))
+	for spec: Dictionary in plan.shrine_trees:
+		var position: Vector3 = spec["position"]
+		ctx.place(shrines,"tree",String(spec["title"]),position,float(spec["yaw"]),float(spec["scale"]))
 	# Broad stone stairs link the main gate to the elevated sanctuary.
-	for i in range(19):
-		var y := (i+1)*5.0/19
-		ctx.box(shrines,"PilgrimStair%02d"%i,Vector3(-5.7,y*.5,-9.4-i*.34),Vector3(2.1,y,.4),"Stone" if i%2 else "StoneLight")
-		if i%4 == 0:
+	var stairs: Dictionary = plan.shrine_stairs
+	for i in range(int(stairs["count"])):
+		var y := (i+1)*float(stairs["height"])/float(stairs["count"])
+		var z := float(stairs["z_start"])+i*float(stairs["z_step"])
+		ctx.box(shrines,"PilgrimStair%02d"%i,Vector3(float(stairs["x"]),y*.5,z),Vector3(float(stairs["width"]),y,float(stairs["depth"])),"Stone" if i%2 else "StoneLight")
+		if i%int(stairs["post_interval"]) == 0:
 			for side in [-1,1]:
-				ctx.box(shrines,"StairPost%d_%d"%[i,side],Vector3(-5.7+side*1.25,y+.35,-9.4-i*.34),Vector3(.24,.7,.24),"StoneDark")
-	for side in [-1,1]:
-		ctx.place(shrines,"lantern","TempleLantern%d"%side,Vector3(-5.7+side*2.0,5,-13.8),0,.8)
-	banner(ctx,shrines,"TemplePrayerSilks",Vector3(-9,5,-16.1),.2)
-	brazier(ctx,shrines,"WesternOffering",Vector3(-3.2,0,-9.7))
-	brazier(ctx,shrines,"EasternOffering",Vector3(3.2,0,-9.7))
+				ctx.box(shrines,"StairPost%d_%d"%[i,side],Vector3(float(stairs["x"])+side*float(stairs["post_offset_x"]),y+float(stairs["post_height"])*.5,z),Vector3(float(stairs["post_size"]),float(stairs["post_height"]),float(stairs["post_size"])),"StoneDark")
+	for spec: Dictionary in plan.shrine_lanterns:
+		var position: Vector3 = spec["position"]
+		ctx.place(shrines,"lantern",String(spec["title"]),position,float(spec["yaw"]),float(spec["scale"]))
+	for spec: Dictionary in plan.shrine_banners:
+		var position: Vector3 = spec["position"]
+		banner(ctx,shrines,String(spec["title"]),position,float(spec["yaw"]))
+	for spec: Dictionary in plan.braziers:
+		var position: Vector3 = spec["position"]
+		brazier(ctx,shrines,String(spec["title"]),position)
 
 	var wetlands := ctx.node(root,"EasternWetlands")
+	var wetland: Dictionary = plan.wetlands
 	# An irregular shoreline and winding stream replace the tiny rectangular pond edge.
-	var shore := [Vector2(12.6,-9.6),Vector2(15.7,-9.6),Vector2(16.4,-5),Vector2(15.8,-1),Vector2(17.1,2),Vector2(16,8),Vector2(13.6,12.2),Vector2(12.4,11.7),Vector2(12.8,8.2),Vector2(12.3,5.1),Vector2(12.6,3),Vector2(12.5,-1.9)]
+	var shore: PackedVector2Array = wetland["shore"]
 	var faces: Array = []
 	var polygon := PackedVector2Array(shore)
 	var indices := Geometry2D.triangulate_polygon(polygon)
+	var shore_y := float(wetland["shore_y"])
 	for i in range(0,indices.size(),3):
 		var a := polygon[indices[i]]
 		var b := polygon[indices[i+1]]
 		var c := polygon[indices[i+2]]
-		ctx.tri(faces,Vector3(a.x,-.015,a.y),Vector3(c.x,-.015,c.y),Vector3(b.x,-.015,b.y))
+		ctx.tri(faces,Vector3(a.x,shore_y,a.y),Vector3(c.x,shore_y,c.y),Vector3(b.x,shore_y,b.y))
 	ctx.surface(wetlands,"LotusLakeAndStream",faces,"Water")
+	var shore_rock_size: Vector3 = wetland["shore_rock_size"]
 	for i in range(shore.size()):
 		var a: Vector2 = shore[i]
 		var b: Vector2 = shore[(i+1)%shore.size()]
-		for j in range(5):
-			var p := a.lerp(b,j/5.0)
-			ctx.rock(wetlands,"ShoreRock%d_%d"%[i,j],Vector3(p.x,.02,p.y),Vector3(.45,.22,.39),"StoneDark" if j%3 else "Moss")
-	for i in range(25):
-		var p := Vector3(ctx.rng.randf_range(13,15.8),.025,ctx.rng.randf_range(1,10))
+		for j in range(int(wetland["shore_rocks_per_edge"])):
+			var p := a.lerp(b,j/float(wetland["shore_rocks_per_edge"]))
+			ctx.rock(wetlands,"ShoreRock%d_%d"%[i,j],Vector3(p.x,float(wetland["shore_rock_y"]),p.y),shore_rock_size,"StoneDark" if j%int(wetland["shore_rock_moss_interval"]) else "Moss")
+	var lotus_x: Vector2 = wetland["lotus_x_range"]
+	var lotus_z: Vector2 = wetland["lotus_z_range"]
+	var lotus_scale: Vector2 = wetland["lotus_scale_range"]
+	for i in range(int(wetland["lotus_count"])):
+		var p := Vector3(ctx.rng.randf_range(lotus_x.x,lotus_x.y),float(wetland["lotus_y"]),ctx.rng.randf_range(lotus_z.x,lotus_z.y))
 		if not Geometry2D.is_point_in_polygon(Vector2(p.x,p.z),polygon):
 			continue
-		ctx.place(wetlands,"lotus","LotusCluster%02d"%i,p,ctx.rng.randf()*TAU,ctx.rng.randf_range(.7,1.25))
-		if i%3 == 0:
-			ring_mesh(ctx,wetlands,"WaterRipple%02d"%i,p,.65,.008,"Ripple")
-		ctx.cylinder(wetlands,"LilyPad%02d"%i,p+Vector3(.5,0,.1),.24,.24,.02,"Leaf",10)
+		ctx.place(wetlands,"lotus","LotusCluster%02d"%i,p,ctx.rng.randf()*TAU,ctx.rng.randf_range(lotus_scale.x,lotus_scale.y))
+		if i%int(wetland["ripple_interval"]) == 0:
+			ring_mesh(ctx,wetlands,"WaterRipple%02d"%i,p,float(wetland["ripple_radius"]),float(wetland["ripple_thickness"]),"Ripple")
+		ctx.cylinder(wetlands,"LilyPad%02d"%i,p+wetland["lily_offset"],float(wetland["lily_bottom"]),float(wetland["lily_top"]),float(wetland["lily_height"]),"Leaf",int(wetland["lily_sides"]))
 	# Water starts in a visible upper basin and falls over two successive cliff ledges.
-	ctx.box(wetlands,"UpperSpring",Vector3(14.4,4.42,-10.7),Vector3(1.7,.04,3.0),"Water")
-	ctx.box(wetlands,"MiddleBasin",Vector3(14.4,1.82,-6.9),Vector3(2.1,.04,2.8),"Water")
+	var upper_spring: Dictionary = wetland["upper_spring"]
+	ctx.box(wetlands,"UpperSpring",upper_spring["position"],upper_spring["size"],"Water")
+	var middle_basin: Dictionary = wetland["middle_basin"]
+	ctx.box(wetlands,"MiddleBasin",middle_basin["position"],middle_basin["size"],"Water")
+	var spring_banks: Dictionary = wetland["spring_banks"]
+	var shelf_banks: Dictionary = wetland["shelf_banks"]
 	for side in [-1,1]:
-		for i in range(5):
-			ctx.rock(wetlands,"SpringBank%d_%d"%[side,i],Vector3(14.4+side*.98,4.4,-11.8+i*.6),Vector3(.22,.18,.38),"Moss" if i%2 else "StoneDark")
-		for i in range(4):
-			ctx.rock(wetlands,"ShelfBank%d_%d"%[side,i],Vector3(14.4+side*1.16,1.8,-7.7+i*.65),Vector3(.22,.16,.36),"StoneDark")
-	waterfall(ctx,wetlands,"UpperFalls",Vector3(14.4,1.84,-9.2),2.58,1.6)
-	waterfall(ctx,wetlands,"LowerFalls",Vector3(14.4,.02,-5.5),1.8,1.9)
+		for i in range(int(spring_banks["count"])):
+			ctx.rock(wetlands,"SpringBank%d_%d"%[side,i],Vector3(float(spring_banks["x"])+side*float(spring_banks["offset"]),float(spring_banks["y"]),float(spring_banks["z_start"])+i*float(spring_banks["z_step"])),spring_banks["size"],"Moss" if i%2 else "StoneDark")
+		for i in range(int(shelf_banks["count"])):
+			ctx.rock(wetlands,"ShelfBank%d_%d"%[side,i],Vector3(float(shelf_banks["x"])+side*float(shelf_banks["offset"]),float(shelf_banks["y"]),float(shelf_banks["z_start"])+i*float(shelf_banks["z_step"])),shelf_banks["size"],"StoneDark")
+	var upper_falls: Dictionary = wetland["upper_falls"]
+	waterfall(ctx,wetlands,String(upper_falls["title"]),upper_falls["position"],float(upper_falls["height"]),float(upper_falls["width"]))
+	var lower_falls: Dictionary = wetland["lower_falls"]
+	waterfall(ctx,wetlands,String(lower_falls["title"]),lower_falls["position"],float(lower_falls["height"]),float(lower_falls["width"]))
 	# The second bridge crosses the stream between the shore paths.
-	var crossing := ctx.node(wetlands,"StreamCrossing",Vector3(14.4,.12,-.4))
+	var crossing_data: Dictionary = wetland["crossing"]
+	var crossing := ctx.node(wetlands,"StreamCrossing",crossing_data["position"])
 	make_bridge(ctx,crossing)
 	var bridge := crossing.get_node("GardenBridge") as Node3D
-	bridge.position = Vector3.ZERO
-	bridge.scale = Vector3(1.0,1.25,1.2)
-	for side in [-1,1]:
-		ctx.place(wetlands,"lantern","BridgeLantern%d"%side,Vector3(14.4+side*.9,0,-1.5),0,.6)
-	for i in range(9):
-		var p := Vector3(12.6+i*.1,.04,6+i*.65)
-		ctx.cylinder(wetlands,"WetlandSteppingStone%d"%i,p,.53,.51,.16,"Stone",6)
+	bridge.position = crossing_data["bridge_position"]
+	bridge.scale = crossing_data["bridge_scale"]
+	for spec: Dictionary in wetland["bridge_lanterns"]:
+		var position: Vector3 = spec["position"]
+		ctx.place(wetlands,"lantern",String(spec["title"]),position,float(spec["yaw"]),float(spec["scale"]))
+	var stones: Dictionary = wetland["stepping_stones"]
+	var stone_start: Vector3 = stones["start"]
+	var stone_step: Vector3 = stones["step"]
+	for i in range(int(stones["count"])):
+		ctx.cylinder(wetlands,"WetlandSteppingStone%d"%i,stone_start+stone_step*i,float(stones["bottom"]),float(stones["top"]),float(stones["height"]),"Stone",int(stones["sides"]))
 
 	var gardens := ctx.node(root,"OuterGardens")
-	var trees := [Vector3(-16.0,1,-3),Vector3(-15.8,1,-6.5),Vector3(-14.2,2.6,-12.4),Vector3(17,0,-4),Vector3(-14.4,0,8.4),Vector3(7.2,0,15.3)]
-	for i in range(trees.size()):
-		ctx.place(gardens,"tree","CherryGrove%d"%i,trees[i],i*.7,.42 if i == 5 else .72+(i%3)*.14)
-	var bamboo_positions := [Vector3(-17,1,-5),Vector3(-15,1,-7),Vector3(-16.5,0,1),Vector3(-16.5,0,4),Vector3(17.3,0,-2),Vector3(17.4,0,1),Vector3(16.6,0,7),Vector3(3,0,-14)]
-	for i in range(bamboo_positions.size()):
-		ctx.place(gardens,"bamboo","BambooThicket%d"%i,bamboo_positions[i],i*1.3,1.0+(i%3)*.2)
+	var garden: Dictionary = plan.gardens
+	for spec: Dictionary in garden["trees"]:
+		var position: Vector3 = spec["position"]
+		ctx.place(gardens,"tree",String(spec["title"]),position,float(spec["yaw"]),float(spec["scale"]))
+	for spec: Dictionary in garden["bamboo"]:
+		var position: Vector3 = spec["position"]
+		ctx.place(gardens,"bamboo",String(spec["title"]),position,float(spec["yaw"]),float(spec["scale"]))
 	var planted_boundary := PackedVector2Array()
-	for point in ISLAND_RIM:
-		planted_boundary.append(point * LANDSCAPE_SCALE * .96)
-	for i in range(100):
-		var p := Vector3(ctx.rng.randf_range(-16,16),0,ctx.rng.randf_range(-11,14))
+	for point in plan.island_rim:
+		planted_boundary.append(point * plan.landscape_scale * float(garden["boundary_scale"]))
+	var fern_x: Vector2 = garden["fern_x_range"]
+	var fern_z: Vector2 = garden["fern_z_range"]
+	var fern_scale: Vector2 = garden["fern_scale_range"]
+	for i in range(int(garden["fern_count"])):
+		var p := Vector3(ctx.rng.randf_range(fern_x.x,fern_x.y),0,ctx.rng.randf_range(fern_z.x,fern_z.y))
 		if not Geometry2D.is_point_in_polygon(Vector2(p.x,p.z),planted_boundary):
 			continue
 		# Keep the playable ground, shore water and terraces clear of tall props.
-		if (absf(p.x)<12.7 and p.z>-9.4 and p.z<12.2) or (p.x>12 and p.z<12) or (p.x<-12 and p.z<0) or (absf(p.x)<2 and p.z>5):
+		if _inside_clear_box(p,garden["clear_boxes"]):
 			continue
-		fern(ctx,gardens,"GroundFern%03d"%i,p,ctx.rng.randf_range(.65,1.5))
-		if i%3 == 0:
-			ctx.rock(gardens,"MossyOutcrop%03d"%i,p,Vector3(.65,.35,.5),"Moss")
-	for i in range(22):
-		var p := Vector3(-16.5+ctx.rng.randf()*2,1.03,-7+ctx.rng.randf()*6)
-		fern(ctx,gardens,"TerraceFern%02d"%i,p,.8)
-		if i%2 == 0:
-			ctx.rock(gardens,"BlossomCarpet%02d"%i,p,Vector3(.16,.025,.13),"BlossomDark")
+		fern(ctx,gardens,"GroundFern%03d"%i,p,ctx.rng.randf_range(fern_scale.x,fern_scale.y))
+		if i%int(garden["outcrop_interval"]) == 0:
+			ctx.rock(gardens,"MossyOutcrop%03d"%i,p,garden["outcrop_size"],"Moss")
+	var terrace_x: Vector2 = garden["terrace_fern_x_range"]
+	var terrace_z: Vector2 = garden["terrace_fern_z_range"]
+	for i in range(int(garden["terrace_fern_count"])):
+		var p := Vector3(ctx.rng.randf_range(terrace_x.x,terrace_x.y),float(garden["terrace_fern_y"]),ctx.rng.randf_range(terrace_z.x,terrace_z.y))
+		fern(ctx,gardens,"TerraceFern%02d"%i,p,float(garden["terrace_fern_scale"]))
+		if i%int(garden["blossom_interval"]) == 0:
+			ctx.rock(gardens,"BlossomCarpet%02d"%i,p,garden["blossom_size"],"BlossomDark")
 	# A worn approach remains low in the foreground, preserving views of the field.
 	var approach := ctx.node(root,"PilgrimApproach")
-	for i in range(13):
-		var z := 11.9+i*.26
-		ctx.box(approach,"OldFlagstone%02d"%i,Vector3(sin(i*.35)*.35,.03,z),Vector3(2.25,.10,.24),"Stone" if i%3 else "StoneLight")
-		if i in [4,12]:
+	var approach_data: Dictionary = plan.approach
+	for i in range(int(approach_data["count"])):
+		var z := float(approach_data["z_start"])+i*float(approach_data["z_step"])
+		ctx.box(approach,"OldFlagstone%02d"%i,Vector3(sin(i*float(approach_data["x_frequency"]))*float(approach_data["x_wave"]),float(approach_data["y"]),z),Vector3(float(approach_data["width"]),float(approach_data["height"]),float(approach_data["depth"])),"Stone" if i%3 else "StoneLight")
+		if i in approach_data["lantern_rows"]:
 			for side in [-1,1]:
-				ctx.place(approach,"lantern","PathLight%d_%d"%[i,side],Vector3(side*1.9,0,z+.6),0,.38)
-	banner(ctx,approach,"EntryPrayerFlags",Vector3(-3.8,0,15.3),-.2)
-	banner(ctx,approach,"EasternPrayerFlags",Vector3(4,0,15.3),.3)
-	approach.get_node("EntryPrayerFlags").scale = Vector3.ONE*.65
-	approach.get_node("EasternPrayerFlags").scale = Vector3.ONE*.65
+				ctx.place(approach,"lantern","PathLight%d_%d"%[i,side],Vector3(side*float(approach_data["lantern_offset_x"]),0,z+float(approach_data["lantern_z_offset"])),0,float(approach_data["lantern_scale"]))
+	for spec: Dictionary in approach_data["banners"]:
+		var position: Vector3 = spec["position"]
+		banner(ctx,approach,String(spec["title"]),position,float(spec["yaw"]))
+		approach.get_node(String(spec["title"])).scale = Vector3.ONE*float(spec["scale"])
 	make_ruins(ctx,root)
 
 static func make_ruins(ctx: AuthoringContext, root: Node3D) -> void:
-	var ruins := ctx.node(root,"WesternRuins",Vector3(-14,0,10.4))
-	ruins.scale = Vector3.ONE*.6
-	for i in range(9):
-		var slab := ctx.box(ruins,"BrokenPaving%d"%i,Vector3((i%3-1)*1.1,.04,(i/3-1)*1.05),Vector3(1,.17,.94),"StoneDark" if i%2 else "Stone")
-		slab.rotation.y = ctx.rng.randf_range(-.14,.14)
+	var plan := LevelPlan.load_default()
+	var data: Dictionary = plan.ruins
+	var ruins := ctx.node(root,"WesternRuins",data["position"])
+	ruins.scale = Vector3.ONE*float(data["scale"])
+	for i in range(int(data["paving_count"])):
+		var slab := ctx.box(ruins,"BrokenPaving%d"%i,Vector3((i%3-1)*float(data["paving_x_step"]),float(data["paving_y"]),(i/3.0-1.0)*float(data["paving_z_step"])),data["paving_size"],"StoneDark" if i%2 else "Stone")
+		slab.rotation.y = ctx.rng.randf_range(-float(data["paving_rotation"]),float(data["paving_rotation"]))
 	for side in [-1,1]:
-		var pillar := ctx.node(ruins,"CarvedPillar%d"%side,Vector3(side*2.1,0,-.4))
+		var pillar := ctx.node(ruins,"CarvedPillar%d"%side,Vector3(side*float(data["pillar_offset"]),0,float(data["pillar_z"])))
 		ctx.box(pillar,"Foot",Vector3(0,.2,0),Vector3(1.2,.4,1.2),"StoneDark")
 		ctx.box(pillar,"Shaft",Vector3(0,1.6,0),Vector3(.7,2.7,.8),"Stone")
-		for y in [.5,2.3,2.9]:
+		for y in data["collar_heights"]:
 			ctx.box(pillar,"Collar%s"%y,Vector3(0,y,0),Vector3(.9,.15,1),"StoneLight")
-		for j in range(3):
-			var glyph := ctx.box(pillar,"InsetRune%d"%j,Vector3(0,1+j*.46,.411),Vector3(.18,.24,.02),"SpiritDim")
+		for j in range(int(data["rune_count"])):
+			var glyph := ctx.box(pillar,"InsetRune%d"%j,Vector3(0,float(data["rune_start_y"])+j*float(data["rune_step_y"]),float(data["rune_z"])),data["rune_size"],"SpiritDim")
 			glyph.rotation.z = PI/4
 		ctx.rock(pillar,"Overgrowth",Vector3(.1,3.04,0),Vector3(.55,.12,.54),"Moss")
-		for j in range(4):
+		for j in range(int(data["vine_count"])):
 			ctx.line(pillar,"HangingVine%d"%j,[Vector3((j-1.5)*.17,3,.48),Vector3((j-1.5)*.17+.05,2.7,.49),Vector3((j-1.5)*.17,2.15-j*.15,.47)],.026,"Leaf")
-	var fallen := ctx.box(ruins,"FallenLintel",Vector3(.4,.36,-1.7),Vector3(3.6,.65,.9),"Stone")
-	fallen.rotation = Vector3(.1,.22,-.12)
-	var monolith := ctx.rock(ruins,"SpiritMonolith",Vector3(0,1.25,-.5),Vector3(.72,1.35,.48),"StoneDark")
+	var fallen_data: Dictionary = data["fallen_lintel"]
+	var fallen := ctx.box(ruins,"FallenLintel",fallen_data["position"],fallen_data["size"],"Stone")
+	fallen.rotation = fallen_data["rotation"]
+	var monolith_data: Dictionary = data["monolith"]
+	var monolith := ctx.rock(ruins,"SpiritMonolith",monolith_data["position"],monolith_data["size"],"StoneDark")
 	monolith.rotation = Vector3.ZERO
+	var spiral_data: Dictionary = data["spiral"]
 	var spiral: Array = []
-	for i in range(25):
-		var t := i/24.0
-		spiral.append(Vector3(sin(t*TAU*1.5)*.22,.55+t*1.45,.005))
-	ctx.line(ruins,"MonolithInscription",spiral,.023,"Spirit")
-	ring_mesh(ctx,ruins,"OfferingCircle",Vector3(0,.15,1),.9,.018,"SpiritDim")
-	ctx.place(ruins,"lantern","RuinLantern",Vector3(-2.7,0,1.4),0,.7)
-	for i in range(12):
-		var a := i*TAU/12
-		fern(ctx,ruins,"ReclaimedFern%d"%i,Vector3(cos(a)*2.9,0,sin(a)*2.5),.8)
+	for i in range(int(spiral_data["count"])):
+		var t := i/float(int(spiral_data["count"])-1)
+		spiral.append(Vector3(sin(t*TAU*1.5)*float(spiral_data["radius"]),float(spiral_data["height_start"])+t*float(spiral_data["height_span"]),float(spiral_data["z"])))
+	ctx.line(ruins,"MonolithInscription",spiral,float(spiral_data["line_radius"]),"Spirit")
+	var offering: Dictionary = data["offering_circle"]
+	ring_mesh(ctx,ruins,"OfferingCircle",offering["position"],float(offering["radius"]),float(offering["thickness"]),"SpiritDim")
+	var lantern: Dictionary = data["lantern"]
+	ctx.place(ruins,"lantern",String(lantern["title"]),lantern["position"],float(lantern["yaw"]),float(lantern["scale"]))
+	for i in range(int(data["fern_count"])):
+		var a := i*TAU/float(data["fern_count"])
+		fern(ctx,ruins,"ReclaimedFern%d"%i,Vector3(cos(a)*float(data["fern_radius_x"]),0,sin(a)*float(data["fern_radius_z"])),float(data["fern_scale"]))
 
 static func guardian(ctx: AuthoringContext, parent: Node, title: String, pos: Vector3, yaw: float) -> void:
 	var n := ctx.node(parent,title,pos)
@@ -378,51 +435,72 @@ static func guardian(ctx: AuthoringContext, parent: Node, title: String, pos: Ve
 			seal.rotation.z = PI/4
 
 static func make_sanctuary_details(ctx: AuthoringContext, root: Node3D) -> void:
+	var plan := LevelPlan.load_default()
+	var data: Dictionary = plan.sanctuary_details
 	var details := ctx.node(root,"SanctuaryDetails")
-	guardian(ctx,details,"WesternCloudLion",Vector3(-4.95,0,-9.5),.2)
-	guardian(ctx,details,"EasternCloudLion",Vector3(4.95,0,-9.5),-.2)
+	for spec: Dictionary in data["guardians"]:
+		var position: Vector3 = spec["position"]
+		guardian(ctx,details,String(spec["title"]),position,float(spec["yaw"]))
 	# Low vegetation crosses the logical field boundary, without covering destinations.
 	var grass_faces: Array = []
 	var petal_faces: Array = []
 	var boundary := PackedVector2Array()
-	for point in ISLAND_RIM:
-		boundary.append(point*LANDSCAPE_SCALE*.98)
-	for i in range(2100):
-		var p := Vector3(ctx.rng.randf_range(-16.5,16.5),.012,ctx.rng.randf_range(-9.1,14.6))
+	for point in plan.island_rim:
+		boundary.append(point*plan.landscape_scale*float(data["boundary_scale"]))
+	var grass_x: Vector2 = data["grass_x_range"]
+	var grass_z: Vector2 = data["grass_z_range"]
+	var west_garden: Dictionary = data["grass_west_garden"]
+	var wetland_clear: Dictionary = data["wetland_clear"]
+	var grass_height: Vector2 = data["blade_height_range"]
+	for i in range(int(data["grass_samples"])):
+		var p := Vector3(ctx.rng.randf_range(grass_x.x,grass_x.y),float(data["grass_y"]),ctx.rng.randf_range(grass_z.x,grass_z.y))
 		if not Geometry2D.is_point_in_polygon(Vector2(p.x,p.z),boundary):
 			continue
-		if p.x > -15.9 and p.x < -13.1 and p.z > .5 and p.z < 7.5:
+		if p.x > float(west_garden["x_min"]) and p.x < float(west_garden["x_max"]) and p.z > float(west_garden["z_min"]) and p.z < float(west_garden["z_max"]):
 			continue
-		if absf(p.x)>12.5 and p.x>0 and p.z<12:
+		if p.x > float(wetland_clear["x_min"]) and p.z < float(wetland_clear["z_max"]):
 			continue # Wetland water remains clear.
 		if GroundZones.is_within_paving_margin(Vector2(p.x,p.z), GroundZones.VEGETATION_CLEARANCE):
 			continue
-		if sin(p.x*.7)+cos(p.z*.8)<.2:
+		if sin(p.x*float(data["grass_frequency_x"]))+cos(p.z*float(data["grass_frequency_z"]))<float(data["grass_density_threshold"]):
 			continue
-		for blade in range(3):
+		for blade in range(int(data["blades"])):
 			var a := ctx.rng.randf()*TAU
-			var side := Vector3(cos(a),0,sin(a))*.022
-			var tip := p+Vector3(sin(a)*.07,ctx.rng.randf_range(.08,.23),cos(a)*.07)
+			var side := Vector3(cos(a),0,sin(a))*float(data["blade_side"])
+			var tip := p+Vector3(sin(a)*float(data["blade_radius"]),ctx.rng.randf_range(grass_height.x,grass_height.y),cos(a)*float(data["blade_radius"]))
 			ctx.tri(grass_faces,p-side,p+side,tip)
 			ctx.tri(grass_faces,p+side,p-side,tip)
-		if i%4==0:
-			var q := p+Vector3(.16,.003,0)
-			ctx.tri(petal_faces,q+Vector3(-.055,0,0),q+Vector3(0,0,.04),q+Vector3(.055,0,0))
-			ctx.tri(petal_faces,q+Vector3(-.055,0,0),q+Vector3(.055,0,0),q+Vector3(0,0,-.04))
+		if i%int(data["petal_interval"])==0:
+			var q: Vector3 = p+data["petal_offset"]
+			var half_width := float(data["petal_half_width"])
+			var half_depth := float(data["petal_half_depth"])
+			ctx.tri(petal_faces,q+Vector3(-half_width,0,0),q+Vector3(0,0,half_depth),q+Vector3(half_width,0,0))
+			ctx.tri(petal_faces,q+Vector3(-half_width,0,0),q+Vector3(half_width,0,0),q+Vector3(0,0,-half_depth))
 	ctx.surface(details,"MeadowGrassAndCreviceShoots",grass_faces,"Grass")
 	ctx.surface(details,"WindblownPetals",petal_faces,"BlossomDark")
 	# Rubble and ferns feather the terrain into the garden rather than framing a board.
-	for i in range(42):
+	var rubble_x: Vector2 = data["rubble_x_range"]
+	var rubble_z: Vector2 = data["rubble_z_range"]
+	var rubble_size_x: Vector2 = data["rubble_size_x_range"]
+	var rubble_size_z: Vector2 = data["rubble_size_z_range"]
+	for i in range(int(data["rubble_count"])):
 		var side := -1 if i%2 else 1
-		var p := Vector3(side*ctx.rng.randf_range(11.7,12.35),.02,ctx.rng.randf_range(-7.5,11.2))
-		var slab := ctx.rock(details,"BuriedStone%02d"%i,p,Vector3(ctx.rng.randf_range(.15,.45),.08,ctx.rng.randf_range(.2,.5)),"Stone")
-		slab.rotation.z = ctx.rng.randf_range(-.13,.13)
-		if i%3==0:
-			fern(ctx,details,"EdgeFern%02d"%i,p+Vector3(.1,0,.1),.48)
+		var p := Vector3(side*ctx.rng.randf_range(rubble_x.x,rubble_x.y),float(data["rubble_y"]),ctx.rng.randf_range(rubble_z.x,rubble_z.y))
+		var slab := ctx.rock(details,"BuriedStone%02d"%i,p,Vector3(ctx.rng.randf_range(rubble_size_x.x,rubble_size_x.y),float(data["rubble_size_y"]),ctx.rng.randf_range(rubble_size_z.x,rubble_size_z.y)),"Stone")
+		slab.rotation.z = ctx.rng.randf_range(-float(data["rubble_tilt"]),float(data["rubble_tilt"]))
+		if i%int(data["rubble_fern_interval"])==0:
+			fern(ctx,details,"EdgeFern%02d"%i,p+data["rubble_fern_offset"],float(data["rubble_fern_scale"]))
 	# Fallen carved stones beside the approach echo the concept's reclaimed ruins.
 	for side in [-1,1]:
-		for i in range(4):
-			var p := Vector3(side*(4.5+i*.55),.15,13.1+sin(i)*.8)
-			var block := ctx.box(details,"ApproachRubble%d_%d"%[side,i],p,Vector3(.6,.3,.7),"Stone")
-			block.rotation.y = i*.43
-			fern(ctx,details,"ApproachFern%d_%d"%[side,i],p+Vector3(.3,0,.2),.65)
+		for i in range(int(data["approach_rubble_count"])):
+			var p := Vector3(side*(float(data["approach_rubble_x_start"])+i*float(data["approach_rubble_x_step"])),float(data["approach_rubble_y"]),float(data["approach_rubble_z"])+sin(i)*float(data["approach_rubble_z_wave"]))
+			var block := ctx.box(details,"ApproachRubble%d_%d"%[side,i],p,data["approach_rubble_size"],"Stone")
+			block.rotation.y = i*float(data["approach_rubble_yaw_step"])
+			fern(ctx,details,"ApproachFern%d_%d"%[side,i],p+data["approach_fern_offset"],float(data["approach_fern_scale"]))
+
+static func _inside_clear_box(p: Vector3, boxes: Array) -> bool:
+	for box: Dictionary in boxes:
+		var x := absf(p.x) if bool(box.get("use_abs_x", false)) else p.x
+		if x >= float(box["x_min"]) and x <= float(box["x_max"]) and p.z >= float(box["z_min"]) and p.z <= float(box["z_max"]):
+			return true
+	return false
