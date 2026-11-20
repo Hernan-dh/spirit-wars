@@ -62,26 +62,24 @@ func play_spirit_pulse(target_position: Vector3) -> void:
 		global_position + PULSE_START,
 		target_position + PULSE_END,
 		SpiritPalette.LANTERN_FLAME,
-		{
-			"radius": PULSE_RADIUS,
-			"height": PULSE_HEIGHT,
-			"flight_time": PULSE_FLIGHT_TIME,
-			"arc": PULSE_ARC,
-			"spin": PULSE_SPIN,
-			"name": "LanternFirebolt",
-		}
+		PULSE_RADIUS,
+		PULSE_HEIGHT,
+		PULSE_FLIGHT_TIME,
+		PULSE_ARC,
+		PULSE_SPIN,
+		"LanternFirebolt"
 	)
 	CombatEffects.play_impact_ring(
 		get_parent(),
 		target_position,
 		SpiritPalette.LANTERN_IMPACT,
-		{
-			"inner_radius": IMPACT_INNER_RADIUS,
-			"outer_radius": IMPACT_OUTER_RADIUS,
-			"height": IMPACT_HEIGHT,
-			"delay": IMPACT_DELAY,
-			"duration": IMPACT_DURATION,
-			"scale": IMPACT_SCALE,
-			"name": "LanternImpact",
-		}
+		IMPACT_INNER_RADIUS,
+		IMPACT_OUTER_RADIUS,
+		CombatEffects.IMPACT_RINGS,
+		CombatEffects.IMPACT_RING_SEGMENTS,
+		IMPACT_HEIGHT,
+		IMPACT_DELAY,
+		IMPACT_DURATION,
+		IMPACT_SCALE,
+		"LanternImpact"
 	)

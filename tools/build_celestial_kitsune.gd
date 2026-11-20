@@ -146,7 +146,8 @@ func tail(parent: Node3D, index: int, controls: Array[Vector3], tint: Color) -> 
 		p.x += sin(i*1.75+index)*widths[i]*.27
 		vein.append(p)
 	strand(n,"SacredLightVein",vein,.012,light)
-	for j in [12,22]:
+	for fork_index in [12,22]:
+		var j := clampi(fork_index, 0, path.size() - 1)
 		var p := path[j] + Vector3(0,0,-depths[j])
 		strand(n,"Fork%d" % j,[p,p+Vector3(widths[j]*.55,.05,-.005),p+Vector3(widths[j]*.85,.14,0)],.008,light)
 

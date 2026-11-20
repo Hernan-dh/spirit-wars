@@ -58,23 +58,35 @@ func _ready() -> void:
 	if tiles.is_empty():
 		push_error("SkirmishController found no hex tiles under %s." % battlefield_path)
 		return
+	var claimed_cells: Dictionary[Vector2i, PlaceholderUnit] = {}
 	for child in get_children():
 		if child is PlaceholderUnit:
 			var unit := child as PlaceholderUnit
 			units.append(unit)
-			var closest := Vector2i.ZERO
-			var distance := INF
-			for cell: Vector2i in tiles:
-				var candidate := unit.global_position.distance_squared_to(tile_position(cell))
-				if candidate < distance:
-					distance = candidate
-					closest = cell
+			var closest := _nearest_free_cell(unit, claimed_cells)
+			claimed_cells[closest] = unit
 			unit_tiles[unit] = closest
 			unit.global_position = tile_position(closest)
 			unit.reset_actions()
 	_check_battle_result()
 	if not battle_over:
 		_refresh()
+
+func _nearest_free_cell(unit: PlaceholderUnit, claimed: Dictionary[Vector2i, PlaceholderUnit]) -> Vector2i:
+	var candidates: Array[Vector2i] = []
+	for cell: Vector2i in tiles:
+		candidates.append(cell)
+	candidates.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
+		return unit.global_position.distance_squared_to(tile_position(a)) < unit.global_position.distance_squared_to(tile_position(b))
+	)
+	var nearest := candidates[0]
+	if not claimed.has(nearest):
+		return nearest
+	push_error("Unit %s starts on the same hex as %s; using the next free tile." % [unit.display_name(), claimed[nearest].display_name()])
+	for cell in candidates:
+		if not claimed.has(cell):
+			return cell
+	return nearest
 
 func _build_highlight_resources() -> void:
 	_highlight_mesh = TorusMesh.new()

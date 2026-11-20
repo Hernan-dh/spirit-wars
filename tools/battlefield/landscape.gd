@@ -119,76 +119,94 @@ static func fern(ctx: AuthoringContext, parent: Node, title: String, pos: Vector
 	ctx.fern_geometry = ctx.surface(n,"FeatheredFronds",fronds,"LeafLight").mesh
 
 static func banner(ctx: AuthoringContext, parent: Node, title: String, pos: Vector3, yaw := 0.0) -> void:
+	var plan := LevelPlan.load_default()
+	var data: Dictionary = plan.prop_templates["banner"]
 	var n := ctx.node(parent,title,pos)
 	n.rotation.y = yaw
 	for side in [-1,1]:
-		ctx.cylinder(n,"StoneFoot%d"%side,Vector3(side*1.55,.18,0),.32,.25,.36,"StoneDark")
-		ctx.rod(n,"Pole%d"%side,Vector3(side*1.55,.3,0),Vector3(side*1.55,3.5,0),.055,"Wood")
-		ctx.rock(n,"Finial%d"%side,Vector3(side*1.55,3.6,0),Vector3(.12,.2,.12),"Gold")
-	ctx.line(n,"Suspension",[Vector3(-1.55,3.45,0),Vector3(0,3.15,0),Vector3(1.55,3.45,0)],.025,"Gold")
-	for i in range(3):
-		var x := (i-1)*.85
-		var y := 3.18+absf(x)*.14
-		var cloth := [Vector3(x-.25,y,0),Vector3(x+.25,y,0),Vector3(x+.27,y-1.25,.14),Vector3(x-.25,y,0),Vector3(x+.27,y-1.25,.14),Vector3(x-.18,y-1.45,.10)]
+		var x: float = side*float(data["post_offset_x"])
+		ctx.cylinder(n,"StoneFoot%d"%side,Vector3(x,float(data["foot_y"]),0),float(data["foot_bottom"]),float(data["foot_top"]),float(data["foot_height"]),"StoneDark")
+		ctx.rod(n,"Pole%d"%side,Vector3(x,float(data["pole_bottom_y"]),0),Vector3(x,float(data["pole_top_y"]),0),float(data["pole_radius"]),"Wood")
+		ctx.rock(n,"Finial%d"%side,Vector3(x,float(data["finial_y"]),0),data["finial_size"],"Gold")
+	ctx.line(n,"Suspension",data["suspension_points"],float(data["suspension_radius"]),"Gold")
+	var flag_count := int(data["flag_count"])
+	for i in range(flag_count):
+		var x := (i-float(data["flag_center"]))*float(data["flag_spacing"])
+		var y := float(data["flag_y"])+absf(x)*float(data["flag_y_slope"])
+		var half_width := float(data["flag_half_width"])
+		var bottom_half_width := float(data["flag_bottom_half_width"])
+		var bottom_drop := float(data["flag_bottom_drop"])
+		var depth := float(data["flag_depth"])
+		var cloth := [Vector3(x-half_width,y,0),Vector3(x+half_width,y,0),Vector3(x+bottom_half_width,y-bottom_drop,depth),Vector3(x-half_width,y,0),Vector3(x+bottom_half_width,y-bottom_drop,depth),Vector3(x-float(data["flag_tip_x"]),y-float(data["flag_tip_drop"]),float(data["flag_tip_depth"]))]
 		var flag := ctx.surface(n,"HangingSilk%d"%i,cloth,"Cloth")
 		flag.material_override = ctx.two_sided(flag.material_override)
-		for j in range(3):
-			var seal := ctx.box(n,"GoldStitch%d_%d"%[i,j],Vector3(x,y-.35-j*.25,.09),Vector3(.11,.16,.025),"Gold")
+		for j in range(int(data["stitch_count"])):
+			var seal := ctx.box(n,"GoldStitch%d_%d"%[i,j],Vector3(x,y+float(data["stitch_y_offset"])+j*float(data["stitch_y_step"]),float(data["stitch_z"])),data["stitch_size"],"Gold")
 			seal.rotation.z = PI/4
-
 static func brazier(ctx: AuthoringContext, parent: Node, title: String, pos: Vector3) -> void:
+	var plan := LevelPlan.load_default()
+	var data: Dictionary = plan.prop_templates["brazier"]
 	var n := ctx.node(parent,title,pos)
-	ctx.cylinder(n,"Plinth",Vector3(0,.15,0),.52,.43,.3,"StoneDark")
-	ctx.cylinder(n,"Stem",Vector3(0,.55,0),.24,.16,.65,"Gold")
-	ctx.cylinder(n,"BronzeBowl",Vector3(0,.94,0),.23,.52,.35,"Gold")
-	ctx.cylinder(n,"Coals",Vector3(0,1.11,0),.43,.40,.04,"Amber")
-	for i in range(5):
-		var a := i*TAU/5
-		var flame := ctx.rock(n,"SpiritFlame%d"%i,Vector3(cos(a)*.19,1.4,sin(a)*.19),Vector3(.12,.43+i*.04,.13),"Amber")
-		flame.rotation.z = sin(a)*.3
-
+	var part_keys := ["plinth", "stem", "bowl", "coals"]
+	var part_names := ["Plinth", "Stem", "BronzeBowl", "Coals"]
+	for i in range(part_keys.size()):
+		var part: Dictionary = data[part_keys[i]]
+		ctx.cylinder(n,part_names[i],part["position"],float(part["bottom_radius"]),float(part["top_radius"]),float(part["height"]),String(part["material"]))
+	var flame_count := int(data["flame_count"])
+	var flame_size: Vector3 = data["flame_size"]
+	for i in range(flame_count):
+		var a := i*TAU/float(flame_count)
+		var flame := ctx.rock(n,"SpiritFlame%d"%i,Vector3(cos(a)*float(data["flame_radius"]),float(data["flame_y"]),sin(a)*float(data["flame_radius"])),Vector3(flame_size.x,flame_size.y+i*float(data["flame_height_step"]),flame_size.z),String(data["flame_material"]))
+		flame.rotation.z = sin(a)*float(data["flame_tilt"])
 static func pavilion(ctx: AuthoringContext, parent: Node, title: String, pos: Vector3, size := 1.0) -> void:
+	var plan := LevelPlan.load_default()
+	var data: Dictionary = plan.prop_templates["pavilion"]
 	var n := ctx.node(parent,title,pos)
 	n.scale *= size
-	ctx.box(n,"Foundation",Vector3(0,.18,0),Vector3(4.5,.36,3.7),"StoneDark")
-	ctx.box(n,"StoneFloor",Vector3(0,.41,0),Vector3(4.7,.14,3.9),"StoneLight")
+	ctx.box(n,"Foundation",data["foundation_position"],data["foundation_size"],"StoneDark")
+	ctx.box(n,"StoneFloor",data["floor_position"],data["floor_size"],"StoneLight")
 	for x in [-1,1]:
 		for z in [-1,1]:
-			var p := Vector3(x*1.75,1.85,z*1.35)
-			ctx.cylinder(n,"Pillar%d_%d"%[x,z],p,.13,.11,2.8,"Wood")
-			ctx.cylinder(n,"GiltFoot%d_%d"%[x,z],Vector3(p.x,.63,p.z),.22,.19,.3,"Gold")
+			var p := Vector3(x*float(data["pillar_x"]),float(data["pillar_y"]),z*float(data["pillar_z"]))
+			ctx.cylinder(n,"Pillar%d_%d"%[x,z],p,float(data["pillar_bottom"]),float(data["pillar_top"]),float(data["pillar_height"]),"Wood")
+			ctx.cylinder(n,"GiltFoot%d_%d"%[x,z],Vector3(p.x,float(data["gilt_foot_y"]),p.z),float(data["gilt_foot_bottom"]),float(data["gilt_foot_top"]),float(data["gilt_foot_height"]),"Gold")
 	for side in [-1,1]:
-		for j in range(9):
-			var x := (j-4)*.43
-			ctx.box(n,"EaveBracket%d_%d"%[side,j],Vector3(x,3.02,side*1.43),Vector3(.12,.34,.36),"Wood")
-			ctx.box(n,"BracketScroll%d_%d"%[side,j],Vector3(x,2.94,side*1.53),Vector3(.24,.08,.22),"Gold")
-		for j in range(5):
-			ctx.box(n,"RearScreen%d_%d"%[side,j],Vector3(side*(.6+j*.21),1.9,-1.35),Vector3(.04,2.2,.06),"WoodLight")
-	ctx.box(n,"LintelFront",Vector3(0,3.15,1.35),Vector3(3.8,.24,.18),"WoodLight")
-	ctx.box(n,"LintelRear",Vector3(0,3.15,-1.35),Vector3(3.8,.24,.18),"WoodLight")
-	var r := ctx.roof(n,"SweptRoof",Vector3(0,3.3,0),2.6,1.05)
-	r.scale.z = .8
-	ctx.roof(n,"UpperRoof",Vector3(0,4.15,0),1.45,.85)
-	ctx.place(n,"lantern","OfferingLantern",Vector3(0,.48,0),0,.68)
+		for j in range(int(data["eave_count"])):
+			var x := (j-int(data["eave_center"]))*float(data["eave_spacing"])
+			ctx.box(n,"EaveBracket%d_%d"%[side,j],Vector3(x,float(data["eave_y"]),side*float(data["eave_z"])),data["eave_size"],"Wood")
+			ctx.box(n,"BracketScroll%d_%d"%[side,j],Vector3(x,float(data["scroll_y"]),side*float(data["scroll_z"])),data["scroll_size"],"Gold")
+		for j in range(int(data["screen_count"])):
+			ctx.box(n,"RearScreen%d_%d"%[side,j],Vector3(side*(float(data["screen_x_start"])+j*float(data["screen_x_step"])),float(data["screen_y"]),float(data["screen_z"])),data["screen_size"],"WoodLight")
+	ctx.box(n,"LintelFront",Vector3(0,float(data["lintel_y"]),float(data["lintel_z"])),data["lintel_size"],"WoodLight")
+	ctx.box(n,"LintelRear",Vector3(0,float(data["lintel_y"]),-float(data["lintel_z"])),data["lintel_size"],"WoodLight")
+	var r := ctx.roof(n,"SweptRoof",data["roof_position"],float(data["roof_radius"]),float(data["roof_height"]))
+	r.scale.z = float(data["roof_scale_z"])
+	ctx.roof(n,"UpperRoof",data["upper_roof_position"],float(data["upper_roof_radius"]),float(data["upper_roof_height"]))
+	ctx.place(n,"lantern","OfferingLantern",data["lantern_position"],0,float(data["lantern_scale"]))
 	for side in [-1,1]:
-		ctx.box(n,"Balustrade%d"%side,Vector3(side*1.8,1,-.2),Vector3(.12,.12,2.7),"WoodLight")
-		for j in range(6):
-			ctx.box(n,"RailSpindle%d_%d"%[side,j],Vector3(side*1.8,.75,-1.25+j*.43),Vector3(.07,.55,.07),"Wood")
-
+		ctx.box(n,"Balustrade%d"%side,Vector3(side*float(data["balustrade_x"]),float(data["balustrade_y"]),float(data["balustrade_z"])),data["balustrade_size"],"WoodLight")
+		for j in range(int(data["rail_count"])):
+			ctx.box(n,"RailSpindle%d_%d"%[side,j],Vector3(side*float(data["rail_x"]),float(data["rail_y"]),float(data["rail_z_start"])+j*float(data["rail_z_step"])),data["rail_size"],"Wood")
 static func waterfall(ctx: AuthoringContext, parent: Node, title: String, pos: Vector3, height: float, width: float) -> void:
+	var plan := LevelPlan.load_default()
+	var data: Dictionary = plan.prop_templates["waterfall"]
 	var n := ctx.node(parent,title,pos)
 	# Opaque ribbons avoid sorting artifacts in the project's Compatibility renderer.
-	for i in range(5):
-		var x := (i-2)*width/5
-		var z := .07*sin(i*1.8)
-		ctx.box(n,"FallingRibbon%d"%i,Vector3(x,height*.5,z),Vector3(width/5*.94,height,.045),"FallingWater" if i%2 else "Ripple")
-		ctx.rod(n,"Whitewater%d"%i,Vector3(x,height,.04+z),Vector3(x+.04,.12,.15+z),.012,"Foam")
-	for i in range(3):
-		var ripple := ring_mesh(ctx,n,"SplashRing%d"%i,Vector3(0,.035+i*.012,.3),width*.45+i*.26,.02,"Foam")
-		ripple.scale.z = .42
-	for i in range(7):
-		ctx.rock(n,"Spray%d"%i,Vector3(ctx.rng.randf_range(-width*.6,width*.6),ctx.rng.randf_range(.05,.42),ctx.rng.randf_range(.05,.6)),Vector3(.04,.07,.04),"Foam")
-
+	var ribbon_count := int(data["ribbon_count"])
+	var ribbon_span := width/float(data["ribbon_span_divisor"])
+	for i in range(ribbon_count):
+		var x := (i-int(data["ribbon_center"]))*ribbon_span
+		var z := float(data["ribbon_z_wave"])*sin(i*float(data["ribbon_z_frequency"]))
+		ctx.box(n,"FallingRibbon%d"%i,Vector3(x,height*.5,z),Vector3(ribbon_span*float(data["ribbon_width_scale"]),height,float(data["ribbon_depth"])),"FallingWater" if i%2 else "Ripple")
+		var whitewater: Vector3 = data["whitewater_offset"]
+		ctx.rod(n,"Whitewater%d"%i,Vector3(x,height,whitewater.z+z),Vector3(x+whitewater.x,whitewater.y,whitewater.z+z),float(data["whitewater_radius"]),"Foam")
+	for i in range(int(data["splash_count"])):
+		var ripple := ring_mesh(ctx,n,"SplashRing%d"%i,Vector3(0,float(data["splash_y"])+i*float(data["splash_y_step"]),float(data["splash_z"])),float(data["splash_radius_base"])+i*float(data["splash_radius_step"]),float(data["splash_thickness"]),"Foam")
+		ripple.scale.z = float(data["splash_scale_z"])
+	var spray_y: Vector2 = data["spray_y_range"]
+	var spray_z: Vector2 = data["spray_z_range"]
+	for i in range(int(data["spray_count"])):
+		ctx.rock(n,"Spray%d"%i,Vector3(ctx.rng.randf_range(-width*float(data["spray_x_scale"]),width*float(data["spray_x_scale"])),ctx.rng.randf_range(spray_y.x,spray_y.y),ctx.rng.randf_range(spray_z.x,spray_z.y)),data["spray_size"],"Foam")
 static func make_expanded_landscape(ctx: AuthoringContext, root: Node3D) -> void:
 	var plan := LevelPlan.load_default()
 	var terrain := ctx.node(root,"HighlandTerraces")
@@ -361,7 +379,7 @@ static func make_ruins(ctx: AuthoringContext, root: Node3D) -> void:
 	var ruins := ctx.node(root,"WesternRuins",data["position"])
 	ruins.scale = Vector3.ONE*float(data["scale"])
 	for i in range(int(data["paving_count"])):
-		var slab := ctx.box(ruins,"BrokenPaving%d"%i,Vector3((i%3-1)*float(data["paving_x_step"]),float(data["paving_y"]),(i/3.0-1.0)*float(data["paving_z_step"])),data["paving_size"],"StoneDark" if i%2 else "Stone")
+		var slab := ctx.box(ruins,"BrokenPaving%d"%i,Vector3((i%3-1)*float(data["paving_x_step"]),float(data["paving_y"]),(floori(i/3.0)-1)*float(data["paving_z_step"])),data["paving_size"],"StoneDark" if i%2 else "Stone")
 		slab.rotation.y = ctx.rng.randf_range(-float(data["paving_rotation"]),float(data["paving_rotation"]))
 	for side in [-1,1]:
 		var pillar := ctx.node(ruins,"CarvedPillar%d"%side,Vector3(side*float(data["pillar_offset"]),0,float(data["pillar_z"])))
@@ -396,42 +414,74 @@ static func make_ruins(ctx: AuthoringContext, root: Node3D) -> void:
 		fern(ctx,ruins,"ReclaimedFern%d"%i,Vector3(cos(a)*float(data["fern_radius_x"]),0,sin(a)*float(data["fern_radius_z"])),float(data["fern_scale"]))
 
 static func guardian(ctx: AuthoringContext, parent: Node, title: String, pos: Vector3, yaw: float) -> void:
+	var plan := LevelPlan.load_default()
+	var data: Dictionary = plan.prop_templates["guardian"]
 	var n := ctx.node(parent,title,pos)
 	n.rotation.y = yaw
-	n.scale = Vector3.ONE*.82
-	ctx.box(n,"WeatheredPlinth",Vector3(0,.16,0),Vector3(1.8,.32,2.0),"StoneDark")
-	ctx.box(n,"CarvedPlinthLip",Vector3(0,.36,0),Vector3(1.65,.12,1.86),"StoneLight")
-	ctx.rock(n,"Haunches",Vector3(0,1.0,-.3),Vector3(.64,.65,.68),"Stone")
-	ctx.rock(n,"UprightChest",Vector3(0,1.45,.1),Vector3(.52,.8,.48),"StoneLight")
+	n.scale = Vector3.ONE*float(data["scale"])
+	ctx.box(n,"WeatheredPlinth",data["plinth_position"],data["plinth_size"],"StoneDark")
+	ctx.box(n,"CarvedPlinthLip",data["plinth_lip_position"],data["plinth_lip_size"],"StoneLight")
+	ctx.rock(n,"Haunches",data["haunches_position"],data["haunches_size"],"Stone")
+	ctx.rock(n,"UprightChest",data["chest_position"],data["chest_size"],"StoneLight")
 	for side in [-1,1]:
-		ctx.rod(n,"Foreleg%d"%side,Vector3(side*.38,1.35,.35),Vector3(side*.42,.58,.65),.17,"StoneLight",.21)
-		ctx.rock(n,"Paw%d"%side,Vector3(side*.43,.53,.77),Vector3(.3,.18,.39),"StoneLight")
-		for toe in range(3):
-			ctx.rock(n,"Toe%d_%d"%[side,toe],Vector3(side*.43+(toe-1)*.15,.51,1.02),Vector3(.07,.08,.13),"Stone")
-	ctx.rock(n,"GuardianHead",Vector3(0,2.2,.3),Vector3(.62,.54,.52),"StoneLight")
-	ctx.rock(n,"Muzzle",Vector3(0,2.03,.77),Vector3(.4,.23,.28),"StoneLight")
-	ctx.rock(n,"Nose",Vector3(0,2.14,.99),Vector3(.21,.12,.1),"StoneDark")
-	ctx.box(n,"MouthCarving",Vector3(0,1.94,.98),Vector3(.45,.045,.035),"StoneDark")
+		var foreleg_start: Vector3 = data["foreleg_start"]
+		foreleg_start.x *= side
+		var foreleg_end: Vector3 = data["foreleg_end"]
+		foreleg_end.x *= side
+		ctx.rod(n,"Foreleg%d"%side,foreleg_start,foreleg_end,float(data["foreleg_radius"]),"StoneLight",float(data["foreleg_top"]))
+		var paw_position: Vector3 = data["paw_position"]
+		paw_position.x *= side
+		ctx.rock(n,"Paw%d"%side,paw_position,data["paw_size"],"StoneLight")
+		var toe_count := int(data["toe_count"])
+		for toe in range(toe_count):
+			var toe_x: float = side*float(data["paw_position"].x)+(toe-(toe_count-1)*.5)*float(data["toe_spacing"])
+			ctx.rock(n,"Toe%d_%d"%[side,toe],Vector3(toe_x,float(data["toe_y"]),float(data["toe_z"])),data["toe_size"],"Stone")
+	ctx.rock(n,"GuardianHead",data["head_position"],data["head_size"],"StoneLight")
+	ctx.rock(n,"Muzzle",data["muzzle_position"],data["muzzle_size"],"StoneLight")
+	ctx.rock(n,"Nose",data["nose_position"],data["nose_size"],"StoneDark")
+	ctx.box(n,"MouthCarving",data["mouth_position"],data["mouth_size"],"StoneDark")
 	for side in [-1,1]:
-		ctx.rock(n,"Ear%d"%side,Vector3(side*.5,2.58,.16),Vector3(.2,.27,.14),"Stone")
-		ctx.rock(n,"EyeSocket%d"%side,Vector3(side*.3,2.31,.73),Vector3(.16,.1,.055),"StoneDark")
-		ctx.rock(n,"SpiritEye%d"%side,Vector3(side*.3,2.31,.785),Vector3(.06,.045,.025),"SpiritDim")
-		ctx.line(n,"Brow%d"%side,[Vector3(side*.12,2.4,.77),Vector3(side*.3,2.46,.73),Vector3(side*.48,2.39,.62)],.065,"StoneLight")
-		ctx.line(n,"Whisker%d"%side,[Vector3(side*.25,2.09,.96),Vector3(side*.63,2.07,.85),Vector3(side*.72,2.28,.69)],.035,"Gold")
-		ctx.cylinder(n,"Fang%d"%side,Vector3(side*.23,1.92,.98),.0,.055,.19,"Gold")
+		var ear_position: Vector3 = data["ear_position"]
+		ear_position.x *= side
+		ctx.rock(n,"Ear%d"%side,ear_position,data["ear_size"],"Stone")
+		var eye_socket: Vector3 = data["eye_socket_position"]
+		eye_socket.x *= side
+		ctx.rock(n,"EyeSocket%d"%side,eye_socket,data["eye_socket_size"],"StoneDark")
+		var spirit_eye: Vector3 = data["spirit_eye_position"]
+		spirit_eye.x *= side
+		ctx.rock(n,"SpiritEye%d"%side,spirit_eye,data["spirit_eye_size"],"SpiritDim")
+		var brow: Array = []
+		for point in data["brow_points"]:
+			var p: Vector3 = point
+			p.x *= side
+			brow.append(p)
+		ctx.line(n,"Brow%d"%side,brow,float(data["brow_radius"]),"StoneLight")
+		var whisker: Array = []
+		for point in data["whisker_points"]:
+			var p: Vector3 = point
+			p.x *= side
+			whisker.append(p)
+		ctx.line(n,"Whisker%d"%side,whisker,float(data["whisker_radius"]),"Gold")
+		var fang_position: Vector3 = data["fang_position"]
+		fang_position.x *= side
+		ctx.cylinder(n,"Fang%d"%side,fang_position,.0,float(data["fang_top"]),float(data["fang_height"]),"Gold")
 	# Repeated spiral locks give the guardian a carved cloud mane.
-	for i in range(13):
-		var a := i*TAU/13
-		var center := Vector3(cos(a)*.57,2.19+sin(a)*.61,.15)
+	var mane_count := int(data["mane_count"])
+	for i in range(mane_count):
+		var a := i*TAU/float(mane_count)
+		var center := Vector3(cos(a)*float(data["mane_center_radius"]),float(data["mane_y"])+sin(a)*float(data["mane_y_radius"]),float(data["mane_z"]))
 		var curl: Array = []
-		for j in range(12):
-			var t := j/11.0
-			curl.append(center+Vector3(cos(t*TAU*1.3)*(.2-.14*t),sin(t*TAU*1.3)*(.2-.14*t),.08*t))
-		ctx.line(n,"CloudMane%02d"%i,curl,.055,"Stone")
-	ctx.line(n,"CurledTail",[Vector3(.1,.8,-.75),Vector3(.65,1,-.9),Vector3(.81,1.5,-.75),Vector3(.6,1.69,-.57),Vector3(.42,1.5,-.48)],.13,"Stone")
+		var curl_count := int(data["mane_curl_count"])
+		for j in range(curl_count):
+			var t := j/float(curl_count-1)
+			var radius := float(data["mane_curl_radius"])-float(data["mane_curl_taper"])*t
+			curl.append(center+Vector3(cos(t*TAU*1.3)*radius,sin(t*TAU*1.3)*radius,float(data["mane_curl_z"])*t))
+		ctx.line(n,"CloudMane%02d"%i,curl,float(data["mane_line_radius"]),"Stone")
+	ctx.line(n,"CurledTail",data["tail_points"],float(data["tail_radius"]),"Stone")
 	for side in [-1,1]:
-		for j in range(4):
-			var seal := ctx.box(n,"PlinthRelief%d_%d"%[side,j],Vector3((j-1.5)*.33,.2,side*1.006),Vector3(.16,.11,.035),"Jade")
+		for j in range(int(data["relief_count"])):
+			var relief_x := (j-float(data["relief_x_center"]))*float(data["relief_x_step"])
+			var seal := ctx.box(n,"PlinthRelief%d_%d"%[side,j],Vector3(relief_x,float(data["relief_y"]),side*float(data["relief_z"])),data["relief_size"],"Jade")
 			seal.rotation.z = PI/4
 
 static func make_sanctuary_details(ctx: AuthoringContext, root: Node3D) -> void:

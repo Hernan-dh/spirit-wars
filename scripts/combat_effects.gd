@@ -37,14 +37,20 @@ static func ring_mesh(inner_radius: float, outer_radius: float, rings: int, ring
 	mesh.ring_segments = ring_segments
 	return mesh
 
-static func play_projectile(parent: Node, from: Vector3, to: Vector3, color: Color, options: Dictionary = {}) -> void:
-	var radius := float(options.get("radius", PROJECTILE_RADIUS))
-	var height := float(options.get("height", PROJECTILE_HEIGHT))
-	var flight_time := float(options.get("flight_time", PROJECTILE_FLIGHT_TIME))
-	var arc := float(options.get("arc", PROJECTILE_ARC_HEIGHT))
-	var spin := float(options.get("spin", PROJECTILE_SPIN))
+static func play_projectile(
+	parent: Node,
+	from: Vector3,
+	to: Vector3,
+	color: Color,
+	radius := PROJECTILE_RADIUS,
+	height := PROJECTILE_HEIGHT,
+	flight_time := PROJECTILE_FLIGHT_TIME,
+	arc := PROJECTILE_ARC_HEIGHT,
+	spin := PROJECTILE_SPIN,
+	effect_name := "SpiritBolt"
+) -> void:
 	var bolt := MeshInstance3D.new()
-	bolt.name = String(options.get("name", "SpiritBolt"))
+	bolt.name = effect_name
 	var sphere := SphereMesh.new()
 	sphere.radius = radius
 	sphere.height = height
@@ -63,17 +69,22 @@ static func play_projectile(parent: Node, from: Vector3, to: Vector3, color: Col
 	, 0.0, 1.0, flight_time)
 	flight.tween_callback(bolt.queue_free)
 
-static func play_impact_ring(parent: Node, position: Vector3, color: Color, options: Dictionary = {}) -> void:
-	var inner_radius := float(options.get("inner_radius", IMPACT_INNER_RADIUS))
-	var outer_radius := float(options.get("outer_radius", IMPACT_OUTER_RADIUS))
-	var rings := int(options.get("rings", IMPACT_RINGS))
-	var ring_segments := int(options.get("ring_segments", IMPACT_RING_SEGMENTS))
-	var height := float(options.get("height", IMPACT_HEIGHT))
-	var delay := float(options.get("delay", IMPACT_DELAY))
-	var duration := float(options.get("duration", IMPACT_DURATION))
-	var target_scale: Vector3 = options.get("scale", IMPACT_SCALE)
+static func play_impact_ring(
+	parent: Node,
+	position: Vector3,
+	color: Color,
+	inner_radius := IMPACT_INNER_RADIUS,
+	outer_radius := IMPACT_OUTER_RADIUS,
+	rings := IMPACT_RINGS,
+	ring_segments := IMPACT_RING_SEGMENTS,
+	height := IMPACT_HEIGHT,
+	delay := IMPACT_DELAY,
+	duration := IMPACT_DURATION,
+	target_scale := IMPACT_SCALE,
+	effect_name := "SpiritImpact"
+) -> void:
 	var pulse := MeshInstance3D.new()
-	pulse.name = String(options.get("name", "SpiritImpact"))
+	pulse.name = effect_name
 	pulse.mesh = ring_mesh(inner_radius, outer_radius, rings, ring_segments)
 	var material := transparent_unshaded_material(color)
 	pulse.material_override = material

@@ -3,6 +3,7 @@ class_name CelestialKitsune
 extends PlaceholderUnit
 ## Nine-tailed sacred fox. Combat uses the shared pawn's authoritative turn rules.
 const FACING_OFFSET := .45
+const ECHO_MESH := preload("res://generated/meshes/kitsune_mirage_echo.res")
 
 const ECHO_COUNT := 3
 const ECHO_SCALE := .38
@@ -30,7 +31,6 @@ var _body: Node3D
 var _tails: Array[Node3D] = []
 var _motes: Node3D
 var _spirit_light: OmniLight3D
-var _echo_mesh: ArrayMesh
 var _echo_material: StandardMaterial3D
 
 func display_name() -> String:
@@ -86,7 +86,7 @@ func play_spirit_pulse(target_position: Vector3) -> void:
 	for echo_index in ECHO_COUNT:
 		var echo := MeshInstance3D.new()
 		echo.name = "MirageFox%d" % (echo_index + 1)
-		echo.mesh = _echo_mesh
+		echo.mesh = ECHO_MESH
 		echo.material_override = _echo_material
 		echo.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		get_parent().add_child(echo)
@@ -108,81 +108,21 @@ func play_spirit_pulse(target_position: Vector3) -> void:
 		get_parent(),
 		target_position,
 		SpiritPalette.KITSUNE_IMPACT,
-		{
-			"inner_radius": IMPACT_INNER_RADIUS,
-			"outer_radius": IMPACT_OUTER_RADIUS,
-			"rings": IMPACT_RINGS,
-			"ring_segments": IMPACT_RING_SEGMENTS,
-			"height": IMPACT_HEIGHT,
-			"delay": IMPACT_DELAY,
-			"duration": IMPACT_DURATION,
-			"scale": IMPACT_SCALE,
-			"name": "MirageImpact",
-		}
+		IMPACT_INNER_RADIUS,
+		IMPACT_OUTER_RADIUS,
+		IMPACT_RINGS,
+		IMPACT_RING_SEGMENTS,
+		IMPACT_HEIGHT,
+		IMPACT_DELAY,
+		IMPACT_DURATION,
+		IMPACT_SCALE,
+		"MirageImpact"
 	)
 
 func _ensure_echo_assets() -> void:
-	if _echo_mesh != null:
+	if _echo_material != null:
 		return
-	_echo_mesh = _build_echo_mesh()
 	_echo_material = CombatEffects.transparent_unshaded_material(
 		Color(SpiritPalette.KITSUNE_ECHO_PRIMARY, .48),
 		"MirageEchoMaterial"
 	)
-
-func _build_echo_mesh() -> ArrayMesh:
-	var surface := SurfaceTool.new()
-	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var body := SphereMesh.new()
-	body.radius = .26
-	body.height = .62
-	body.radial_segments = 8
-	body.rings = 5
-	surface.append_from(body, 0, _part_transform(Vector3(0,.35,.04), Vector3(1,1,.8)))
-	var head := SphereMesh.new()
-	head.radius = .19
-	head.height = .40
-	head.radial_segments = 8
-	head.rings = 4
-	surface.append_from(head, 0, _part_transform(Vector3(0,.65,-.22)))
-	var snout := SphereMesh.new()
-	snout.radius = .10
-	snout.height = .22
-	snout.radial_segments = 6
-	snout.rings = 3
-	surface.append_from(snout, 0, _part_transform(Vector3(0,.61,-.41), Vector3(1.2,.8,1.5)))
-	for side in [-1, 1]:
-		surface.append_from(_echo_cone(.075, .24), 0, _part_transform(Vector3(side*.12,.84,-.18), Vector3.ONE, Vector3(0,0,side*.12)))
-		for z in [-.18, .18]:
-			surface.append_from(_echo_tube(.04, .28), 0, _part_transform(Vector3(side*.12,.14,z)))
-	for tail_index in 3:
-		surface.append_from(
-			_echo_cone(.065, .62),
-			0,
-			_part_transform(Vector3((tail_index - 1) * .17,.36,.42), Vector3.ONE, Vector3(1.15,0,0))
-		)
-	surface.generate_normals()
-	return surface.commit()
-
-func _echo_cone(bottom_radius: float, height: float) -> CylinderMesh:
-	var cone := CylinderMesh.new()
-	cone.bottom_radius = bottom_radius
-	cone.top_radius = 0.0
-	cone.height = height
-	cone.radial_segments = 6
-	cone.rings = 1
-	return cone
-
-func _echo_tube(radius: float, height: float) -> CylinderMesh:
-	var tube := CylinderMesh.new()
-	tube.bottom_radius = radius
-	tube.top_radius = radius
-	tube.height = height
-	tube.radial_segments = 5
-	tube.rings = 1
-	return tube
-
-func _part_transform(origin: Vector3, scale := Vector3.ONE, rotation := Vector3.ZERO) -> Transform3D:
-	var basis := Basis.from_scale(scale)
-	basis = basis.rotated(Vector3.RIGHT, rotation.x).rotated(Vector3.UP, rotation.y).rotated(Vector3.FORWARD, rotation.z)
-	return Transform3D(basis, origin)

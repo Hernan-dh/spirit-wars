@@ -14,6 +14,32 @@ static func reset() -> void:
 	_resource_paths.clear()
 	_used_paths.clear()
 	_content_paths.clear()
+	refresh_resource_paths()
+
+static func refresh_resource_paths() -> void:
+	# Assets were moved between folders once; keep every stored path matching
+	# its actual location so tools that trust resource_path stay reliable.
+	_refresh_directory(MESH_DIR, true)
+	_refresh_directory(MATERIAL_DIR, false)
+
+static func _refresh_directory(directory: String, force_resave: bool) -> void:
+	var dir := DirAccess.open(directory)
+	if dir == null:
+		return
+	dir.list_dir_begin()
+	var entry := dir.get_next()
+	while not entry.is_empty():
+		if not dir.current_is_dir():
+			var extension := entry.get_extension().to_lower()
+			if extension == "res" or extension == "tres":
+				var path := directory.path_join(entry)
+				var resource := ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE)
+				if resource != null and (force_resave or resource.resource_path != path):
+					resource.resource_path = path
+					var error := ResourceSaver.save(resource, path, ResourceSaver.FLAG_CHANGE_PATH)
+					assert(error == OK, "Could not refresh resource path for " + path)
+		entry = dir.get_next()
+	dir.list_dir_end()
 
 static func externalize(root: Node, scene_path: String) -> void:
 	_ensure_dir(MESH_DIR)
@@ -90,7 +116,8 @@ static func _resource_signature(resource: Resource, kind: String) -> String:
 	return _material_signature(resource as Material)
 
 static func _resource_base(resource_name: String, fallback_name: String) -> String:
-	var base := resource_name.to_snake_case() if not resource_name.is_empty() else fallback_name.to_snake_case()
+	var candidate := fallback_name if resource_name.begins_with("Combined_") else resource_name
+	var base := candidate.to_snake_case() if not candidate.is_empty() else fallback_name.to_snake_case()
 	base = base.validate_filename()
 	if base.is_empty():
 		base = "resource"

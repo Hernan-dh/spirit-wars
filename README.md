@@ -136,14 +136,15 @@ cache, RNG and primitive mesh helpers, then runs the modules in order:
 - `props.gd` builds the reusable lantern, blossom tree, bamboo, lotus and gate scenes.
 - `ground_zones.gd` defines the path, plaza and meadow zones shared by the field, shader and vegetation clearing.
 - `field.gd` builds tile contents from the shared grid coordinates and ground zones.
-- `level_plan.tres` stores the authored placements, counts, terraces, wetlands and lighting tuning; its exported fields are editable in the inspector.
+- `level_plan.tres` stores the authored placements, counts, prop templates, Moonwell cell, terraces, wetlands and lighting tuning; its exported fields are editable in the inspector. `level_plan.gd` validates the required keys and types once when the plan loads.
 - `landscape.gd` consumes the level plan to build the island foundation, terraces, wetlands, gardens, ruins and sanctuary details.
 - `scene_assembly.gd` reads the same plan for the foundation, gate approach, margins, atmosphere and lighting, then adds the camera and starting units.
 
 `tools/static_geometry.gd` merges static surfaces and
 batches repeated scenery during authoring; `tools/generated_resources.gd` saves the
-resulting meshes and materials as shared external resources. Normal game/editor use
-does no conversion.
+resulting meshes and materials as shared external resources. Resource paths are
+refreshed during authoring so stored paths always match their actual folders. Normal
+game/editor use does no conversion.
 Grid dimensions, `grid_position()`, axial coordinates and neighbors live in
 `scripts/hex_grid.gd`, shared by `tools/battlefield/field.gd` and the runtime movement
 controller. `ground_material()` reads `ground_zones.gd`, whose parameters are applied
@@ -216,9 +217,9 @@ Each team starts with one Kitsune in slot 02. It retains the shared three HP,
 three-hex movement and attack range, and one move plus one attack per turn. Movement
 turns the fox toward its destination and plays a short bounding hop. Its attack,
 **Mirage Rush**, sends three violet-blue fox silhouettes toward the selected enemy,
-followed by a sacred-light impact ring. The trio shares one cached effect mesh and
-material instead of cloning the full visual, and represents a single attack dealing
-one damage. The HUD displays the selected unit's ability name; the Lantern keeps
+followed by a sacred-light impact ring. The trio shares the saved
+`generated/meshes/kitsune_mirage_echo.res` silhouette and one material instead of
+cloning the full visual, and represents a single attack dealing one damage. The HUD displays the selected unit's ability name; the Lantern keeps
 Spirit Pulse. Effects clean themselves up even after a lethal hit.
 
 `celestial_kitsune.tscn` inherits the shared pawn scene with its own picking volume,
@@ -231,4 +232,10 @@ godot --headless --path . --script tools/build_celestial_kitsune.gd
 ```
 
 This overwrites only `scenes/units/kitsune_visual.tscn` and its generated external
-resources. No rebuild is needed to play.
+resources. The small Mirage Rush silhouette is a separate saved mesh:
+
+```sh
+godot --headless --path . --script tools/build_kitsune_echo.gd
+```
+
+No rebuild is needed to play.

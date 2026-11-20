@@ -9,20 +9,20 @@
 [ext_resource type="Material" path="res://generated/materials/leaf_light_double_sided.tres" id="7_wo6ml"]
 [ext_resource type="ArrayMesh" path="res://generated/meshes/bamboo_grove_combined_leaf_light_double_sided_1_1_0_0.res" id="8_obd84"]
 
-[node name="BambooGrove" type="Node3D" unique_id=2109815586]
+[node name="BambooGrove" type="Node3D" unique_id=7719005]
 
-[node name="Combined_Bamboo_1_1_0_0" type="MeshInstance3D" parent="." unique_id=489934488]
+[node name="Combined_Bamboo_1_1_0_0" type="MeshInstance3D" parent="." unique_id=1132614347]
 material_override = ExtResource("1_xi02m")
 mesh = ExtResource("2_pcpmu")
 
-[node name="Combined_MossLight weathered grain_1_1_0_0" type="MeshInstance3D" parent="." unique_id=330107944]
+[node name="Combined_MossLight weathered grain_1_1_0_0" type="MeshInstance3D" parent="." unique_id=584064485]
 material_override = ExtResource("3_iyc1c")
 mesh = ExtResource("4_5hmkx")
 
-[node name="Combined_Leaf double sided_1_1_0_0" type="MeshInstance3D" parent="." unique_id=460774685]
+[node name="Combined_Leaf double sided_1_1_0_0" type="MeshInstance3D" parent="." unique_id=1978123389]
 material_override = ExtResource("5_s4o03")
 mesh = ExtResource("6_nnnor")
 
-[node name="Combined_LeafLight double sided_1_1_0_0" type="MeshInstance3D" parent="." unique_id=1004055053]
+[node name="Combined_LeafLight double sided_1_1_0_0" type="MeshInstance3D" parent="." unique_id=1718782496]
 material_override = ExtResource("7_wo6ml")
 mesh = ExtResource("8_obd84")
