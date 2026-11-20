@@ -1,5 +1,6 @@
 extends RefCounted
 const AuthoringContext = preload("res://tools/battlefield/authoring_context.gd")
+const GroundZones = preload("res://tools/battlefield/ground_zones.gd")
 ## Authored palette for the Moonwell courtyard.
 
 static func build(ctx: AuthoringContext) -> void:
@@ -47,6 +48,7 @@ static func build(ctx: AuthoringContext) -> void:
 	var ground := ShaderMaterial.new()
 	ground.resource_name = "Continuous sanctuary earth and flagstone"
 	ground.shader = load("res://materials/sanctuary_ground.gdshader")
+	GroundZones.apply_shader_parameters(ground)
 	ctx.palette["Terrain"] = ground
 	var water := ShaderMaterial.new()
 	water.resource_name = "Jade pool ripples"

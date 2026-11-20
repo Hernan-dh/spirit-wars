@@ -1,6 +1,20 @@
 shader_type spatial;
 render_mode diffuse_burley;
 
+// Authored zone parameters are applied from tools/battlefield/ground_zones.gd.
+uniform float pilgrim_amplitude;
+uniform float pilgrim_frequency;
+uniform float pilgrim_half_width;
+uniform float cross_amplitude;
+uniform float cross_frequency;
+uniform float cross_offset;
+uniform float cross_half_width;
+uniform vec2 plaza_center;
+uniform float plaza_radius;
+uniform float path_blend_start;
+uniform float path_blend_end;
+uniform float path_noise_strength;
+
 // Shared world-space surface: paths and moss continue across every ground mesh.
 varying vec3 world_position;
 
@@ -22,10 +36,10 @@ void fragment() {
 	float broad = noise(p * .31) * .65 + noise(p * .91) * .35;
 	float grain = noise(p * 22.0);
 	float wear = noise(p * 4.5);
-	float path = min(abs(p.x - sin(p.y * .25) * 1.3) - 2.5,
-		abs(p.y + .4 - sin(p.x * .28) * 1.1) - 1.8);
-	path = min(path, length(p - vec2(0.0, 1.4)) - 3.8);
-	float meadow = smoothstep(-.3, 1.7, path + (broad - .5) * 2.5);
+	float path = min(abs(p.x - sin(p.y * pilgrim_frequency) * pilgrim_amplitude) - pilgrim_half_width,
+		abs(p.y + cross_offset - sin(p.x * cross_frequency) * cross_amplitude) - cross_half_width);
+	path = min(path, length(p - plaza_center) - plaza_radius);
+	float meadow = smoothstep(path_blend_start, path_blend_end, path + (broad - .5) * path_noise_strength);
 	// Irregular flagstones, independent of the tactical grid.
 	vec2 q = p * 1.17 + vec2(noise(p * 2.0), noise(p * 2.0 + 8.0)) * .15;
 	vec2 cell = floor(q);

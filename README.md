@@ -134,7 +134,8 @@ cache, RNG and primitive mesh helpers, then runs the modules in order:
 
 - `materials.gd` authors the palette and weathering shaders.
 - `props.gd` builds the reusable lantern, blossom tree, bamboo, lotus and gate scenes.
-- `field.gd` defines grid coordinates, ground zones and tile contents.
+- `ground_zones.gd` defines the path, plaza and meadow zones shared by the field, shader and vegetation clearing.
+- `field.gd` defines grid coordinates and tile contents using those zone functions.
 - `landscape.gd` builds the island foundation, terraces, wetlands, gardens, ruins and sanctuary details.
 - `scene_assembly.gd` roots the field and landscape, then adds atmosphere, camera and starting units.
 
@@ -143,7 +144,8 @@ batches repeated scenery during authoring; `tools/generated_resources.gd` saves 
 resulting meshes and materials as shared external resources. Normal game/editor use
 does no conversion.
 `GRID_SIZE`, `HEX_RADIUS`, `GRID_CENTER_Z`, and
-`grid_position()` live in `field.gd`; `ground_material()` labels approximate terrain zones.
+`grid_position()` live in `field.gd`; `ground_material()` reads `ground_zones.gd`, whose
+parameters are applied to the shader as uniforms.
 `materials/sanctuary_ground.gdshader` defines continuous paths, stone joints, and
 moss coverage in world coordinates. `materials/weathered_surface.gdshader` controls
 scenery grain and weathering, and `materials/lotus_water.gdshader` controls pool ripples.

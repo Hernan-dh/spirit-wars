@@ -1,5 +1,6 @@
 extends RefCounted
 const AuthoringContext = preload("res://tools/battlefield/authoring_context.gd")
+const GroundZones = preload("res://tools/battlefield/ground_zones.gd")
 ## Surrounding landscape features: island rim, terraces, wetlands, gardens,
 ## ruins and sanctuary details. Everything is baked into ordinary scene nodes.
 
@@ -394,7 +395,7 @@ static func make_sanctuary_details(ctx: AuthoringContext, root: Node3D) -> void:
 			continue
 		if absf(p.x)>12.5 and p.x>0 and p.z<12:
 			continue # Wetland water remains clear.
-		if absf(p.x-sin(p.z*.25)*1.3)<2.8 or absf(p.z+.4-sin(p.x*.28)*1.1)<2.05:
+		if GroundZones.is_within_paving_margin(Vector2(p.x,p.z), GroundZones.VEGETATION_CLEARANCE):
 			continue
 		if sin(p.x*.7)+cos(p.z*.8)<.2:
 			continue

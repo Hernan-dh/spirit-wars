@@ -1,5 +1,6 @@
 extends RefCounted
 const AuthoringContext = preload("res://tools/battlefield/authoring_context.gd")
+const GroundZones = preload("res://tools/battlefield/ground_zones.gd")
 ## Playable hex field: coordinates, authored ground zones and tile contents.
 
 const GRID_SIZE := 14
@@ -11,19 +12,7 @@ static func grid_position(row: int, column: int) -> Vector3:
 	return Vector3((column-midpoint)*sqrt(3.0)*HEX_RADIUS + (row%2)*sqrt(3.0)*HEX_RADIUS*.5-sqrt(3.0)*HEX_RADIUS*.25,-.35,(row-midpoint)*1.5*HEX_RADIUS+GRID_CENTER_Z)
 
 static func ground_material(ctx: AuthoringContext, pos: Vector3) -> String:
-	# Continuous meadow patches and paths cross cell boundaries, avoiding a checkerboard.
-	var pilgrim_path := absf(pos.x - sin(pos.z*.25)*1.3) < 2.5
-	var crossing_path := absf(pos.z + .4 - sin(pos.x*.28)*1.1) < 1.8
-	if pilgrim_path or crossing_path or Vector2(pos.x,pos.z-1.4).length() < 3.8:
-		return "Paving%d"%ctx.rng.randi_range(0,5)
-	if pos.x > 7.5 + sin(pos.z*.5):
-		return "BankPaving"
-	var meadow := sin(pos.x*.36) + cos(pos.z*.42) + sin((pos.x+pos.z)*.23)
-	if meadow < -.55 or (pos.x < -7.0 and pos.z > 3):
-		return "MeadowLight" if meadow < -1.2 else "Meadow"
-	if meadow > 1.25:
-		return "TrailEarth"
-	return "MossPaving"
+	return GroundZones.material_for(Vector2(pos.x, pos.z), ctx.rng)
 
 static func make_tile(ctx: AuthoringContext, parent: Node, row: int, column: int) -> void:
 	var pos := grid_position(row,column)
