@@ -88,11 +88,11 @@ Meshes and materials are native Godot resources; no external asset tools are req
 - **R** restores the opening position, angle, and zoom.
 - **Left click** a unit from either team to select or inspect it. Click empty space or press **Esc** to clear selection.
 - During the active team's turn, **click a gold-ringed hex** to move the selected unit up to three hexes in one move. Gold rings mark every empty destination reachable within three steps; units cannot move through occupied hexes or off the field.
-- **Spirit Pulse / Attack** (Lantern), **Mirage Rush / Attack** (Kitsune), or **Thunder Whip / Attack** (Storm Dragon Wisp) enters targeting mode. Click a red-ringed enemy within three hexes to deal one damage. **Cancel Attack** exits targeting without spending the attack; **Esc** clears selection. Invalid targets spend no action.
+- **Spirit Pulse / Attack** (Lantern) or **Mirage Rush / Attack** (Kitsune) enters targeting mode. Click a red-ringed enemy within three hexes to deal one damage. **Cancel Attack** exits targeting without spending the attack; **Esc** clears selection. Invalid targets spend no action.
 - **End Turn** hands local control to the other team, even if actions remain. Jade starts.
-- Defeating a team's last surviving unit ends the battle and displays the winner. Movement, attacks, selection, and turn changes stop. Choose **Restart Encounter** (or press Enter with the button focused) to restore the starting encounter, including all six units at full health, Jade's first turn, and the opening camera.
+- Defeating a team's last surviving unit ends the battle and displays the winner. Movement, attacks, selection, and turn changes stop. Choose **Restart Encounter** (or press Enter with the button focused) to restore the starting encounter, including all four units at full health, Jade's first turn, and the opening camera.
 
-Each team fields a Lantern Spirit, a Celestial Kitsune, and a Storm Dragon Wisp across two starting ranks. Each has a
+Each team fields one Lantern Spirit and one Celestial Kitsune on rows 12 and 3 of the field. Each has a
 team-colored base plus a team/name label and visible health. Every unit starts with **3 HP**; health persists between turns. A unit at zero health is removed and its hex becomes available. Selection adds a gold ground
 ring and overhead pointer, while the top-right panel names the selected unit.
 Only one unit is selected at a time; both teams can be inspected. Only the active
@@ -102,11 +102,10 @@ turn clears selection and refreshes only the incoming team's actions. The panel
 shows the turn, active team, and selected unit's remaining actions. Both teams
 are controlled locally; there is no AI or networking.
 
-`scenes/units/skirmish.tscn` holds the six editable starting positions and team
-assignments. `scenes/units/lantern_spirit.tscn`,
-`scenes/units/celestial_kitsune.tscn`, and `scenes/units/storm_dragon_wisp.tscn`
-are the reusable units; their `team` and `unit_number` properties also update
-their bases and labels in the editor. Selection
+`scenes/units/skirmish.tscn` holds the four editable starting positions and team
+assignments. `scenes/units/lantern_spirit.tscn` and
+`scenes/units/celestial_kitsune.tscn` are the reusable units; their `team`
+and `unit_number` properties also update their bases and labels in the editor. Selection
 uses 3D collision picking on physics layer 2, with hex ground picking on layer 1.
 
 Panning stays within 18 world units of the opening focus on each ground axis.
@@ -203,34 +202,3 @@ godot --headless --path . --script tools/build_celestial_kitsune.gd
 ```
 
 This overwrites only `scenes/units/kitsune_visual.tscn`. No rebuild is needed to play.
-
-## Storm Dragon Wisp
-
-The Storm Dragon Wisp follows the left concept in `references/sw_concept_2.png`: a
-coiled eastern dragon rising from a glowing storm pool. Its long snout, antlers,
-glowing eyes, whiskers, fanged open jaw, storm mane, and broad trailing wisps blend
-cyan, violet, and magenta. Lightning arcs crackle over the coil and around the antlers,
-ice clouds and a snow-capped stone spire cradle the pool, and lotus petals mark the rim.
-All geometry is saved in `scenes/units/storm_dragon_visual.tscn` and is editable in the
-editor. `materials/storm_wisp.gdshader`, `materials/storm_arc.gdshader`, and
-`materials/storm_pool.gdshader` supply the vertex-colored body glow, flickering arcs, and
-animated pool without imported textures or runtime mesh generation.
-
-Each team starts with one Storm Dragon Wisp in slot 03. It keeps the shared three HP,
-three-hex movement and attack range, and one move plus one attack per turn. Its attack,
-**Thunder Whip**, turns the dragon toward the enemy, lashes a forked lightning bolt from
-its jaws, and bursts into an electric impact ring and radial arcs. The lash deals one
-damage. Idle motion bobs the coil, sways the head and whiskers, flickers the saved arc
-meshes, and pulses the pool ripples; effects live on the encounter and clean themselves
-up after a lethal hit.
-
-`storm_dragon_wisp.tscn` inherits the shared pawn scene with its own picking volume,
-label heights, and visual. `scripts/storm_dragon_wisp.gd` adds animation and the attack
-effect; the common controller still validates all movement, targeting, turns, and damage.
-To regenerate only the editable visual after changing its authoring source:
-
-```sh
-godot --headless --path . --script tools/build_storm_dragon_wisp.gd
-```
-
-This overwrites only `scenes/units/storm_dragon_visual.tscn`. No rebuild is needed to play.
