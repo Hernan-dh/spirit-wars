@@ -4,6 +4,7 @@ extends RefCounted
 ## sequence and reuse the same palette and packed prop scenes.
 
 const StaticGeometry = preload("res://tools/static_geometry.gd")
+const GeneratedResources = preload("res://tools/generated_resources.gd")
 
 var rng := RandomNumberGenerator.new()
 var palette: Dictionary = {}
@@ -186,6 +187,7 @@ func own_recursive(n: Node, root: Node) -> void:
 func save_scene(root: Node, path: String) -> PackedScene:
 	if path.begins_with("res://scenes/props/"):
 		StaticGeometry.merge_prop(root)
+	GeneratedResources.externalize(root, path)
 	own_recursive(root, root)
 	var packed := PackedScene.new()
 	packed.pack(root)
@@ -209,6 +211,7 @@ func place(parent: Node, key: String, title: String, pos: Vector3, yaw := 0.0, s
 func two_sided(source: StandardMaterial3D) -> StandardMaterial3D:
 	if not two_sided_materials.has(source):
 		var result := source.duplicate() as StandardMaterial3D
+		result.resource_name = source.resource_name + " double sided"
 		result.cull_mode = BaseMaterial3D.CULL_DISABLED
 		two_sided_materials[source] = result
 	return two_sided_materials[source]

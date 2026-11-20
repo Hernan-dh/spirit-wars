@@ -1,2 +1,5 @@
 # Normalize EOL for all files that Git considers text files.
 * text=auto eol=lf
+
+# Generated binary mesh resources are not text-editable.
+*.res binary

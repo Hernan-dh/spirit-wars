@@ -1,0 +1,12 @@
+[gd_resource type="ShaderMaterial" format=3]
+
+[ext_resource type="Shader" path="res://materials/weathered_surface.gdshader" id="1_6lhgn"]
+
+[resource]
+resource_name = "Stone weathered grain"
+render_priority = 0
+shader = ExtResource("1_6lhgn")
+shader_parameter/base_color = Color(0.39607844, 0.49019608, 0.53333336, 1)
+shader_parameter/moss_amount = 0.7
+shader_parameter/grain_scale = 9.0
+shader_parameter/strata_amount = 0.12

@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "BlossomDark"
+albedo_color = Color(0.6745098, 0.3764706, 0.6156863, 1)
+roughness = 0.84

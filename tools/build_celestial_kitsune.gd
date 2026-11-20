@@ -1,6 +1,7 @@
 extends SceneTree
 ## Deterministic, editable native mesh authoring. No runtime generation or imports.
 ## godot --headless --path . --script tools/build_celestial_kitsune.gd
+const GeneratedResources = preload("res://tools/generated_resources.gd")
 var visual: Node3D
 var fur: StandardMaterial3D
 var warm_fur: StandardMaterial3D
@@ -180,6 +181,7 @@ func tail(parent: Node3D, index: int, controls: Array[Vector3], tint: Color) -> 
 		strand(n,"Fork%d" % j,[p,p+Vector3(widths[j]*.55,.05,-.005),p+Vector3(widths[j]*.85,.14,0)],.008,light)
 
 func _initialize() -> void:
+	GeneratedResources.reset()
 	visual = Node3D.new()
 	visual.name = "KitsuneVisual"
 	fur = material("f3edff",.035)
@@ -273,6 +275,7 @@ func _initialize() -> void:
 	glow.light_color = Color("b186ff")
 	glow.light_energy = .35
 	glow.omni_range = 2.5
+	GeneratedResources.externalize(visual, "res://scenes/units/kitsune_visual.tscn")
 	var packed := PackedScene.new()
 	var error := packed.pack(visual)
 	if error == OK:

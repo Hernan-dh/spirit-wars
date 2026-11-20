@@ -8,6 +8,7 @@ const AuthoringContext = preload("res://tools/battlefield/authoring_context.gd")
 const Materials = preload("res://tools/battlefield/materials.gd")
 const Props = preload("res://tools/battlefield/props.gd")
 const SceneAssembly = preload("res://tools/battlefield/scene_assembly.gd")
+const GeneratedResources = preload("res://tools/generated_resources.gd")
 
 func _initialize() -> void:
 	# The dummy renderer drops MultiMesh buffers when saving. Fail before overwriting
@@ -16,6 +17,7 @@ func _initialize() -> void:
 		push_error("Rebuild requires the Compatibility renderer to save MultiMesh transforms. Run without --headless; use xvfb-run on a display-less machine.")
 		quit(1)
 		return
+	GeneratedResources.reset()
 	var ctx = AuthoringContext.new()
 	ctx.rng.seed = 72819
 	Materials.build(ctx)

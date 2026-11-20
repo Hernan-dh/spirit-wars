@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "BlossomLight"
+albedo_color = Color(0.95686275, 0.73333335, 0.84313726, 1)
+roughness = 0.84

@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "Meadow"
+albedo_color = Color(0.3372549, 0.41960785, 0.32156864, 1)
+roughness = 0.84

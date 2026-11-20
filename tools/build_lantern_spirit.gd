@@ -1,6 +1,7 @@
 extends SceneTree
 ## Author the reusable native-mesh Lantern Spirit; no external asset imports required.
 ## godot --headless --path . --script tools/build_lantern_spirit.gd
+const GeneratedResources = preload("res://tools/generated_resources.gd")
 var visual: Node3D
 var gold: StandardMaterial3D
 var red: StandardMaterial3D
@@ -83,6 +84,7 @@ func ribbon(parent: Node3D, label: String, points: Array[Vector3], width: float,
 	mesh(parent,label,st.commit(),m)
 
 func _initialize() -> void:
+	GeneratedResources.reset()
 	visual = Node3D.new()
 	visual.name = "LanternVisual"
 	gold = mat("dca94e",0.12,0.65)
@@ -154,6 +156,7 @@ func _initialize() -> void:
 	light.light_energy = .65
 	light.omni_range = 2.8
 	light.shadow_enabled = false
+	GeneratedResources.externalize(visual, "res://scenes/units/lantern_visual.tscn")
 	var packed := PackedScene.new()
 	packed.pack(visual)
 	var error := ResourceSaver.save(packed,"res://scenes/units/lantern_visual.tscn")

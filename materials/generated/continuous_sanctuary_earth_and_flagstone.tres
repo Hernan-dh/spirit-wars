@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" format=3]
+
+[ext_resource type="Shader" path="res://materials/sanctuary_ground.gdshader" id="1_1ysa1"]
+
+[resource]
+resource_name = "Continuous sanctuary earth and flagstone"
+render_priority = 0
+shader = ExtResource("1_1ysa1")

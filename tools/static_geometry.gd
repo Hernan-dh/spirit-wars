@@ -52,8 +52,10 @@ static func merge_meshes(parent: Node3D, entries: Array, spatial: bool) -> void:
 			append_surface(st, part.node.mesh, 0, part.transform)
 		st.index()
 		var combined := MeshInstance3D.new()
-		combined.name = "Combined_%s_%d" % [key[0].resource_name.validate_node_name(), parent.get_child_count()]
+		var material_name: String = key[0].resource_name if key[0] != null else "Material"
+		combined.name = "Combined_%s_%d_%d_%d_%d" % [material_name.validate_node_name(), key[1], key[2], key[3].x, key[3].y]
 		combined.mesh = st.commit()
+		combined.mesh.resource_name = combined.name
 		combined.material_override = key[0]
 		combined.cast_shadow = key[1]
 		combined.layers = key[2]

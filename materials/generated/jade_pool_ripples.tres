@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" format=3]
+
+[ext_resource type="Shader" path="res://materials/lotus_water.gdshader" id="1_ynahy"]
+
+[resource]
+resource_name = "Jade pool ripples"
+render_priority = 0
+shader = ExtResource("1_ynahy")
+shader_parameter/deep_color = Color(0.09, 0.29, 0.34, 1)
+shader_parameter/ripple_color = Color(0.27, 0.54, 0.53, 1)

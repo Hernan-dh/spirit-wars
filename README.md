@@ -11,7 +11,9 @@ The scene is the project's main scene and uses the configured Compatibility rend
 ## Editing the battlefield
 
 Everything in the environment is saved in the scene, so it is visible without
-running the game or an editor tool. `BattlefieldGrid` contains exactly 196 individually
+running the game or an editor tool. Generated meshes and materials are saved as
+external resources and referenced from the scene, so geometry is not inlined as
+base64 text. `BattlefieldGrid` contains exactly 196 individually
 editable ground hexes in a 14×14 layout, named `Hex_row_column` with one-based
 display names. Their
 `row` and `column` metadata are zero-based; `axial_q` / `axial_r` provide axial
@@ -76,7 +78,10 @@ prop and the saved battlefield. `BLOSSOM_LOD_ERROR` in
 `tools/battlefield/props.gd` tunes the screen-size transition; there is no runtime mesh generation or swap script.
 All 196 tile roots, metadata, collisions, and gameplay nodes remain
 independent. Tile seals and static lines are combined meshes, with no segment nodes.
-Meshes and materials are native Godot resources; no external asset tools are required.
+Meshes and materials are native Godot resources saved under
+`scenes/generated/meshes/` (binary `.res`) and `materials/generated/` (text `.tres`);
+repeated props and scenery batches reference the same files instead of embedding
+copies. No external asset tools are required.
 
 `MoonlitAtmosphere`, `Moonlight`, and `SoftDuskFill` control the lighting.
 `CameraRig/Camera3D` gives the angled orthographic opening view. Runtime controls:
@@ -132,7 +137,9 @@ cache, RNG and primitive mesh helpers, then runs the modules in order:
 - `scene_assembly.gd` roots the field and landscape, then adds atmosphere, camera and starting units.
 
 `tools/static_geometry.gd` merges static surfaces and
-batches repeated scenery during authoring; normal game/editor use does no conversion.
+batches repeated scenery during authoring; `tools/generated_resources.gd` saves the
+resulting meshes and materials as shared external resources. Normal game/editor use
+does no conversion.
 `GRID_SIZE`, `HEX_RADIUS`, `GRID_CENTER_Z`, and
 `grid_position()` live in `field.gd`; `ground_material()` labels approximate terrain zones.
 `materials/sanctuary_ground.gdshader` defines continuous paths, stone joints, and
@@ -153,9 +160,10 @@ The generator rejects `--headless` before changing files because Godot's dummy
 renderer does not serialize MultiMesh transform buffers. On a machine with Xvfb
 installed, prefix the command with `xvfb-run -a` for an unattended rebuild.
 
-Regeneration **overwrites the battlefield and prop scene files**, including any
-manual scene edits. Normal game/editor use does not run this script. Temporary
-validation scripts and preview renders belong in the ignored `tmp/` directory.
+Regeneration **overwrites the battlefield and prop scene files and their generated
+mesh/material files**, including any manual scene edits. Normal game/editor use does
+not run this script. Temporary validation scripts and preview renders belong in the
+ignored `tmp/` directory.
 
 ## Lantern Spirit
 
@@ -163,7 +171,8 @@ The encounter includes the Lantern Spirit from the unit sheet in
 `references/sw_concept_2.png`, with materials that match the sanctuary palette in
 `references/sw_concept_1.png`. Its glowing amber paper body, gold ribs, blue swept
 pagoda roof, hanging hook, prayer seals, red tassel, streaming silks, and two flame
-wisps are native editable Godot meshes in `scenes/units/lantern_visual.tscn`.
+wisps are native editable Godot meshes referenced from `scenes/units/lantern_visual.tscn`.
+The generated meshes and materials live in the shared external resource folders.
 The spirit hovers and sways, with gently flickering warm light. Jade and Ember
 retain their colored bases and labels; selection adds the gold ring and pointer.
 Spirit Pulse fires a small arcing firebolt and an expanding amber impact ring.
@@ -178,7 +187,8 @@ scene after editing its authoring source:
 godot --headless --path . --script tools/build_lantern_spirit.gd
 ```
 
-This overwrites only `scenes/units/lantern_visual.tscn`. No rebuild is needed to play.
+This overwrites only `scenes/units/lantern_visual.tscn` and its generated external
+resources. No rebuild is needed to play.
 
 
 ## Celestial Kitsune
@@ -188,8 +198,8 @@ an ivory fox with pointed rose ears, crimson brows and cheek seals, a layered ch
 ruff, vermilion collar, gilded bells, amethyst mirror, and nine curling spirit tails.
 Each plume blends from ivory into pink, violet, or blue and carries pale sacred-light
 veins. The fox breathes, its tails sway independently, and small light motes hover
-around the fan. All geometry is saved in `scenes/units/kitsune_visual.tscn` and is
-visible in the editor; no external textures or runtime mesh generation are needed.
+around the fan. All geometry is referenced from `scenes/units/kitsune_visual.tscn`
+and is visible in the editor; no external textures or runtime mesh generation are needed.
 `materials/kitsune_spirit.gdshader` supplies the tail colors and gentle emission in
 the project's Compatibility renderer.
 
@@ -210,4 +220,5 @@ To regenerate just the editable visual after changing its authoring source:
 godot --headless --path . --script tools/build_celestial_kitsune.gd
 ```
 
-This overwrites only `scenes/units/kitsune_visual.tscn`. No rebuild is needed to play.
+This overwrites only `scenes/units/kitsune_visual.tscn` and its generated external
+resources. No rebuild is needed to play.
