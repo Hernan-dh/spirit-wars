@@ -277,6 +277,22 @@
         "top_radius": "float"
       }
     },
+    "fern": {
+      "fronds": "int",
+      "height": "float",
+      "height_base": "float",
+      "height_frequency": "float",
+      "leaf_depth": "float",
+      "leaf_length": "float",
+      "leaf_mid_lift": "float",
+      "leaf_min_width": "float",
+      "leaf_width": "float",
+      "length": "float",
+      "material": "String",
+      "stem_half_width": "float",
+      "step_overlap": "float",
+      "steps": "int"
+    },
     "guardian": {
       "brow_points": [
         "Vector3"

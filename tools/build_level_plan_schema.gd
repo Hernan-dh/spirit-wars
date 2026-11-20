@@ -5,6 +5,8 @@ extends SceneTree
 const LevelPlan = preload("res://tools/battlefield/level_plan.gd")
 const OUTPUT := "res://tools/battlefield/level_plan_schema.json"
 
+var _unsupported := false
+
 func _initialize() -> void:
 	var plan := load(LevelPlan.RESOURCE_PATH) as BattlefieldLevelPlan
 	if plan == null:
@@ -14,6 +16,10 @@ func _initialize() -> void:
 	var schema := {}
 	for section in LevelPlan.SECTIONS:
 		schema[section] = _describe(plan.get(section))
+	if _unsupported:
+		push_error("The level plan contains unsupported value types; schema not written.")
+		quit(1)
+		return
 	var file := FileAccess.open(OUTPUT, FileAccess.WRITE)
 	if file == null:
 		push_error("Could not write the level plan schema at %s." % OUTPUT)
@@ -48,4 +54,7 @@ func _type_name(value: Variant) -> String:
 		TYPE_PACKED_VECTOR2_ARRAY: return "PackedVector2Array"
 		TYPE_ARRAY: return "Array"
 		TYPE_DICTIONARY: return "Dictionary"
-		_: return str(typeof(value))
+		_:
+			_unsupported = true
+			push_error("Unsupported level plan value type: %d." % typeof(value))
+			return "Unsupported"

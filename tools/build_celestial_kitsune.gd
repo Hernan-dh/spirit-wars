@@ -1,8 +1,8 @@
 extends "res://tools/unit_visual_builder.gd"
 ## Deterministic, editable native mesh authoring. No runtime generation or imports.
 ## godot --headless --path . --script tools/build_celestial_kitsune.gd
+const StaticGeometry = preload("res://tools/static_geometry.gd")
 var fur: StandardMaterial3D
-var warm_fur: StandardMaterial3D
 var red: StandardMaterial3D
 var gold: StandardMaterial3D
 var dark: StandardMaterial3D
@@ -12,12 +12,26 @@ func oval(parent: Node3D, label: String, pos: Vector3, size: Vector3, mat: Mater
 	var sphere := SphereMesh.new()
 	sphere.radius = 1.0
 	sphere.height = 2.0
-	sphere.radial_segments = 24
-	sphere.rings = 12
+	sphere.radial_segments = 12
+	sphere.rings = 6
 	var n := mesh(parent, label, sphere, mat)
 	n.position = pos
 	n.scale = size
 	return n
+
+func merge_children(parent: Node3D) -> void:
+	# Keep each animated group (body, tail, motes) as a scene node, but collapse
+	# its meshes by material so the saved unit is a few resources instead of dozens.
+	var entries: Array = []
+	StaticGeometry.collect_meshes(parent, Transform3D.IDENTITY, entries)
+	StaticGeometry.merge_meshes(parent, entries, false)
+	StaticGeometry.prune_empty(parent)
+	_own_tree(parent)
+
+func _own_tree(parent: Node) -> void:
+	for child in parent.get_children():
+		child.owner = visual
+		_own_tree(child)
 
 func smooth_path(points: Array[Vector3], steps := 5) -> Array[Vector3]:
 	var result: Array[Vector3] = []
@@ -32,7 +46,7 @@ func sweep(parent: Node3D, label: String, path: Array[Vector3], widths: Array[fl
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	var rings: Array[PackedVector3Array] = []
-	const SIDES := 12
+	const SIDES := 8
 	for i in path.size():
 		var tangent := (path[mini(i + 1, path.size() - 1)] - path[maxi(i - 1, 0)]).normalized()
 		var side := Vector3.RIGHT.slide(tangent).normalized()
@@ -61,14 +75,14 @@ func sweep(parent: Node3D, label: String, path: Array[Vector3], widths: Array[fl
 	return mesh(parent, label, st.commit(), mat)
 
 func strand(parent: Node3D, label: String, points: Array[Vector3], radius: float, mat: Material) -> void:
-	var path := smooth_path(points, 3)
+	var path := smooth_path(points, 2)
 	var widths: Array[float] = []
 	for i in path.size():
 		widths.append(radius * (1.0 - .65 * float(i) / (path.size() - 1)))
 	sweep(parent, label, path, widths, widths, mat)
 
 func tuft(parent: Node3D, label: String, points: Array[Vector3], width: float, mat: Material) -> void:
-	var path := smooth_path(points, 4)
+	var path := smooth_path(points, 3)
 	var widths: Array[float] = []
 	var depths: Array[float] = []
 	for i in path.size():
@@ -123,7 +137,7 @@ func leg(parent: Node3D, side: float, rear: bool) -> void:
 
 func tail(parent: Node3D, index: int, controls: Array[Vector3], tint: Color) -> void:
 	var n := node(parent,"Tail%d" % index,Vector3(0,.92,.51))
-	var path := smooth_path(controls,8)
+	var path := smooth_path(controls,6)
 	var widths: Array[float] = []
 	var depths: Array[float] = []
 	var colors: Array[Color] = []
@@ -150,12 +164,12 @@ func tail(parent: Node3D, index: int, controls: Array[Vector3], tint: Color) -> 
 		var j := clampi(fork_index, 0, path.size() - 1)
 		var p := path[j] + Vector3(0,0,-depths[j])
 		strand(n,"Fork%d" % j,[p,p+Vector3(widths[j]*.55,.05,-.005),p+Vector3(widths[j]*.85,.14,0)],.008,light)
+	merge_children(n)
 
 func _initialize() -> void:
 	material_roughness = .48
 	begin_visual("KitsuneVisual")
 	fur = material("f3edff",.035)
-	warm_fur = material("c5b8e0")
 	red = material("d83258",.06)
 	gold = material("edb44e",.16,.65)
 	dark = material("241f42")
@@ -196,8 +210,8 @@ func _initialize() -> void:
 		leg(body,side,false)
 	# Vermilion braided collar, gilded bells, central sacred mirror, hanging ties.
 	var collar: Array[Vector3] = []
-	for i in 33:
-		var a := TAU*i/32
+	for i in 17:
+		var a := TAU*i/16
 		collar.append(Vector3(cos(a)*.25,1.30+sin(a)*.06,-.43+sin(a)*.25))
 	strand(body,"VermilionCollar",collar,.037,red)
 	for i in 7:
@@ -214,6 +228,7 @@ func _initialize() -> void:
 		oval(body,"TieBead%s" % side,Vector3(side*.18,.87,-.60),Vector3(.038,.045,.038),gold)
 		for i in 4:
 			strand(body,"Tassel%s_%d" % [side,i],[Vector3(side*.18,.84,-.60),Vector3(side*(.18+i*.013),.70,-.57)],.009,red)
+	merge_children(body)
 	var tails := node(visual,"Tails")
 	# Nine separate plumes form an asymmetrical, ascending fan behind the fox.
 	tail(tails,0,[Vector3.ZERO,Vector3(-.35,.10,.33),Vector3(-.95,.05,.45),Vector3(-1.12,.39,.46),Vector3(-.98,.55,.48)],Color("ed73b9"))
@@ -237,6 +252,7 @@ func _initialize() -> void:
 		gem.rings = 1
 		var n := mesh(motes,"Star%d" % i,gem,light)
 		n.position = p
+	merge_children(motes)
 	var glow := OmniLight3D.new()
 	glow.name = "SpiritLight"
 	visual.add_child(glow)

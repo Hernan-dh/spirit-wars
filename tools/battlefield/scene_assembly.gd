@@ -103,42 +103,10 @@ static func build(ctx: AuthoringContext) -> void:
 	StaticGeometry.optimize_details(root)
 	make_atmosphere(ctx,root)
 	make_camera(ctx,root)
-	var skirmish := SkirmishScene.instantiate()
+	var skirmish := SkirmishScene.instantiate(PackedScene.GEN_EDIT_STATE_INSTANCE)
 	root.add_child(skirmish)
-	var scene_path := "res://scenes/battlefields/moonwell_courtyard.tscn"
-	ctx.save_scene(root,scene_path)
-	_remove_skirmish_script_override(scene_path)
+	ctx.save_scene(root,"res://scenes/battlefields/moonwell_courtyard.tscn")
 	print(SAVED_MESSAGE % cell_count)
-
-static func _remove_skirmish_script_override(scene_path: String) -> void:
-	# The instanced skirmish scene already supplies this script; dropping the
-	# redundant override keeps generated text stable and avoids a dead resource.
-	var file := FileAccess.open(scene_path, FileAccess.READ)
-	if file == null:
-		return
-	var lines := file.get_as_text().split("\n")
-	file.close()
-	for i in range(lines.size() - 1):
-		if not lines[i].begins_with('[node name="Skirmish"'):
-			continue
-		if not lines[i + 1].begins_with("script = ExtResource("):
-			return
-		var script_id := lines[i + 1].get_slice('"', 1)
-		lines.remove_at(i + 1)
-		for j in range(lines.size()):
-			if lines[j].begins_with("[ext_resource") and lines[j].contains('id="%s"' % script_id):
-				lines.remove_at(j)
-				break
-		for j in range(lines.size()):
-			if lines[j].begins_with("[gd_scene"):
-				var steps := int(lines[j].get_slice("load_steps=", 1).get_slice(" ", 0))
-				lines[j] = lines[j].replace("load_steps=%d" % steps, "load_steps=%d" % maxi(1, steps - 1))
-				break
-		var out := FileAccess.open(scene_path, FileAccess.WRITE)
-		if out != null:
-			out.store_string("\n".join(lines))
-			out.close()
-		return
 
 static func make_atmosphere(ctx: AuthoringContext, root: Node3D) -> void:
 	var plan := LevelPlan.load_default()

@@ -101,6 +101,10 @@ func _matches(value: Variant, schema: Variant, path: String) -> bool:
 				ok = false
 			elif not _matches(value[key], schema[key], "%s.%s" % [path, key]):
 				ok = false
+		for key in value:
+			if not schema.has(key):
+				push_error("%s has unexpected key '%s'." % [path, key])
+				ok = false
 		return ok
 	if schema is Array:
 		if not value is Array:
@@ -131,7 +135,9 @@ func _matches_type(value: Variant, expected: String, path: String) -> bool:
 		"PackedVector2Array": ok = typeof(value) == TYPE_PACKED_VECTOR2_ARRAY
 		"Array": ok = typeof(value) == TYPE_ARRAY
 		"Dictionary": ok = typeof(value) == TYPE_DICTIONARY
-		_: ok = true
+		_:
+			push_error("%s uses unsupported schema type '%s'." % [path, expected])
+			return false
 	if not ok:
 		push_error("%s should be %s." % [path, expected])
 	return ok

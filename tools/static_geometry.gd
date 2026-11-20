@@ -42,6 +42,7 @@ static func merge_meshes(parent: Node3D, entries: Array, spatial: bool) -> void:
 		if not groups.has(key):
 			groups[key] = []
 		groups[key].append(entry)
+	var combined_index := 0
 	for key in groups:
 		var parts: Array = groups[key]
 		if parts.size() < 2:
@@ -52,8 +53,12 @@ static func merge_meshes(parent: Node3D, entries: Array, spatial: bool) -> void:
 			append_surface(st, part.node.mesh, 0, part.transform)
 		st.index()
 		var combined := MeshInstance3D.new()
-		var material_name: String = key[0].resource_name if key[0] != null else "Material"
-		combined.name = "Combined_%s_%d_%d_%d_%d" % [material_name.validate_node_name(), key[1], key[2], key[3].x, key[3].y]
+		var material_name: String = key[0].resource_name if key[0] != null else ""
+		if material_name.is_empty():
+			combined.name = "Combined_Material_%d" % combined_index
+		else:
+			combined.name = "Combined_%s_%d_%d_%d_%d" % [material_name.validate_node_name(), key[1], key[2], key[3].x, key[3].y]
+		combined_index += 1
 		combined.mesh = st.commit()
 		combined.mesh.resource_name = combined.name
 		combined.material_override = key[0]

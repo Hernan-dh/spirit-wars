@@ -9,22 +9,22 @@
 [ext_resource type="Material" path="res://generated/materials/blossom_light.tres" id="7_no85n"]
 [ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_combined_blossom_light_1_1_0_0.res" id="8_recjj"]
 
-[node name="Lotus" type="Node3D" unique_id=799034434]
+[node name="Lotus" type="Node3D" unique_id=828768813]
 
-[node name="LilyPad" type="MeshInstance3D" parent="." unique_id=1214373729]
+[node name="LilyPad" type="MeshInstance3D" parent="." unique_id=1668336425]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
 material_override = ExtResource("1_65wf1")
 mesh = ExtResource("2_chahu")
 
-[node name="GoldenHeart" type="MeshInstance3D" parent="." unique_id=1065893981]
+[node name="GoldenHeart" type="MeshInstance3D" parent="." unique_id=1375406892]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.16, 0)
 material_override = ExtResource("3_2y7pf")
 mesh = ExtResource("4_njxl4")
 
-[node name="Combined_Blossom_1_1_0_0" type="MeshInstance3D" parent="." unique_id=1763495076]
+[node name="Combined_Blossom_1_1_0_0" type="MeshInstance3D" parent="." unique_id=1627494845]
 material_override = ExtResource("5_nmh3g")
 mesh = ExtResource("6_f1i5i")
 
-[node name="Combined_BlossomLight_1_1_0_0" type="MeshInstance3D" parent="." unique_id=1980168693]
+[node name="Combined_BlossomLight_1_1_0_0" type="MeshInstance3D" parent="." unique_id=442737650]
 material_override = ExtResource("7_no85n")
 mesh = ExtResource("8_recjj")

@@ -105,9 +105,11 @@ static func _bamboo(ctx: AuthoringContext, data: Dictionary) -> void:
 				ctx.rod(bamboo,"Twig%d_%d" % [i,j],mid,mid+direction*float(data["twig_length"]),float(data["twig_radius"]),String(data["material"]),float(data["twig_top_radius"]))
 				var leaf_materials: Array = data["leaf_materials"]
 				var leaf_side: Vector3 = data["leaf_side"]
-				for k in range(int(data["leaf_count"])):
+				var leaf_count := int(data["leaf_count"])
+				var leaf_center := (leaf_count - 1) * .5
+				for k in range(leaf_count):
 					var base := mid + direction * (float(data["leaf_start"])+k*float(data["leaf_step"]))
-					var tip_leaf := base + Vector3(direction.x*float(data["leaf_x_scale"]),float(data["leaf_y"]),(k-2)*float(data["leaf_z_step"]))
+					var tip_leaf := base + Vector3(direction.x*float(data["leaf_x_scale"]),float(data["leaf_y"]),(k-leaf_center)*float(data["leaf_z_step"]))
 					var leaf := ctx.surface(bamboo,"Leaf%d_%d_%d" % [i,j,k],[base,base.lerp(tip_leaf,.5)+leaf_side,tip_leaf,base,tip_leaf,base.lerp(tip_leaf,.5)-leaf_side],String(leaf_materials[k%2]))
 					leaf.material_override = ctx.two_sided(leaf.material_override)
 	ctx.prop_scenes["bamboo"] = ctx.save_scene(bamboo,"res://scenes/props/bamboo_grove.tscn")

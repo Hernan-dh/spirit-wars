@@ -216,7 +216,9 @@ ruff, vermilion collar, gilded bells, amethyst mirror, and nine curling spirit t
 Each plume blends from ivory into pink, violet, or blue and carries pale sacred-light
 veins. The fox breathes, its tails sway independently, and small light motes hover
 around the fan. All geometry is referenced from `scenes/units/kitsune_visual.tscn`
-and is visible in the editor; no external textures or runtime mesh generation are needed.
+and is visible in the editor; the body, each tail and the motes merge their parts by
+material so each animated group is a few saved meshes. No external textures or
+runtime mesh generation are needed.
 `materials/kitsune_spirit.gdshader` supplies the tail colors and gentle emission in
 the project's Compatibility renderer. Attack effects share the projectile and ring
 helpers and named tuning in `scripts/combat_effects.gd`.

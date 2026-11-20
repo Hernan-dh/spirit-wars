@@ -36,7 +36,6 @@ static func build(ctx: AuthoringContext) -> void:
 	ctx.material("Blossom", "d887b9")
 	ctx.material("BlossomLight", "f4bbd7")
 	ctx.material("BlossomDark", "ac609d")
-	ctx.material("Water", "286975", 0.12, 0.5).roughness = 0.2
 	ctx.material("Ripple", "70c9c7", 0.5)
 	ctx.material("Spirit", "6ef5ed", 2.0)
 	ctx.material("SpiritDim", "338d96", 0.8)

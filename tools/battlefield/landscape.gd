@@ -96,31 +96,48 @@ static func ring_mesh(ctx: AuthoringContext, parent: Node, title: String, center
 	return ctx.mesh(parent,title,torus,mat,center)
 
 static func fern(ctx: AuthoringContext, parent: Node, title: String, pos: Vector3, size := 1.0) -> void:
+	var plan := LevelPlan.load_default()
+	if plan == null:
+		return
+	var data: Dictionary = plan.prop_templates["fern"]
 	var n := ctx.node(parent,title,pos)
 	n.scale *= size
 	n.set_meta("batch_scenery", true)
 	if ctx.fern_geometry != null:
-		ctx.mesh(n, "FeatheredFronds", ctx.fern_geometry, "LeafLight")
+		ctx.mesh(n, "FeatheredFronds", ctx.fern_geometry, String(data["material"]))
 		return
 	var fronds: Array = []
-	for i in range(9):
-		var a := i*TAU/9
+	var frond_count := int(data["fronds"])
+	var steps := int(data["steps"])
+	var length := float(data["length"])
+	var step_overlap := float(data["step_overlap"])
+	var height := float(data["height"])
+	var height_base := float(data["height_base"])
+	var height_frequency := float(data["height_frequency"])
+	var stem_half := float(data["stem_half_width"])
+	var leaf_width := float(data["leaf_width"])
+	var leaf_min_width := float(data["leaf_min_width"])
+	var leaf_length := float(data["leaf_length"])
+	var leaf_mid_lift := float(data["leaf_mid_lift"])
+	var leaf_depth := float(data["leaf_depth"])
+	for i in range(frond_count):
+		var a := i*TAU/float(frond_count)
 		var d := Vector3(cos(a),0,sin(a))
 		var side := Vector3(-sin(a),0,cos(a))
-		for j in range(7):
-			var t := j/7.0
-			var mid := d*t*.72+Vector3.UP*(sin(t*PI*.85)*.48+.03)
-			var next := d*(t+.14)*.72+Vector3.UP*(sin((t+.14)*PI*.85)*.48+.03)
-			ctx.tri(fronds,mid-side*.012,mid+side*.012,next)
-			ctx.tri(fronds,mid+side*.012,mid-side*.012,next)
+		for j in range(steps):
+			var t := j/float(steps)
+			var mid := d*t*length+Vector3.UP*(sin(t*PI*height_frequency)*height+height_base)
+			var next := d*(t+step_overlap)*length+Vector3.UP*(sin((t+step_overlap)*PI*height_frequency)*height+height_base)
+			ctx.tri(fronds,mid-side*stem_half,mid+side*stem_half,next)
+			ctx.tri(fronds,mid+side*stem_half,mid-side*stem_half,next)
 			for direction in [-1,1]:
-				var tip: Vector3 = mid+side*direction*(.17*(1.0-t)+.025)+d*.10
-				var middle := mid.lerp(tip,.5)+Vector3.UP*.035
-				ctx.tri(fronds,mid,middle-d*.04,tip)
-				ctx.tri(fronds,mid,tip,middle+d*.04)
-				ctx.tri(fronds,mid,tip,middle-d*.04)
-				ctx.tri(fronds,mid,middle+d*.04,tip)
-	ctx.fern_geometry = ctx.surface(n,"FeatheredFronds",fronds,"LeafLight").mesh
+				var tip: Vector3 = mid+side*direction*(leaf_width*(1.0-t)+leaf_min_width)+d*leaf_length
+				var middle := mid.lerp(tip,.5)+Vector3.UP*leaf_mid_lift
+				ctx.tri(fronds,mid,middle-d*leaf_depth,tip)
+				ctx.tri(fronds,mid,tip,middle+d*leaf_depth)
+				ctx.tri(fronds,mid,tip,middle-d*leaf_depth)
+				ctx.tri(fronds,mid,middle+d*leaf_depth,tip)
+	ctx.fern_geometry = ctx.surface(n,"FeatheredFronds",fronds,String(data["material"])).mesh
 
 static func banner(ctx: AuthoringContext, parent: Node, title: String, pos: Vector3, yaw := 0.0) -> void:
 	var plan := LevelPlan.load_default()
