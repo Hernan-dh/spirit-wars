@@ -54,8 +54,8 @@ Godot selects the level by screen size, including orthographic zoom, viewport
 resolution, and instance scale. Lanterns have window lattice and carved bases.
 Stone and cliffs use procedural mineral grain,
 strata, and moss weathering. Pool surfaces have gentle animated ripples.
-The lake outline and terrace profiles are also defined in the authoring
-script for geometry changes. Scenery is decorative; movement and picking use
+The lake outline and terrace profiles are also defined in
+`tools/battlefield/landscape.gd` for geometry changes. Scenery is decorative; movement and picking use
 the ground hexes. Waterfall ribbons and ripples are static editable meshes.
 
 Reusable lantern, blossom tree, bamboo grove, lotus, and spirit gate scenes live
@@ -69,11 +69,11 @@ Batches stay within their named landscape group and an eight-unit local X/Z cell
 so distant regions can still be culled separately. Batch `instance_names` metadata
 maps each instance index to its authored placement name; transforms live in the
 MultiMesh resource. To change repeated scenery geometry or placements, edit the
-authoring script and rebuild. Batches contain baked mesh resources rather than
+matching authoring module and rebuild. Batches contain baked mesh resources rather than
 live prop scene instances. The blossom crown is authored as one surface with LOD
 indices before batching, so its lower-detail mesh survives in both the reusable
-prop and the saved battlefield. `BLOSSOM_LOD_ERROR` in the authoring script tunes
-the screen-size transition; there is no runtime mesh generation or swap script.
+prop and the saved battlefield. `BLOSSOM_LOD_ERROR` in
+`tools/battlefield/props.gd` tunes the screen-size transition; there is no runtime mesh generation or swap script.
 All 196 tile roots, metadata, collisions, and gameplay nodes remain
 independent. Tile seals and static lines are combined meshes, with no segment nodes.
 Meshes and materials are native Godot resources; no external asset tools are required.
@@ -121,11 +121,20 @@ pawns store their own action allowances in `scripts/placeholder_unit.gd`.
 
 ## Rebuilding the initial layout
 
-`tools/build_battlefield.gd` is the deterministic authoring source for the
-layout and reusable props. `tools/static_geometry.gd` merges static surfaces and
+`tools/build_battlefield.gd` is the deterministic authoring entry point. It creates
+`tools/battlefield/authoring_context.gd`, which holds the shared palette, packed prop
+cache, RNG and primitive mesh helpers, then runs the modules in order:
+
+- `materials.gd` authors the palette and weathering shaders.
+- `props.gd` builds the reusable lantern, blossom tree, bamboo, lotus and gate scenes.
+- `field.gd` defines grid coordinates, ground zones and tile contents.
+- `landscape.gd` builds the island foundation, terraces, wetlands, gardens, ruins and sanctuary details.
+- `scene_assembly.gd` roots the field and landscape, then adds atmosphere, camera and starting units.
+
+`tools/static_geometry.gd` merges static surfaces and
 batches repeated scenery during authoring; normal game/editor use does no conversion.
 `GRID_SIZE`, `HEX_RADIUS`, `GRID_CENTER_Z`, and
-`grid_position()` define the grid; `ground_material()` labels approximate terrain zones.
+`grid_position()` live in `field.gd`; `ground_material()` labels approximate terrain zones.
 `materials/sanctuary_ground.gdshader` defines continuous paths, stone joints, and
 moss coverage in world coordinates. `materials/weathered_surface.gdshader` controls
 scenery grain and weathering, and `materials/lotus_water.gdshader` controls pool ripples.
