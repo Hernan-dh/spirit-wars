@@ -1,460 +1,429 @@
 [gd_scene format=3]
 
-[ext_resource type="Material" path="res://materials/generated/lantern_visual_floating_body_paper_lantern_material.tres" id="1_83uv2"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_paper_lantern.res" id="2_yxqr4"]
-[ext_resource type="Material" path="res://materials/generated/lantern_visual_floating_body_lantern_rib_0_material.tres" id="3_2bqyc"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lantern_rib_0.res" id="4_cr5l3"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lantern_rib_1.res" id="5_n3v53"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lantern_rib_2.res" id="6_ekvlw"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lantern_rib_3.res" id="7_u16cd"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lantern_rib_4.res" id="8_ucn56"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lantern_rib_5.res" id="9_1dch1"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lantern_rib_6.res" id="10_rptwc"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lantern_rib_7.res" id="11_enjwv"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lantern_rib_8.res" id="12_mtbnc"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lantern_rib_9.res" id="13_meuug"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lantern_rib_10.res" id="14_kdexn"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lantern_rib_11.res" id="15_6gr6g"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lower_collar.res" id="16_byjcu"]
-[ext_resource type="Material" path="res://materials/generated/lantern_visual_floating_body_roof_underside_material.tres" id="17_0u17k"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_roof_underside.res" id="18_kjoa7"]
-[ext_resource type="Material" path="res://materials/generated/lantern_visual_floating_body_swept_pagoda_roof_material.tres" id="19_ttx1n"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_swept_pagoda_roof.res" id="20_n813o"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_gilded_roof_ridge_0.res" id="21_46ewa"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_eave_0.res" id="22_c1ktb"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_gilded_roof_ridge_1.res" id="23_dptyo"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_eave_1.res" id="24_t4fw8"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_gilded_roof_ridge_2.res" id="25_7epuq"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_eave_2.res" id="26_nr6lm"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_gilded_roof_ridge_3.res" id="27_8fvpm"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_eave_3.res" id="28_qngvu"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_gilded_roof_ridge_4.res" id="29_wwh34"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_eave_4.res" id="30_ycsbc"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_gilded_roof_ridge_5.res" id="31_r6h08"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_eave_5.res" id="32_myt66"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_gilded_roof_ridge_6.res" id="33_hm1wi"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_eave_6.res" id="34_i8cdk"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_gilded_roof_ridge_7.res" id="35_ambww"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_eave_7.res" id="36_t1qhp"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_finial.res" id="37_58lrm"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_hanging_hook.res" id="38_autom"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_knot.res" id="39_1exdn"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_silk_strand_0.res" id="40_bqkbh"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_silk_strand_1.res" id="41_mvhjt"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_silk_strand_2.res" id="42_h0ayh"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_silk_strand_3.res" id="43_ev7cf"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_silk_strand_4.res" id="44_h637c"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_silk_strand_5.res" id="45_y6v3v"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_silk_strand_6.res" id="46_tw5yr"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_silk_strand_7.res" id="47_hllnu"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_silk_strand_8.res" id="48_eolyw"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_silk_strand_9.res" id="49_ug8fl"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_silk_strand_10.res" id="50_equnp"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_silk_strand_11.res" id="51_ajv8d"]
-[ext_resource type="Material" path="res://materials/generated/lantern_visual_floating_body_talisman_0_vermilion_border_material.tres" id="52_5ep2h"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_0_vermilion_border.res" id="53_uh2lx"]
-[ext_resource type="Material" path="res://materials/generated/lantern_visual_floating_body_talisman_0_prayer_paper_material.tres" id="54_0r6t4"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_0_prayer_paper.res" id="55_oj257"]
-[ext_resource type="Material" path="res://materials/generated/lantern_visual_floating_body_talisman_0_seal_stroke_0_material.tres" id="56_ve6nn"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_0_seal_stroke_0.res" id="57_kea8d"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_0_seal_stroke_1.res" id="58_pttrb"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_0_seal_stroke_2.res" id="59_eurvr"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_0_seal_stroke_3.res" id="60_wvvd8"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_0_seal_spine.res" id="61_o4afd"]
-[ext_resource type="Material" path="res://materials/generated/lantern_visual_floating_body_talisman_1_vermilion_border_material.tres" id="62_k02mu"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_1_vermilion_border.res" id="63_xwtch"]
-[ext_resource type="Material" path="res://materials/generated/lantern_visual_floating_body_talisman_1_prayer_paper_material.tres" id="64_n4hxn"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_1_prayer_paper.res" id="65_kbkin"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_1_seal_stroke_0.res" id="66_v3ai7"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_1_seal_stroke_1.res" id="67_3e2m5"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_1_seal_stroke_2.res" id="68_ygrb1"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_1_seal_stroke_3.res" id="69_e3i2v"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_1_seal_spine.res" id="70_tylvs"]
-[ext_resource type="Material" path="res://materials/generated/lantern_visual_floating_body_talisman_2_vermilion_border_material.tres" id="71_x5byw"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_2_vermilion_border.res" id="72_u2uip"]
-[ext_resource type="Material" path="res://materials/generated/lantern_visual_floating_body_talisman_2_prayer_paper_material.tres" id="73_72x7w"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_2_prayer_paper.res" id="74_7sxhs"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_2_seal_stroke_0.res" id="75_s3ptc"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_2_seal_stroke_1.res" id="76_7nbrf"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_2_seal_stroke_2.res" id="77_nxwd2"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_2_seal_stroke_3.res" id="78_hoiqn"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_2_seal_spine.res" id="79_6ke7y"]
-[ext_resource type="Material" path="res://materials/generated/lantern_visual_floating_body_talisman_3_vermilion_border_material.tres" id="80_45edg"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_3_vermilion_border.res" id="81_eeoeo"]
-[ext_resource type="Material" path="res://materials/generated/lantern_visual_floating_body_talisman_3_prayer_paper_material.tres" id="82_wr554"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_3_prayer_paper.res" id="83_lh3us"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_3_seal_stroke_0.res" id="84_jkutj"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_3_seal_stroke_1.res" id="85_ue4b4"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_3_seal_stroke_2.res" id="86_8aomc"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_3_seal_stroke_3.res" id="87_56ld0"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_3_seal_spine.res" id="88_52fcv"]
-[ext_resource type="Material" path="res://materials/generated/lantern_visual_floating_body_streamer_0_silk_material.tres" id="89_4rld6"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_streamer_0_silk.res" id="90_der0k"]
-[ext_resource type="Material" path="res://materials/generated/lantern_visual_floating_body_streamer_1_silk_material.tres" id="91_lcv0s"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_streamer_1_silk.res" id="92_3lyuj"]
-[ext_resource type="Material" path="res://materials/generated/lantern_visual_wisp_0_flame_material.tres" id="93_jojoy"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_wisp_0_flame.res" id="94_y2avp"]
-[ext_resource type="Material" path="res://materials/generated/lantern_visual_wisp_0_heart_material.tres" id="95_mr55w"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_wisp_0_heart.res" id="96_h4cua"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_wisp_1_flame.res" id="97_6iitj"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_wisp_1_heart.res" id="98_8efrg"]
+[ext_resource type="Material" path="res://materials/generated/lantern_visual_floating_body_paper_lantern_material.tres" id="1_hx05h"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_paper_lantern.res" id="2_ttsde"]
+[ext_resource type="Material" path="res://materials/generated/lantern_visual_floating_body_lantern_rib_0_material.tres" id="3_i52py"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lantern_rib_0.res" id="4_neaje"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lantern_rib_1.res" id="5_6khso"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lantern_rib_2.res" id="6_208s2"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lantern_rib_3.res" id="7_lwhwh"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lantern_rib_4.res" id="8_38av7"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lantern_rib_5.res" id="9_aqrcq"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lantern_rib_6.res" id="10_tdwu8"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lantern_rib_7.res" id="11_f0gd6"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lantern_rib_8.res" id="12_embis"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lantern_rib_9.res" id="13_v171m"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lantern_rib_10.res" id="14_4wkax"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lantern_rib_11.res" id="15_i0yq6"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_lower_collar.res" id="16_jakq1"]
+[ext_resource type="Material" path="res://materials/generated/lantern_visual_floating_body_roof_underside_material.tres" id="17_xmc1h"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_roof_underside.res" id="18_bvd1d"]
+[ext_resource type="Material" path="res://materials/generated/lantern_visual_floating_body_swept_pagoda_roof_material.tres" id="19_la0cy"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_swept_pagoda_roof.res" id="20_52oo4"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_gilded_roof_ridge_0.res" id="21_i2aiw"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_eave_0.res" id="22_n5b2m"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_gilded_roof_ridge_1.res" id="23_g1j1q"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_eave_1.res" id="24_m8d3p"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_gilded_roof_ridge_2.res" id="25_ax78g"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_eave_2.res" id="26_fgj48"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_gilded_roof_ridge_3.res" id="27_y2jd2"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_eave_3.res" id="28_0v7cn"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_gilded_roof_ridge_4.res" id="29_567lo"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_eave_4.res" id="30_kocd5"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_gilded_roof_ridge_5.res" id="31_usp14"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_eave_5.res" id="32_83uv2"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_gilded_roof_ridge_6.res" id="33_yxqr4"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_eave_6.res" id="34_2bqyc"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_gilded_roof_ridge_7.res" id="35_cr5l3"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_eave_7.res" id="36_n3v53"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_finial.res" id="37_ekvlw"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_hanging_hook.res" id="38_u16cd"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_knot.res" id="39_ucn56"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_silk_strand_0.res" id="40_1dch1"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_silk_strand_1.res" id="41_rptwc"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_silk_strand_2.res" id="42_enjwv"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_silk_strand_3.res" id="43_mtbnc"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_silk_strand_4.res" id="44_meuug"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_silk_strand_5.res" id="45_kdexn"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_silk_strand_6.res" id="46_6gr6g"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_silk_strand_7.res" id="47_byjcu"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_silk_strand_8.res" id="48_0u17k"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_silk_strand_9.res" id="49_kjoa7"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_silk_strand_10.res" id="50_ttx1n"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_tassel_silk_strand_11.res" id="51_n813o"]
+[ext_resource type="Material" path="res://materials/generated/lantern_visual_floating_body_talisman_0_vermilion_border_material.tres" id="52_46ewa"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_0_vermilion_border.res" id="53_c1ktb"]
+[ext_resource type="Material" path="res://materials/generated/lantern_visual_floating_body_talisman_0_prayer_paper_material.tres" id="54_dptyo"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_0_prayer_paper.res" id="55_t4fw8"]
+[ext_resource type="Material" path="res://materials/generated/lantern_visual_floating_body_talisman_0_seal_stroke_0_material.tres" id="56_7epuq"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_0_seal_stroke_0.res" id="57_nr6lm"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_0_seal_stroke_1.res" id="58_8fvpm"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_0_seal_stroke_2.res" id="59_qngvu"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_0_seal_stroke_3.res" id="60_wwh34"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_talisman_0_seal_spine.res" id="61_ycsbc"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_floating_body_streamer_0_silk.res" id="62_r6h08"]
+[ext_resource type="Material" path="res://materials/generated/lantern_visual_floating_body_streamer_1_silk_material.tres" id="63_myt66"]
+[ext_resource type="Material" path="res://materials/generated/lantern_visual_wisp_0_flame_material.tres" id="64_hm1wi"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_wisp_0_flame.res" id="65_i8cdk"]
+[ext_resource type="Material" path="res://materials/generated/lantern_visual_wisp_0_heart_material.tres" id="66_ambww"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lantern_visual_wisp_0_heart.res" id="67_t1qhp"]
 
-[node name="LanternVisual" type="Node3D" unique_id=78473807]
+[node name="LanternVisual" type="Node3D" unique_id=1214471763]
 
-[node name="FloatingBody" type="Node3D" parent="." unique_id=1829288378]
+[node name="FloatingBody" type="Node3D" parent="." unique_id=1027998179]
 
-[node name="PaperLantern" type="MeshInstance3D" parent="FloatingBody" unique_id=274690414]
-material_override = ExtResource("1_83uv2")
-mesh = ExtResource("2_yxqr4")
+[node name="PaperLantern" type="MeshInstance3D" parent="FloatingBody" unique_id=755471352]
+material_override = ExtResource("1_hx05h")
+mesh = ExtResource("2_ttsde")
 
-[node name="LanternRib0" type="MeshInstance3D" parent="FloatingBody" unique_id=140628811]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("4_cr5l3")
+[node name="LanternRib0" type="MeshInstance3D" parent="FloatingBody" unique_id=1906021052]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("4_neaje")
 
-[node name="LanternRib1" type="MeshInstance3D" parent="FloatingBody" unique_id=17540645]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("5_n3v53")
+[node name="LanternRib1" type="MeshInstance3D" parent="FloatingBody" unique_id=204747505]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("5_6khso")
 
-[node name="LanternRib2" type="MeshInstance3D" parent="FloatingBody" unique_id=745771874]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("6_ekvlw")
+[node name="LanternRib2" type="MeshInstance3D" parent="FloatingBody" unique_id=1028395309]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("6_208s2")
 
-[node name="LanternRib3" type="MeshInstance3D" parent="FloatingBody" unique_id=1226587922]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("7_u16cd")
+[node name="LanternRib3" type="MeshInstance3D" parent="FloatingBody" unique_id=858643688]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("7_lwhwh")
 
-[node name="LanternRib4" type="MeshInstance3D" parent="FloatingBody" unique_id=626766858]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("8_ucn56")
+[node name="LanternRib4" type="MeshInstance3D" parent="FloatingBody" unique_id=2061901022]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("8_38av7")
 
-[node name="LanternRib5" type="MeshInstance3D" parent="FloatingBody" unique_id=245286565]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("9_1dch1")
+[node name="LanternRib5" type="MeshInstance3D" parent="FloatingBody" unique_id=1679999490]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("9_aqrcq")
 
-[node name="LanternRib6" type="MeshInstance3D" parent="FloatingBody" unique_id=722263711]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("10_rptwc")
+[node name="LanternRib6" type="MeshInstance3D" parent="FloatingBody" unique_id=848757830]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("10_tdwu8")
 
-[node name="LanternRib7" type="MeshInstance3D" parent="FloatingBody" unique_id=365311921]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("11_enjwv")
+[node name="LanternRib7" type="MeshInstance3D" parent="FloatingBody" unique_id=1307252173]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("11_f0gd6")
 
-[node name="LanternRib8" type="MeshInstance3D" parent="FloatingBody" unique_id=117745798]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("12_mtbnc")
+[node name="LanternRib8" type="MeshInstance3D" parent="FloatingBody" unique_id=1852318202]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("12_embis")
 
-[node name="LanternRib9" type="MeshInstance3D" parent="FloatingBody" unique_id=558303708]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("13_meuug")
+[node name="LanternRib9" type="MeshInstance3D" parent="FloatingBody" unique_id=361331537]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("13_v171m")
 
-[node name="LanternRib10" type="MeshInstance3D" parent="FloatingBody" unique_id=503496084]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("14_kdexn")
+[node name="LanternRib10" type="MeshInstance3D" parent="FloatingBody" unique_id=2021143208]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("14_4wkax")
 
-[node name="LanternRib11" type="MeshInstance3D" parent="FloatingBody" unique_id=1168191843]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("15_6gr6g")
+[node name="LanternRib11" type="MeshInstance3D" parent="FloatingBody" unique_id=309064469]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("15_i0yq6")
 
-[node name="LowerCollar" type="MeshInstance3D" parent="FloatingBody" unique_id=1663749883]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("16_byjcu")
+[node name="LowerCollar" type="MeshInstance3D" parent="FloatingBody" unique_id=1712323961]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("16_jakq1")
 
-[node name="RoofUnderside" type="MeshInstance3D" parent="FloatingBody" unique_id=234542102]
-material_override = ExtResource("17_0u17k")
-mesh = ExtResource("18_kjoa7")
+[node name="RoofUnderside" type="MeshInstance3D" parent="FloatingBody" unique_id=504534105]
+material_override = ExtResource("17_xmc1h")
+mesh = ExtResource("18_bvd1d")
 
-[node name="SweptPagodaRoof" type="MeshInstance3D" parent="FloatingBody" unique_id=498752419]
-material_override = ExtResource("19_ttx1n")
-mesh = ExtResource("20_n813o")
+[node name="SweptPagodaRoof" type="MeshInstance3D" parent="FloatingBody" unique_id=1008956550]
+material_override = ExtResource("19_la0cy")
+mesh = ExtResource("20_52oo4")
 
-[node name="GildedRoofRidge0" type="MeshInstance3D" parent="FloatingBody" unique_id=1993977734]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("21_46ewa")
+[node name="GildedRoofRidge0" type="MeshInstance3D" parent="FloatingBody" unique_id=689012668]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("21_i2aiw")
 
-[node name="Eave0" type="MeshInstance3D" parent="FloatingBody" unique_id=407491668]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("22_c1ktb")
+[node name="Eave0" type="MeshInstance3D" parent="FloatingBody" unique_id=1494606335]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("22_n5b2m")
 
-[node name="GildedRoofRidge1" type="MeshInstance3D" parent="FloatingBody" unique_id=2012914136]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("23_dptyo")
+[node name="GildedRoofRidge1" type="MeshInstance3D" parent="FloatingBody" unique_id=1963823776]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("23_g1j1q")
 
-[node name="Eave1" type="MeshInstance3D" parent="FloatingBody" unique_id=1712205397]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("24_t4fw8")
+[node name="Eave1" type="MeshInstance3D" parent="FloatingBody" unique_id=395171336]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("24_m8d3p")
 
-[node name="GildedRoofRidge2" type="MeshInstance3D" parent="FloatingBody" unique_id=419758708]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("25_7epuq")
+[node name="GildedRoofRidge2" type="MeshInstance3D" parent="FloatingBody" unique_id=1396132967]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("25_ax78g")
 
-[node name="Eave2" type="MeshInstance3D" parent="FloatingBody" unique_id=1330412129]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("26_nr6lm")
+[node name="Eave2" type="MeshInstance3D" parent="FloatingBody" unique_id=1964101435]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("26_fgj48")
 
-[node name="GildedRoofRidge3" type="MeshInstance3D" parent="FloatingBody" unique_id=1561374429]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("27_8fvpm")
+[node name="GildedRoofRidge3" type="MeshInstance3D" parent="FloatingBody" unique_id=2048997598]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("27_y2jd2")
 
-[node name="Eave3" type="MeshInstance3D" parent="FloatingBody" unique_id=1091678736]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("28_qngvu")
+[node name="Eave3" type="MeshInstance3D" parent="FloatingBody" unique_id=320332665]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("28_0v7cn")
 
-[node name="GildedRoofRidge4" type="MeshInstance3D" parent="FloatingBody" unique_id=549456068]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("29_wwh34")
+[node name="GildedRoofRidge4" type="MeshInstance3D" parent="FloatingBody" unique_id=243816950]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("29_567lo")
 
-[node name="Eave4" type="MeshInstance3D" parent="FloatingBody" unique_id=2016677061]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("30_ycsbc")
+[node name="Eave4" type="MeshInstance3D" parent="FloatingBody" unique_id=2069744384]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("30_kocd5")
 
-[node name="GildedRoofRidge5" type="MeshInstance3D" parent="FloatingBody" unique_id=1501889818]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("31_r6h08")
+[node name="GildedRoofRidge5" type="MeshInstance3D" parent="FloatingBody" unique_id=1385097460]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("31_usp14")
 
-[node name="Eave5" type="MeshInstance3D" parent="FloatingBody" unique_id=253114272]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("32_myt66")
+[node name="Eave5" type="MeshInstance3D" parent="FloatingBody" unique_id=1949334123]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("32_83uv2")
 
-[node name="GildedRoofRidge6" type="MeshInstance3D" parent="FloatingBody" unique_id=1923104533]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("33_hm1wi")
+[node name="GildedRoofRidge6" type="MeshInstance3D" parent="FloatingBody" unique_id=97268714]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("33_yxqr4")
 
-[node name="Eave6" type="MeshInstance3D" parent="FloatingBody" unique_id=1037954338]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("34_i8cdk")
+[node name="Eave6" type="MeshInstance3D" parent="FloatingBody" unique_id=1633650766]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("34_2bqyc")
 
-[node name="GildedRoofRidge7" type="MeshInstance3D" parent="FloatingBody" unique_id=1401653655]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("35_ambww")
+[node name="GildedRoofRidge7" type="MeshInstance3D" parent="FloatingBody" unique_id=743567541]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("35_cr5l3")
 
-[node name="Eave7" type="MeshInstance3D" parent="FloatingBody" unique_id=374819023]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("36_t1qhp")
+[node name="Eave7" type="MeshInstance3D" parent="FloatingBody" unique_id=1964860305]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("36_n3v53")
 
-[node name="Finial" type="MeshInstance3D" parent="FloatingBody" unique_id=1220041637]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("37_58lrm")
+[node name="Finial" type="MeshInstance3D" parent="FloatingBody" unique_id=1301702006]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("37_ekvlw")
 
-[node name="HangingHook" type="MeshInstance3D" parent="FloatingBody" unique_id=2005295138]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("38_autom")
+[node name="HangingHook" type="MeshInstance3D" parent="FloatingBody" unique_id=886495943]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("38_u16cd")
 
-[node name="TasselKnot" type="MeshInstance3D" parent="FloatingBody" unique_id=1001602152]
-material_override = ExtResource("3_2bqyc")
-mesh = ExtResource("39_1exdn")
+[node name="TasselKnot" type="MeshInstance3D" parent="FloatingBody" unique_id=1533530386]
+material_override = ExtResource("3_i52py")
+mesh = ExtResource("39_ucn56")
 
-[node name="Tassel" type="Node3D" parent="FloatingBody" unique_id=555015009]
+[node name="Tassel" type="Node3D" parent="FloatingBody" unique_id=107343428]
 
-[node name="SilkStrand0" type="MeshInstance3D" parent="FloatingBody/Tassel" unique_id=812313994]
-material_override = ExtResource("17_0u17k")
-mesh = ExtResource("40_bqkbh")
+[node name="SilkStrand0" type="MeshInstance3D" parent="FloatingBody/Tassel" unique_id=1682662347]
+material_override = ExtResource("17_xmc1h")
+mesh = ExtResource("40_1dch1")
 
-[node name="SilkStrand1" type="MeshInstance3D" parent="FloatingBody/Tassel" unique_id=1839686646]
-material_override = ExtResource("17_0u17k")
-mesh = ExtResource("41_mvhjt")
+[node name="SilkStrand1" type="MeshInstance3D" parent="FloatingBody/Tassel" unique_id=758358676]
+material_override = ExtResource("17_xmc1h")
+mesh = ExtResource("41_rptwc")
 
-[node name="SilkStrand2" type="MeshInstance3D" parent="FloatingBody/Tassel" unique_id=1730025804]
-material_override = ExtResource("17_0u17k")
-mesh = ExtResource("42_h0ayh")
+[node name="SilkStrand2" type="MeshInstance3D" parent="FloatingBody/Tassel" unique_id=662331681]
+material_override = ExtResource("17_xmc1h")
+mesh = ExtResource("42_enjwv")
 
-[node name="SilkStrand3" type="MeshInstance3D" parent="FloatingBody/Tassel" unique_id=627847425]
-material_override = ExtResource("17_0u17k")
-mesh = ExtResource("43_ev7cf")
+[node name="SilkStrand3" type="MeshInstance3D" parent="FloatingBody/Tassel" unique_id=1093952810]
+material_override = ExtResource("17_xmc1h")
+mesh = ExtResource("43_mtbnc")
 
-[node name="SilkStrand4" type="MeshInstance3D" parent="FloatingBody/Tassel" unique_id=1960122202]
-material_override = ExtResource("17_0u17k")
-mesh = ExtResource("44_h637c")
+[node name="SilkStrand4" type="MeshInstance3D" parent="FloatingBody/Tassel" unique_id=1820545266]
+material_override = ExtResource("17_xmc1h")
+mesh = ExtResource("44_meuug")
 
-[node name="SilkStrand5" type="MeshInstance3D" parent="FloatingBody/Tassel" unique_id=390698435]
-material_override = ExtResource("17_0u17k")
-mesh = ExtResource("45_y6v3v")
+[node name="SilkStrand5" type="MeshInstance3D" parent="FloatingBody/Tassel" unique_id=1571579]
+material_override = ExtResource("17_xmc1h")
+mesh = ExtResource("45_kdexn")
 
-[node name="SilkStrand6" type="MeshInstance3D" parent="FloatingBody/Tassel" unique_id=636466335]
-material_override = ExtResource("17_0u17k")
-mesh = ExtResource("46_tw5yr")
+[node name="SilkStrand6" type="MeshInstance3D" parent="FloatingBody/Tassel" unique_id=2000126558]
+material_override = ExtResource("17_xmc1h")
+mesh = ExtResource("46_6gr6g")
 
-[node name="SilkStrand7" type="MeshInstance3D" parent="FloatingBody/Tassel" unique_id=1703517520]
-material_override = ExtResource("17_0u17k")
-mesh = ExtResource("47_hllnu")
+[node name="SilkStrand7" type="MeshInstance3D" parent="FloatingBody/Tassel" unique_id=1268505366]
+material_override = ExtResource("17_xmc1h")
+mesh = ExtResource("47_byjcu")
 
-[node name="SilkStrand8" type="MeshInstance3D" parent="FloatingBody/Tassel" unique_id=126395703]
-material_override = ExtResource("17_0u17k")
-mesh = ExtResource("48_eolyw")
+[node name="SilkStrand8" type="MeshInstance3D" parent="FloatingBody/Tassel" unique_id=1190659383]
+material_override = ExtResource("17_xmc1h")
+mesh = ExtResource("48_0u17k")
 
-[node name="SilkStrand9" type="MeshInstance3D" parent="FloatingBody/Tassel" unique_id=334783342]
-material_override = ExtResource("17_0u17k")
-mesh = ExtResource("49_ug8fl")
+[node name="SilkStrand9" type="MeshInstance3D" parent="FloatingBody/Tassel" unique_id=133230483]
+material_override = ExtResource("17_xmc1h")
+mesh = ExtResource("49_kjoa7")
 
-[node name="SilkStrand10" type="MeshInstance3D" parent="FloatingBody/Tassel" unique_id=1932518661]
-material_override = ExtResource("17_0u17k")
-mesh = ExtResource("50_equnp")
+[node name="SilkStrand10" type="MeshInstance3D" parent="FloatingBody/Tassel" unique_id=79257628]
+material_override = ExtResource("17_xmc1h")
+mesh = ExtResource("50_ttx1n")
 
-[node name="SilkStrand11" type="MeshInstance3D" parent="FloatingBody/Tassel" unique_id=372956325]
-material_override = ExtResource("17_0u17k")
-mesh = ExtResource("51_ajv8d")
+[node name="SilkStrand11" type="MeshInstance3D" parent="FloatingBody/Tassel" unique_id=1256959376]
+material_override = ExtResource("17_xmc1h")
+mesh = ExtResource("51_n813o")
 
-[node name="Talisman0" type="Node3D" parent="FloatingBody" unique_id=58392157]
+[node name="Talisman0" type="Node3D" parent="FloatingBody" unique_id=452563759]
 
-[node name="VermilionBorder" type="MeshInstance3D" parent="FloatingBody/Talisman0" unique_id=1045703080]
-material_override = ExtResource("52_5ep2h")
-mesh = ExtResource("53_uh2lx")
+[node name="VermilionBorder" type="MeshInstance3D" parent="FloatingBody/Talisman0" unique_id=2088955289]
+material_override = ExtResource("52_46ewa")
+mesh = ExtResource("53_c1ktb")
 
-[node name="PrayerPaper" type="MeshInstance3D" parent="FloatingBody/Talisman0" unique_id=1570198187]
-material_override = ExtResource("54_0r6t4")
-mesh = ExtResource("55_oj257")
+[node name="PrayerPaper" type="MeshInstance3D" parent="FloatingBody/Talisman0" unique_id=83032180]
+material_override = ExtResource("54_dptyo")
+mesh = ExtResource("55_t4fw8")
 
-[node name="SealStroke0" type="MeshInstance3D" parent="FloatingBody/Talisman0" unique_id=223347826]
-material_override = ExtResource("56_ve6nn")
-mesh = ExtResource("57_kea8d")
+[node name="SealStroke0" type="MeshInstance3D" parent="FloatingBody/Talisman0" unique_id=485673217]
+material_override = ExtResource("56_7epuq")
+mesh = ExtResource("57_nr6lm")
 
-[node name="SealStroke1" type="MeshInstance3D" parent="FloatingBody/Talisman0" unique_id=1252044897]
-material_override = ExtResource("56_ve6nn")
-mesh = ExtResource("58_pttrb")
+[node name="SealStroke1" type="MeshInstance3D" parent="FloatingBody/Talisman0" unique_id=1854656428]
+material_override = ExtResource("56_7epuq")
+mesh = ExtResource("58_8fvpm")
 
-[node name="SealStroke2" type="MeshInstance3D" parent="FloatingBody/Talisman0" unique_id=1292324736]
-material_override = ExtResource("56_ve6nn")
-mesh = ExtResource("59_eurvr")
+[node name="SealStroke2" type="MeshInstance3D" parent="FloatingBody/Talisman0" unique_id=703709441]
+material_override = ExtResource("56_7epuq")
+mesh = ExtResource("59_qngvu")
 
-[node name="SealStroke3" type="MeshInstance3D" parent="FloatingBody/Talisman0" unique_id=1442914150]
-material_override = ExtResource("56_ve6nn")
-mesh = ExtResource("60_wvvd8")
+[node name="SealStroke3" type="MeshInstance3D" parent="FloatingBody/Talisman0" unique_id=1054208560]
+material_override = ExtResource("56_7epuq")
+mesh = ExtResource("60_wwh34")
 
-[node name="SealSpine" type="MeshInstance3D" parent="FloatingBody/Talisman0" unique_id=1838949987]
-material_override = ExtResource("56_ve6nn")
-mesh = ExtResource("61_o4afd")
+[node name="SealSpine" type="MeshInstance3D" parent="FloatingBody/Talisman0" unique_id=1596290838]
+material_override = ExtResource("56_7epuq")
+mesh = ExtResource("61_ycsbc")
 
-[node name="Talisman1" type="Node3D" parent="FloatingBody" unique_id=2084201976]
+[node name="Talisman1" type="Node3D" parent="FloatingBody" unique_id=1605148565]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
 
-[node name="VermilionBorder" type="MeshInstance3D" parent="FloatingBody/Talisman1" unique_id=1305992762]
-material_override = ExtResource("62_k02mu")
-mesh = ExtResource("63_xwtch")
+[node name="VermilionBorder" type="MeshInstance3D" parent="FloatingBody/Talisman1" unique_id=930698883]
+material_override = ExtResource("52_46ewa")
+mesh = ExtResource("53_c1ktb")
 
-[node name="PrayerPaper" type="MeshInstance3D" parent="FloatingBody/Talisman1" unique_id=144834962]
-material_override = ExtResource("64_n4hxn")
-mesh = ExtResource("65_kbkin")
+[node name="PrayerPaper" type="MeshInstance3D" parent="FloatingBody/Talisman1" unique_id=2142838916]
+material_override = ExtResource("54_dptyo")
+mesh = ExtResource("55_t4fw8")
 
-[node name="SealStroke0" type="MeshInstance3D" parent="FloatingBody/Talisman1" unique_id=601143830]
-material_override = ExtResource("56_ve6nn")
-mesh = ExtResource("66_v3ai7")
+[node name="SealStroke0" type="MeshInstance3D" parent="FloatingBody/Talisman1" unique_id=14540490]
+material_override = ExtResource("56_7epuq")
+mesh = ExtResource("57_nr6lm")
 
-[node name="SealStroke1" type="MeshInstance3D" parent="FloatingBody/Talisman1" unique_id=919081281]
-material_override = ExtResource("56_ve6nn")
-mesh = ExtResource("67_3e2m5")
+[node name="SealStroke1" type="MeshInstance3D" parent="FloatingBody/Talisman1" unique_id=1611902063]
+material_override = ExtResource("56_7epuq")
+mesh = ExtResource("58_8fvpm")
 
-[node name="SealStroke2" type="MeshInstance3D" parent="FloatingBody/Talisman1" unique_id=1319361858]
-material_override = ExtResource("56_ve6nn")
-mesh = ExtResource("68_ygrb1")
+[node name="SealStroke2" type="MeshInstance3D" parent="FloatingBody/Talisman1" unique_id=853878676]
+material_override = ExtResource("56_7epuq")
+mesh = ExtResource("59_qngvu")
 
-[node name="SealStroke3" type="MeshInstance3D" parent="FloatingBody/Talisman1" unique_id=175378374]
-material_override = ExtResource("56_ve6nn")
-mesh = ExtResource("69_e3i2v")
+[node name="SealStroke3" type="MeshInstance3D" parent="FloatingBody/Talisman1" unique_id=1095112955]
+material_override = ExtResource("56_7epuq")
+mesh = ExtResource("60_wwh34")
 
-[node name="SealSpine" type="MeshInstance3D" parent="FloatingBody/Talisman1" unique_id=2082256297]
-material_override = ExtResource("56_ve6nn")
-mesh = ExtResource("70_tylvs")
+[node name="SealSpine" type="MeshInstance3D" parent="FloatingBody/Talisman1" unique_id=1294452493]
+material_override = ExtResource("56_7epuq")
+mesh = ExtResource("61_ycsbc")
 
-[node name="Talisman2" type="Node3D" parent="FloatingBody" unique_id=1332682805]
+[node name="Talisman2" type="Node3D" parent="FloatingBody" unique_id=101884733]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
 
-[node name="VermilionBorder" type="MeshInstance3D" parent="FloatingBody/Talisman2" unique_id=249854082]
-material_override = ExtResource("71_x5byw")
-mesh = ExtResource("72_u2uip")
+[node name="VermilionBorder" type="MeshInstance3D" parent="FloatingBody/Talisman2" unique_id=1637731157]
+material_override = ExtResource("52_46ewa")
+mesh = ExtResource("53_c1ktb")
 
-[node name="PrayerPaper" type="MeshInstance3D" parent="FloatingBody/Talisman2" unique_id=201874203]
-material_override = ExtResource("73_72x7w")
-mesh = ExtResource("74_7sxhs")
+[node name="PrayerPaper" type="MeshInstance3D" parent="FloatingBody/Talisman2" unique_id=1812410276]
+material_override = ExtResource("54_dptyo")
+mesh = ExtResource("55_t4fw8")
 
-[node name="SealStroke0" type="MeshInstance3D" parent="FloatingBody/Talisman2" unique_id=556253620]
-material_override = ExtResource("56_ve6nn")
-mesh = ExtResource("75_s3ptc")
+[node name="SealStroke0" type="MeshInstance3D" parent="FloatingBody/Talisman2" unique_id=1622342247]
+material_override = ExtResource("56_7epuq")
+mesh = ExtResource("57_nr6lm")
 
-[node name="SealStroke1" type="MeshInstance3D" parent="FloatingBody/Talisman2" unique_id=1701478950]
-material_override = ExtResource("56_ve6nn")
-mesh = ExtResource("76_7nbrf")
+[node name="SealStroke1" type="MeshInstance3D" parent="FloatingBody/Talisman2" unique_id=1113949170]
+material_override = ExtResource("56_7epuq")
+mesh = ExtResource("58_8fvpm")
 
-[node name="SealStroke2" type="MeshInstance3D" parent="FloatingBody/Talisman2" unique_id=1590211111]
-material_override = ExtResource("56_ve6nn")
-mesh = ExtResource("77_nxwd2")
+[node name="SealStroke2" type="MeshInstance3D" parent="FloatingBody/Talisman2" unique_id=874539898]
+material_override = ExtResource("56_7epuq")
+mesh = ExtResource("59_qngvu")
 
-[node name="SealStroke3" type="MeshInstance3D" parent="FloatingBody/Talisman2" unique_id=129930481]
-material_override = ExtResource("56_ve6nn")
-mesh = ExtResource("78_hoiqn")
+[node name="SealStroke3" type="MeshInstance3D" parent="FloatingBody/Talisman2" unique_id=1318290533]
+material_override = ExtResource("56_7epuq")
+mesh = ExtResource("60_wwh34")
 
-[node name="SealSpine" type="MeshInstance3D" parent="FloatingBody/Talisman2" unique_id=788971703]
-material_override = ExtResource("56_ve6nn")
-mesh = ExtResource("79_6ke7y")
+[node name="SealSpine" type="MeshInstance3D" parent="FloatingBody/Talisman2" unique_id=1128927973]
+material_override = ExtResource("56_7epuq")
+mesh = ExtResource("61_ycsbc")
 
-[node name="Talisman3" type="Node3D" parent="FloatingBody" unique_id=16834500]
+[node name="Talisman3" type="Node3D" parent="FloatingBody" unique_id=1317930925]
 transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 0, 0, 0)
 
-[node name="VermilionBorder" type="MeshInstance3D" parent="FloatingBody/Talisman3" unique_id=339069327]
-material_override = ExtResource("80_45edg")
-mesh = ExtResource("81_eeoeo")
+[node name="VermilionBorder" type="MeshInstance3D" parent="FloatingBody/Talisman3" unique_id=1860313883]
+material_override = ExtResource("52_46ewa")
+mesh = ExtResource("53_c1ktb")
 
-[node name="PrayerPaper" type="MeshInstance3D" parent="FloatingBody/Talisman3" unique_id=369507884]
-material_override = ExtResource("82_wr554")
-mesh = ExtResource("83_lh3us")
+[node name="PrayerPaper" type="MeshInstance3D" parent="FloatingBody/Talisman3" unique_id=534748087]
+material_override = ExtResource("54_dptyo")
+mesh = ExtResource("55_t4fw8")
 
-[node name="SealStroke0" type="MeshInstance3D" parent="FloatingBody/Talisman3" unique_id=1234521152]
-material_override = ExtResource("56_ve6nn")
-mesh = ExtResource("84_jkutj")
+[node name="SealStroke0" type="MeshInstance3D" parent="FloatingBody/Talisman3" unique_id=1401452842]
+material_override = ExtResource("56_7epuq")
+mesh = ExtResource("57_nr6lm")
 
-[node name="SealStroke1" type="MeshInstance3D" parent="FloatingBody/Talisman3" unique_id=1240553359]
-material_override = ExtResource("56_ve6nn")
-mesh = ExtResource("85_ue4b4")
+[node name="SealStroke1" type="MeshInstance3D" parent="FloatingBody/Talisman3" unique_id=464305112]
+material_override = ExtResource("56_7epuq")
+mesh = ExtResource("58_8fvpm")
 
-[node name="SealStroke2" type="MeshInstance3D" parent="FloatingBody/Talisman3" unique_id=1715727677]
-material_override = ExtResource("56_ve6nn")
-mesh = ExtResource("86_8aomc")
+[node name="SealStroke2" type="MeshInstance3D" parent="FloatingBody/Talisman3" unique_id=733371998]
+material_override = ExtResource("56_7epuq")
+mesh = ExtResource("59_qngvu")
 
-[node name="SealStroke3" type="MeshInstance3D" parent="FloatingBody/Talisman3" unique_id=593896561]
-material_override = ExtResource("56_ve6nn")
-mesh = ExtResource("87_56ld0")
+[node name="SealStroke3" type="MeshInstance3D" parent="FloatingBody/Talisman3" unique_id=540259004]
+material_override = ExtResource("56_7epuq")
+mesh = ExtResource("60_wwh34")
 
-[node name="SealSpine" type="MeshInstance3D" parent="FloatingBody/Talisman3" unique_id=810374577]
-material_override = ExtResource("56_ve6nn")
-mesh = ExtResource("88_52fcv")
+[node name="SealSpine" type="MeshInstance3D" parent="FloatingBody/Talisman3" unique_id=1311238256]
+material_override = ExtResource("56_7epuq")
+mesh = ExtResource("61_ycsbc")
 
-[node name="Streamer0" type="Node3D" parent="FloatingBody" unique_id=782080379]
+[node name="Streamer0" type="Node3D" parent="FloatingBody" unique_id=648255069]
 
-[node name="Silk" type="MeshInstance3D" parent="FloatingBody/Streamer0" unique_id=35362301]
-material_override = ExtResource("89_4rld6")
-mesh = ExtResource("90_der0k")
+[node name="Silk" type="MeshInstance3D" parent="FloatingBody/Streamer0" unique_id=339834921]
+material_override = ExtResource("52_46ewa")
+mesh = ExtResource("62_r6h08")
 
-[node name="Streamer1" type="Node3D" parent="FloatingBody" unique_id=2134947995]
+[node name="Streamer1" type="Node3D" parent="FloatingBody" unique_id=815717887]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
 
-[node name="Silk" type="MeshInstance3D" parent="FloatingBody/Streamer1" unique_id=1304438389]
-material_override = ExtResource("91_lcv0s")
-mesh = ExtResource("92_3lyuj")
+[node name="Silk" type="MeshInstance3D" parent="FloatingBody/Streamer1" unique_id=328066160]
+material_override = ExtResource("63_myt66")
+mesh = ExtResource("62_r6h08")
 
-[node name="InnerLight" type="OmniLight3D" parent="FloatingBody" unique_id=1714081737]
+[node name="InnerLight" type="OmniLight3D" parent="FloatingBody" unique_id=1063192997]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
 light_color = Color(1, 0.6156863, 0.25882354, 1)
 light_energy = 0.65
 omni_range = 2.8
 
-[node name="Wisp0" type="Node3D" parent="." unique_id=1005062619]
+[node name="Wisp0" type="Node3D" parent="." unique_id=1433175418]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.81, 1.1, 0.04)
 
-[node name="Flame" type="MeshInstance3D" parent="Wisp0" unique_id=1403855351]
+[node name="Flame" type="MeshInstance3D" parent="Wisp0" unique_id=849801183]
 transform = Transform3D(0.97589743, 0.21822962, 0, -0.21822962, 0.97589743, 0, 0, 0, 1, 0, 0, 0)
-material_override = ExtResource("93_jojoy")
-mesh = ExtResource("94_y2avp")
+material_override = ExtResource("64_hm1wi")
+mesh = ExtResource("65_i8cdk")
 
-[node name="Heart" type="MeshInstance3D" parent="Wisp0" unique_id=278117541]
-material_override = ExtResource("95_mr55w")
-mesh = ExtResource("96_h4cua")
+[node name="Heart" type="MeshInstance3D" parent="Wisp0" unique_id=795317589]
+material_override = ExtResource("66_ambww")
+mesh = ExtResource("67_t1qhp")
 
-[node name="Wisp1" type="Node3D" parent="." unique_id=1246800866]
+[node name="Wisp1" type="Node3D" parent="." unique_id=980273279]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.83, 0.76, 0.04)
 
-[node name="Flame" type="MeshInstance3D" parent="Wisp1" unique_id=1965450654]
+[node name="Flame" type="MeshInstance3D" parent="Wisp1" unique_id=1208377021]
 transform = Transform3D(0.9553365, -0.29552022, 0, 0.29552022, 0.9553365, 0, 0, 0, 1, 0, 0, 0)
-material_override = ExtResource("93_jojoy")
-mesh = ExtResource("97_6iitj")
+material_override = ExtResource("64_hm1wi")
+mesh = ExtResource("65_i8cdk")
 
-[node name="Heart" type="MeshInstance3D" parent="Wisp1" unique_id=436108219]
-material_override = ExtResource("95_mr55w")
-mesh = ExtResource("98_8efrg")
+[node name="Heart" type="MeshInstance3D" parent="Wisp1" unique_id=1849870817]
+material_override = ExtResource("66_ambww")
+mesh = ExtResource("67_t1qhp")

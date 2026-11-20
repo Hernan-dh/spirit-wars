@@ -81,7 +81,9 @@ independent. Tile seals and static lines are combined meshes, with no segment no
 Meshes and materials are native Godot resources saved under
 `scenes/generated/meshes/` (binary `.res`) and `materials/generated/` (text `.tres`);
 repeated props and scenery batches reference the same files instead of embedding
-copies. No external asset tools are required.
+copies. Identical mesh geometry and material settings are written once, so shared
+hex surfaces, grid etchings, pavilion roofs and unit shaders reference a single
+file. No external asset tools are required.
 
 `MoonlitAtmosphere`, `Moonlight`, and `SoftDuskFill` control the lighting.
 `CameraRig/Camera3D` gives the angled orthographic opening view. Runtime controls:

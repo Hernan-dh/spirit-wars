@@ -1,808 +1,757 @@
 [gd_scene format=3]
 
-[ext_resource type="Material" path="res://materials/generated/kitsune_visual_fox_body_lithe_torso_material.tres" id="1_ycc4r"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_lithe_torso.res" id="2_c57hv"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_haunches.res" id="3_gjy3w"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_raised_chest.res" id="4_sio2l"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_proud_neck.res" id="5_028a3"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_cheek_ruff_1_0_0.res" id="6_hovbv"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_cheek_ruff_1_0_1.res" id="7_u8dln"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_cheek_ruff_1_0_2.res" id="8_bll45"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_cheek_ruff_1_0_3.res" id="9_llokv"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_cheek_ruff_1_0_0_2.res" id="10_wcfsl"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_cheek_ruff_1_0_1_2.res" id="11_x7qvg"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_cheek_ruff_1_0_2_2.res" id="12_brdvi"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_cheek_ruff_1_0_3_2.res" id="13_afpqp"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_chest_mane_0.res" id="14_sx8s3"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_chest_mane_1.res" id="15_ewcot"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_chest_mane_2.res" id="16_fpusw"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_chest_mane_3.res" id="17_f5dun"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_chest_mane_4.res" id="18_dqa48"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_fox_skull.res" id="19_g410w"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_pointed_muzzle.res" id="20_htp1t"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_lower_jaw.res" id="21_ht71g"]
-[ext_resource type="Material" path="res://materials/generated/kitsune_visual_fox_body_head_onyx_nose_material.tres" id="22_48qeo"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_onyx_nose.res" id="23_iaw7a"]
-[ext_resource type="Material" path="res://materials/generated/kitsune_visual_fox_body_head_ear_left_ivory_pinna_material.tres" id="24_gfmyn"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_ear_left_ivory_pinna.res" id="25_c5y68"]
-[ext_resource type="Material" path="res://materials/generated/kitsune_visual_fox_body_head_ear_left_rose_inner_ear_material.tres" id="26_r2x7g"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_ear_left_rose_inner_ear.res" id="27_ngb6a"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_eye_1_0.res" id="28_18mju"]
-[ext_resource type="Material" path="res://materials/generated/kitsune_visual_fox_body_head_amber_iris_1_0_material.tres" id="29_6bugs"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_amber_iris_1_0.res" id="30_cw5be"]
-[ext_resource type="Material" path="res://materials/generated/kitsune_visual_fox_body_head_eye_glint_1_0_material.tres" id="31_7f162"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_eye_glint_1_0.res" id="32_hx8lt"]
-[ext_resource type="Material" path="res://materials/generated/kitsune_visual_fox_body_head_crimson_brow_1_0_material.tres" id="33_2hfkk"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_crimson_brow_1_0.res" id="34_ep242"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_cheek_seal_1_0.res" id="35_cjda8"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_smile_1_0.res" id="36_641fx"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_cheek_tuft_1_0.res" id="37_78eco"]
-[ext_resource type="Material" path="res://materials/generated/kitsune_visual_fox_body_head_ear_right_ivory_pinna_material.tres" id="38_skjbt"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_ear_right_ivory_pinna.res" id="39_7oqu5"]
-[ext_resource type="Material" path="res://materials/generated/kitsune_visual_fox_body_head_ear_right_rose_inner_ear_material.tres" id="40_nydlm"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_ear_right_rose_inner_ear.res" id="41_m1slu"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_eye_1_0_2.res" id="42_qmr0j"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_amber_iris_1_0_2.res" id="43_0gxmw"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_eye_glint_1_0_2.res" id="44_q1xpi"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_crimson_brow_1_0_2.res" id="45_dwli1"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_cheek_seal_1_0_2.res" id="46_f8gnq"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_smile_1_0_2.res" id="47_tuari"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_cheek_tuft_1_0_2.res" id="48_rxd0x"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_forehead_seal.res" id="49_wd8ah"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_rear_left_leg_tapered_limb.res" id="50_ybbqv"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_rear_left_leg_paw.res" id="51_en37c"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_rear_left_leg_red_sock.res" id="52_0ugki"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_rear_left_leg_toe_1.res" id="53_l33f6"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_rear_left_leg_toe_0.res" id="54_wkrpe"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_rear_left_leg_toe_1_2.res" id="55_xuvy0"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_fore_left_leg_tapered_limb.res" id="56_3enn3"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_fore_left_leg_paw.res" id="57_kyn6v"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_fore_left_leg_red_sock.res" id="58_vf0h3"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_fore_left_leg_toe_1.res" id="59_t012c"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_fore_left_leg_toe_0.res" id="60_3oucc"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_fore_left_leg_toe_1_2.res" id="61_svtr0"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_fore_left_leg_gold_anklet.res" id="62_xj6cs"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_rear_right_leg_tapered_limb.res" id="63_tmbem"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_rear_right_leg_paw.res" id="64_wsiow"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_rear_right_leg_red_sock.res" id="65_m6tuy"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_rear_right_leg_toe_1.res" id="66_ya3cr"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_rear_right_leg_toe_0.res" id="67_jd2i5"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_rear_right_leg_toe_1_2.res" id="68_anj2j"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_fore_right_leg_tapered_limb.res" id="69_l5s8g"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_fore_right_leg_paw.res" id="70_2yluo"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_fore_right_leg_red_sock.res" id="71_o6ucq"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_fore_right_leg_toe_1.res" id="72_w3kgq"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_fore_right_leg_toe_0.res" id="73_csnq6"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_fore_right_leg_toe_1_2.res" id="74_ledwq"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_fore_right_leg_gold_anklet.res" id="75_iqgux"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_vermilion_collar.res" id="76_o6dv5"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_collar_bead_0.res" id="77_x6ecl"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_collar_bead_1.res" id="78_cg45n"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_bell_1.res" id="79_bd136"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_bell_slit_1.res" id="80_ny631"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_collar_bead_2.res" id="81_7rugn"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_collar_bead_3.res" id="82_s3j0u"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_bell_3.res" id="83_wktsq"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_bell_slit_3.res" id="84_h3on5"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_collar_bead_4.res" id="85_es5qj"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_collar_bead_5.res" id="86_eqpoo"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_bell_5.res" id="87_f8gpd"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_bell_slit_5.res" id="88_rn28c"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_collar_bead_6.res" id="89_mmmjf"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_mirror_rim.res" id="90_q6nco"]
-[ext_resource type="Material" path="res://materials/generated/kitsune_visual_fox_body_sacred_amethyst_material.tres" id="91_kb3tx"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_sacred_amethyst.res" id="92_70wnv"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_prayer_tie_1_0.res" id="93_xw1ll"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_tie_bead_1_0.res" id="94_ntyo2"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_tassel_1_0_0.res" id="95_tofn5"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_tassel_1_0_1.res" id="96_t8yd2"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_tassel_1_0_2.res" id="97_u8ovf"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_tassel_1_0_3.res" id="98_syh2x"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_prayer_tie_1_0_2.res" id="99_t5o2b"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_tie_bead_1_0_2.res" id="100_j0ltm"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_tassel_1_0_0_2.res" id="101_6dl16"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_tassel_1_0_1_2.res" id="102_5ftar"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_tassel_1_0_2_2.res" id="103_hfymb"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_tassel_1_0_3_2.res" id="104_gndeo"]
-[ext_resource type="Material" path="res://materials/generated/kitsune_visual_tails_tail_0_spirit_plume_material.tres" id="105_vv4u7"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_0_spirit_plume.res" id="106_lth7y"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_0_sacred_light_vein.res" id="107_mbmg6"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_0_fork_12.res" id="108_0jx5s"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_0_fork_22.res" id="109_cqro4"]
-[ext_resource type="Material" path="res://materials/generated/kitsune_visual_tails_tail_1_spirit_plume_material.tres" id="110_1cj70"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_1_spirit_plume.res" id="111_w36wm"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_1_sacred_light_vein.res" id="112_yyetc"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_1_fork_12.res" id="113_xlham"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_1_fork_22.res" id="114_4aqe4"]
-[ext_resource type="Material" path="res://materials/generated/kitsune_visual_tails_tail_2_spirit_plume_material.tres" id="115_n082x"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_2_spirit_plume.res" id="116_lt18a"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_2_sacred_light_vein.res" id="117_0w4bf"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_2_fork_12.res" id="118_tsntg"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_2_fork_22.res" id="119_8tktj"]
-[ext_resource type="Material" path="res://materials/generated/kitsune_visual_tails_tail_3_spirit_plume_material.tres" id="120_gv1u8"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_3_spirit_plume.res" id="121_bqkjt"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_3_sacred_light_vein.res" id="122_p4gga"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_3_fork_12.res" id="123_b7xwo"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_3_fork_22.res" id="124_ipnjr"]
-[ext_resource type="Material" path="res://materials/generated/kitsune_visual_tails_tail_4_spirit_plume_material.tres" id="125_kygsd"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_4_spirit_plume.res" id="126_2l6mt"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_4_sacred_light_vein.res" id="127_bpmkp"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_4_fork_12.res" id="128_806wa"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_4_fork_22.res" id="129_u6fgc"]
-[ext_resource type="Material" path="res://materials/generated/kitsune_visual_tails_tail_5_spirit_plume_material.tres" id="130_5cejn"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_5_spirit_plume.res" id="131_6rs1s"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_5_sacred_light_vein.res" id="132_8ige6"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_5_fork_12.res" id="133_xwayg"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_5_fork_22.res" id="134_872n6"]
-[ext_resource type="Material" path="res://materials/generated/kitsune_visual_tails_tail_6_spirit_plume_material.tres" id="135_h3s16"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_6_spirit_plume.res" id="136_06vi1"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_6_sacred_light_vein.res" id="137_r1j3n"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_6_fork_12.res" id="138_xtctu"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_6_fork_22.res" id="139_le4vf"]
-[ext_resource type="Material" path="res://materials/generated/kitsune_visual_tails_tail_7_spirit_plume_material.tres" id="140_v32c3"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_7_spirit_plume.res" id="141_a36ji"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_7_sacred_light_vein.res" id="142_iyj2p"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_7_fork_12.res" id="143_4mpo7"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_7_fork_22.res" id="144_yqjw5"]
-[ext_resource type="Material" path="res://materials/generated/kitsune_visual_tails_tail_8_spirit_plume_material.tres" id="145_q6ano"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_8_spirit_plume.res" id="146_o0hov"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_8_sacred_light_vein.res" id="147_jxfmw"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_8_fork_12.res" id="148_gug0d"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_8_fork_22.res" id="149_kh867"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_motes_star_0.res" id="150_lge0i"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_motes_star_1.res" id="151_vryif"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_motes_star_2.res" id="152_p65sr"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_motes_star_3.res" id="153_twt5t"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_motes_star_4.res" id="154_npgdl"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_motes_star_5.res" id="155_88kna"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_motes_star_6.res" id="156_blr8l"]
-[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_motes_star_7.res" id="157_v0ehc"]
+[ext_resource type="Material" path="res://materials/generated/kitsune_visual_fox_body_lithe_torso_material.tres" id="1_bjqoq"]
+[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_lithe_torso.res" id="2_x7bqs"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_cheek_ruff_1_0_0.res" id="3_t6cx0"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_cheek_ruff_1_0_1.res" id="4_ayasr"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_cheek_ruff_1_0_2.res" id="5_xtidf"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_cheek_ruff_1_0_3.res" id="6_d6wtq"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_cheek_ruff_1_0_0_2.res" id="7_tysbc"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_cheek_ruff_1_0_1_2.res" id="8_7iy5j"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_cheek_ruff_1_0_2_2.res" id="9_snjjv"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_cheek_ruff_1_0_3_2.res" id="10_ah6w2"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_chest_mane_0.res" id="11_4jv6y"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_chest_mane_1.res" id="12_rtuun"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_chest_mane_2.res" id="13_emh88"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_chest_mane_3.res" id="14_r4ft5"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_chest_mane_4.res" id="15_qdesw"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_pointed_muzzle.res" id="16_725i8"]
+[ext_resource type="Material" path="res://materials/generated/kitsune_visual_fox_body_head_onyx_nose_material.tres" id="17_472k8"]
+[ext_resource type="Material" path="res://materials/generated/kitsune_visual_fox_body_head_ear_left_ivory_pinna_material.tres" id="18_3yo3d"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_ear_left_ivory_pinna.res" id="19_h6l8f"]
+[ext_resource type="Material" path="res://materials/generated/kitsune_visual_fox_body_head_ear_left_rose_inner_ear_material.tres" id="20_d3f5p"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_ear_left_rose_inner_ear.res" id="21_mn1x4"]
+[ext_resource type="Material" path="res://materials/generated/kitsune_visual_fox_body_head_amber_iris_1_0_material.tres" id="22_5e0vi"]
+[ext_resource type="Material" path="res://materials/generated/kitsune_visual_fox_body_head_eye_glint_1_0_material.tres" id="23_78n0v"]
+[ext_resource type="Material" path="res://materials/generated/kitsune_visual_fox_body_head_crimson_brow_1_0_material.tres" id="24_ohs34"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_crimson_brow_1_0.res" id="25_hodw1"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_cheek_seal_1_0.res" id="26_ysxcx"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_smile_1_0.res" id="27_4yf0h"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_cheek_tuft_1_0.res" id="28_5l55x"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_ear_right_ivory_pinna.res" id="29_8nc70"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_ear_right_rose_inner_ear.res" id="30_p0wm1"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_crimson_brow_1_0_2.res" id="31_gmcqq"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_cheek_seal_1_0_2.res" id="32_530nb"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_smile_1_0_2.res" id="33_yf2e4"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_cheek_tuft_1_0_2.res" id="34_dwnte"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_head_forehead_seal.res" id="35_fyvml"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_rear_left_leg_tapered_limb.res" id="36_t0pw6"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_rear_left_leg_toe_1.res" id="37_6em5w"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_rear_left_leg_toe_0.res" id="38_d7wh8"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_rear_left_leg_toe_1_2.res" id="39_p65mv"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_fore_left_leg_tapered_limb.res" id="40_sjcng"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_fore_left_leg_toe_1.res" id="41_bmw7a"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_fore_left_leg_toe_0.res" id="42_naant"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_fore_left_leg_toe_1_2.res" id="43_fvx6j"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_fore_left_leg_gold_anklet.res" id="44_ynqqy"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_rear_right_leg_tapered_limb.res" id="45_rqw10"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_rear_right_leg_toe_1.res" id="46_13hpo"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_rear_right_leg_toe_0.res" id="47_dbkws"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_rear_right_leg_toe_1_2.res" id="48_bld1s"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_fore_right_leg_tapered_limb.res" id="49_8qtcd"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_fore_right_leg_toe_1.res" id="50_3bv6u"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_fore_right_leg_toe_0.res" id="51_ilj52"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_fore_right_leg_toe_1_2.res" id="52_ycc4r"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_fore_right_leg_gold_anklet.res" id="53_c57hv"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_vermilion_collar.res" id="54_gjy3w"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_bell_slit_1.res" id="55_sio2l"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_bell_slit_3.res" id="56_028a3"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_bell_slit_5.res" id="57_hovbv"]
+[ext_resource type="Material" path="res://materials/generated/kitsune_visual_fox_body_sacred_amethyst_material.tres" id="58_u8dln"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_prayer_tie_1_0.res" id="59_bll45"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_tassel_1_0_0.res" id="60_llokv"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_tassel_1_0_1.res" id="61_wcfsl"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_tassel_1_0_2.res" id="62_x7qvg"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_tassel_1_0_3.res" id="63_brdvi"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_prayer_tie_1_0_2.res" id="64_afpqp"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_tassel_1_0_0_2.res" id="65_sx8s3"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_tassel_1_0_1_2.res" id="66_ewcot"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_tassel_1_0_2_2.res" id="67_fpusw"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_fox_body_tassel_1_0_3_2.res" id="68_f5dun"]
+[ext_resource type="Material" path="res://materials/generated/kitsune_visual_tails_tail_0_spirit_plume_material.tres" id="69_dqa48"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_0_spirit_plume.res" id="70_g410w"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_0_sacred_light_vein.res" id="71_htp1t"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_0_fork_12.res" id="72_ht71g"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_0_fork_22.res" id="73_48qeo"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_1_spirit_plume.res" id="74_iaw7a"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_1_sacred_light_vein.res" id="75_gfmyn"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_1_fork_12.res" id="76_c5y68"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_1_fork_22.res" id="77_r2x7g"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_2_spirit_plume.res" id="78_ngb6a"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_2_sacred_light_vein.res" id="79_18mju"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_2_fork_12.res" id="80_6bugs"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_2_fork_22.res" id="81_cw5be"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_3_spirit_plume.res" id="82_7f162"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_3_sacred_light_vein.res" id="83_hx8lt"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_3_fork_12.res" id="84_2hfkk"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_3_fork_22.res" id="85_ep242"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_4_spirit_plume.res" id="86_cjda8"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_4_sacred_light_vein.res" id="87_641fx"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_4_fork_12.res" id="88_78eco"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_4_fork_22.res" id="89_skjbt"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_5_spirit_plume.res" id="90_7oqu5"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_5_sacred_light_vein.res" id="91_nydlm"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_5_fork_12.res" id="92_m1slu"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_5_fork_22.res" id="93_qmr0j"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_6_spirit_plume.res" id="94_0gxmw"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_6_sacred_light_vein.res" id="95_q1xpi"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_6_fork_12.res" id="96_dwli1"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_6_fork_22.res" id="97_f8gnq"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_7_spirit_plume.res" id="98_tuari"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_7_sacred_light_vein.res" id="99_rxd0x"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_7_fork_12.res" id="100_wd8ah"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_7_fork_22.res" id="101_ybbqv"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_8_spirit_plume.res" id="102_en37c"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_8_sacred_light_vein.res" id="103_0ugki"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_8_fork_12.res" id="104_l33f6"]
+[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/kitsune_visual_tails_tail_8_fork_22.res" id="105_wkrpe"]
+[ext_resource type="SphereMesh" path="res://scenes/generated/meshes/kitsune_visual_motes_star_0.res" id="106_xuvy0"]
 
-[node name="KitsuneVisual" type="Node3D" unique_id=1907260765]
+[node name="KitsuneVisual" type="Node3D" unique_id=192673051]
 
-[node name="FoxBody" type="Node3D" parent="." unique_id=1421287003]
+[node name="FoxBody" type="Node3D" parent="." unique_id=297281092]
 
-[node name="LitheTorso" type="MeshInstance3D" parent="FoxBody" unique_id=939803434]
+[node name="LitheTorso" type="MeshInstance3D" parent="FoxBody" unique_id=810127802]
 transform = Transform3D(0.265, 0, 0, 0, 0.31, 0, 0, 0, 0.61, 0, 0.99, 0.05)
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("2_c57hv")
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("2_x7bqs")
 
-[node name="Haunches" type="MeshInstance3D" parent="FoxBody" unique_id=709174195]
+[node name="Haunches" type="MeshInstance3D" parent="FoxBody" unique_id=1742160954]
 transform = Transform3D(0.28, 0, 0, 0, 0.31, 0, 0, 0, 0.29, 0, 1, 0.43)
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("3_gjy3w")
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("2_x7bqs")
 
-[node name="RaisedChest" type="MeshInstance3D" parent="FoxBody" unique_id=618154702]
+[node name="RaisedChest" type="MeshInstance3D" parent="FoxBody" unique_id=225890928]
 transform = Transform3D(0.26, 0, 0, 0, 0.38, 0, 0, 0, 0.27, 0, 1.1, -0.4)
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("4_sio2l")
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("2_x7bqs")
 
-[node name="ProudNeck" type="MeshInstance3D" parent="FoxBody" unique_id=1660864554]
+[node name="ProudNeck" type="MeshInstance3D" parent="FoxBody" unique_id=144549486]
 transform = Transform3D(0.205, 0, 0, 0, 0.3584976, 0.05690291, 0, -0.091539465, 0.22284986, 0, 1.38, -0.45)
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("5_028a3")
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("2_x7bqs")
 
-[node name="CheekRuff-1_0_0" type="MeshInstance3D" parent="FoxBody" unique_id=180283368]
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("6_hovbv")
+[node name="CheekRuff-1_0_0" type="MeshInstance3D" parent="FoxBody" unique_id=393956721]
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("3_t6cx0")
 
-[node name="CheekRuff-1_0_1" type="MeshInstance3D" parent="FoxBody" unique_id=633010243]
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("7_u8dln")
+[node name="CheekRuff-1_0_1" type="MeshInstance3D" parent="FoxBody" unique_id=486338162]
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("4_ayasr")
 
-[node name="CheekRuff-1_0_2" type="MeshInstance3D" parent="FoxBody" unique_id=1400791990]
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("8_bll45")
+[node name="CheekRuff-1_0_2" type="MeshInstance3D" parent="FoxBody" unique_id=1207129800]
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("5_xtidf")
 
-[node name="CheekRuff-1_0_3" type="MeshInstance3D" parent="FoxBody" unique_id=871797882]
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("9_llokv")
+[node name="CheekRuff-1_0_3" type="MeshInstance3D" parent="FoxBody" unique_id=1511646474]
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("6_d6wtq")
 
-[node name="CheekRuff1_0_0" type="MeshInstance3D" parent="FoxBody" unique_id=1983623923]
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("10_wcfsl")
+[node name="CheekRuff1_0_0" type="MeshInstance3D" parent="FoxBody" unique_id=399884213]
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("7_tysbc")
 
-[node name="CheekRuff1_0_1" type="MeshInstance3D" parent="FoxBody" unique_id=348001507]
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("11_x7qvg")
+[node name="CheekRuff1_0_1" type="MeshInstance3D" parent="FoxBody" unique_id=1143741118]
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("8_7iy5j")
 
-[node name="CheekRuff1_0_2" type="MeshInstance3D" parent="FoxBody" unique_id=1758410339]
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("12_brdvi")
+[node name="CheekRuff1_0_2" type="MeshInstance3D" parent="FoxBody" unique_id=756589436]
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("9_snjjv")
 
-[node name="CheekRuff1_0_3" type="MeshInstance3D" parent="FoxBody" unique_id=2139539189]
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("13_afpqp")
+[node name="CheekRuff1_0_3" type="MeshInstance3D" parent="FoxBody" unique_id=73548732]
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("10_ah6w2")
 
-[node name="ChestMane0" type="MeshInstance3D" parent="FoxBody" unique_id=35572020]
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("14_sx8s3")
+[node name="ChestMane0" type="MeshInstance3D" parent="FoxBody" unique_id=557327195]
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("11_4jv6y")
 
-[node name="ChestMane1" type="MeshInstance3D" parent="FoxBody" unique_id=1147478949]
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("15_ewcot")
+[node name="ChestMane1" type="MeshInstance3D" parent="FoxBody" unique_id=1627942422]
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("12_rtuun")
 
-[node name="ChestMane2" type="MeshInstance3D" parent="FoxBody" unique_id=1477940861]
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("16_fpusw")
+[node name="ChestMane2" type="MeshInstance3D" parent="FoxBody" unique_id=1245871430]
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("13_emh88")
 
-[node name="ChestMane3" type="MeshInstance3D" parent="FoxBody" unique_id=826225263]
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("17_f5dun")
+[node name="ChestMane3" type="MeshInstance3D" parent="FoxBody" unique_id=512880254]
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("14_r4ft5")
 
-[node name="ChestMane4" type="MeshInstance3D" parent="FoxBody" unique_id=1767770720]
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("18_dqa48")
+[node name="ChestMane4" type="MeshInstance3D" parent="FoxBody" unique_id=1209859293]
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("15_qdesw")
 
-[node name="Head" type="Node3D" parent="FoxBody" unique_id=1516503801]
+[node name="Head" type="Node3D" parent="FoxBody" unique_id=1132188519]
 
-[node name="FoxSkull" type="MeshInstance3D" parent="FoxBody/Head" unique_id=1836273172]
+[node name="FoxSkull" type="MeshInstance3D" parent="FoxBody/Head" unique_id=849553612]
 transform = Transform3D(0.23, 0, 0, 0, 0.23, 0, 0, 0, 0.26, 0, 1.66, -0.61)
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("19_g410w")
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("2_x7bqs")
 
-[node name="PointedMuzzle" type="MeshInstance3D" parent="FoxBody/Head" unique_id=1414593390]
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("20_htp1t")
+[node name="PointedMuzzle" type="MeshInstance3D" parent="FoxBody/Head" unique_id=224962591]
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("16_725i8")
 
-[node name="LowerJaw" type="MeshInstance3D" parent="FoxBody/Head" unique_id=591482012]
+[node name="LowerJaw" type="MeshInstance3D" parent="FoxBody/Head" unique_id=1347119163]
 transform = Transform3D(0.105, 0, 0, 0, 0.045, 0, 0, 0, 0.17, 0, 1.51, -0.83)
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("21_ht71g")
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("2_x7bqs")
 
-[node name="OnyxNose" type="MeshInstance3D" parent="FoxBody/Head" unique_id=1538142694]
+[node name="OnyxNose" type="MeshInstance3D" parent="FoxBody/Head" unique_id=272344600]
 transform = Transform3D(0.044, 0, 0, 0, 0.03, 0, 0, 0, 0.027, 0, 1.565, -1.015)
-material_override = ExtResource("22_48qeo")
-mesh = ExtResource("23_iaw7a")
+material_override = ExtResource("17_472k8")
+mesh = ExtResource("2_x7bqs")
 
-[node name="EarLeft" type="Node3D" parent="FoxBody/Head" unique_id=1262720685]
+[node name="EarLeft" type="Node3D" parent="FoxBody/Head" unique_id=184576408]
 
-[node name="IvoryPinna" type="MeshInstance3D" parent="FoxBody/Head/EarLeft" unique_id=21009701]
-material_override = ExtResource("24_gfmyn")
-mesh = ExtResource("25_c5y68")
+[node name="IvoryPinna" type="MeshInstance3D" parent="FoxBody/Head/EarLeft" unique_id=1997016783]
+material_override = ExtResource("18_3yo3d")
+mesh = ExtResource("19_h6l8f")
 
-[node name="RoseInnerEar" type="MeshInstance3D" parent="FoxBody/Head/EarLeft" unique_id=1517908221]
-material_override = ExtResource("26_r2x7g")
-mesh = ExtResource("27_ngb6a")
+[node name="RoseInnerEar" type="MeshInstance3D" parent="FoxBody/Head/EarLeft" unique_id=2103476038]
+material_override = ExtResource("20_d3f5p")
+mesh = ExtResource("21_mn1x4")
 
-[node name="Eye-1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=422897690]
+[node name="Eye-1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=642442930]
 transform = Transform3D(0.025481733, 0.0065560876, 0, -0.005165403, 0.0323422, 0, 0, 0, 0.075, -0.171, 1.694, -0.785)
-material_override = ExtResource("22_48qeo")
-mesh = ExtResource("28_18mju")
+material_override = ExtResource("17_472k8")
+mesh = ExtResource("2_x7bqs")
 
-[node name="AmberIris-1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=93314184]
+[node name="AmberIris-1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=512852709]
 transform = Transform3D(0.012, 0, 0, 0, 0.024, 0, 0, 0, 0.031, -0.192, 1.697, -0.807)
-material_override = ExtResource("29_6bugs")
-mesh = ExtResource("30_cw5be")
+material_override = ExtResource("22_5e0vi")
+mesh = ExtResource("2_x7bqs")
 
-[node name="EyeGlint-1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=788239201]
+[node name="EyeGlint-1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=87247625]
 transform = Transform3D(0.008, 0, 0, 0, 0.009, 0, 0, 0, 0.009, -0.199, 1.71, -0.819)
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("32_hx8lt")
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("2_x7bqs")
 
-[node name="CrimsonBrow-1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=1185361937]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("34_ep242")
+[node name="CrimsonBrow-1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=1037749330]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("25_hodw1")
 
-[node name="CheekSeal-1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=98350030]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("35_cjda8")
+[node name="CheekSeal-1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=816823904]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("26_ysxcx")
 
-[node name="Smile-1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=632833634]
-material_override = ExtResource("22_48qeo")
-mesh = ExtResource("36_641fx")
+[node name="Smile-1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=235221574]
+material_override = ExtResource("17_472k8")
+mesh = ExtResource("27_4yf0h")
 
-[node name="CheekTuft-1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=689930833]
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("37_78eco")
+[node name="CheekTuft-1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=348167861]
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("28_5l55x")
 
-[node name="EarRight" type="Node3D" parent="FoxBody/Head" unique_id=132564783]
+[node name="EarRight" type="Node3D" parent="FoxBody/Head" unique_id=1501809705]
 
-[node name="IvoryPinna" type="MeshInstance3D" parent="FoxBody/Head/EarRight" unique_id=1269675252]
-material_override = ExtResource("38_skjbt")
-mesh = ExtResource("39_7oqu5")
+[node name="IvoryPinna" type="MeshInstance3D" parent="FoxBody/Head/EarRight" unique_id=573709133]
+material_override = ExtResource("18_3yo3d")
+mesh = ExtResource("29_8nc70")
 
-[node name="RoseInnerEar" type="MeshInstance3D" parent="FoxBody/Head/EarRight" unique_id=1485444840]
-material_override = ExtResource("40_nydlm")
-mesh = ExtResource("41_m1slu")
+[node name="RoseInnerEar" type="MeshInstance3D" parent="FoxBody/Head/EarRight" unique_id=531542234]
+material_override = ExtResource("20_d3f5p")
+mesh = ExtResource("30_p0wm1")
 
-[node name="Eye1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=775614521]
+[node name="Eye1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=1848234265]
 transform = Transform3D(0.025481733, -0.0065560876, 0, 0.005165403, 0.0323422, 0, 0, 0, 0.075, 0.171, 1.694, -0.785)
-material_override = ExtResource("22_48qeo")
-mesh = ExtResource("42_qmr0j")
+material_override = ExtResource("17_472k8")
+mesh = ExtResource("2_x7bqs")
 
-[node name="AmberIris1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=1439314272]
+[node name="AmberIris1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=1682570259]
 transform = Transform3D(0.012, 0, 0, 0, 0.024, 0, 0, 0, 0.031, 0.192, 1.697, -0.807)
-material_override = ExtResource("29_6bugs")
-mesh = ExtResource("43_0gxmw")
+material_override = ExtResource("22_5e0vi")
+mesh = ExtResource("2_x7bqs")
 
-[node name="EyeGlint1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=884302058]
+[node name="EyeGlint1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=662382639]
 transform = Transform3D(0.008, 0, 0, 0, 0.009, 0, 0, 0, 0.009, 0.199, 1.71, -0.819)
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("44_q1xpi")
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("2_x7bqs")
 
-[node name="CrimsonBrow1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=1908891981]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("45_dwli1")
+[node name="CrimsonBrow1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=975761790]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("31_gmcqq")
 
-[node name="CheekSeal1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=865461245]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("46_f8gnq")
+[node name="CheekSeal1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=1798257539]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("32_530nb")
 
-[node name="Smile1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=1974063202]
-material_override = ExtResource("22_48qeo")
-mesh = ExtResource("47_tuari")
+[node name="Smile1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=1431126918]
+material_override = ExtResource("17_472k8")
+mesh = ExtResource("33_yf2e4")
 
-[node name="CheekTuft1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=327252858]
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("48_rxd0x")
+[node name="CheekTuft1_0" type="MeshInstance3D" parent="FoxBody/Head" unique_id=2001677578]
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("34_dwnte")
 
-[node name="ForeheadSeal" type="MeshInstance3D" parent="FoxBody/Head" unique_id=2025159858]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("49_wd8ah")
+[node name="ForeheadSeal" type="MeshInstance3D" parent="FoxBody/Head" unique_id=1342303531]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("35_fyvml")
 
-[node name="RearLeftLeg" type="Node3D" parent="FoxBody" unique_id=1856788759]
+[node name="RearLeftLeg" type="Node3D" parent="FoxBody" unique_id=520909923]
 
-[node name="TaperedLimb" type="MeshInstance3D" parent="FoxBody/RearLeftLeg" unique_id=1817345867]
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("50_ybbqv")
+[node name="TaperedLimb" type="MeshInstance3D" parent="FoxBody/RearLeftLeg" unique_id=1802206439]
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("36_t0pw6")
 
-[node name="Paw" type="MeshInstance3D" parent="FoxBody/RearLeftLeg" unique_id=1674317791]
+[node name="Paw" type="MeshInstance3D" parent="FoxBody/RearLeftLeg" unique_id=238633063]
 transform = Transform3D(0.075, 0, 0, 0, 0.065, 0, 0, 0, 0.13, -0.2576, 0.13, 0.29)
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("51_en37c")
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("2_x7bqs")
 
-[node name="RedSock" type="MeshInstance3D" parent="FoxBody/RearLeftLeg" unique_id=408125768]
+[node name="RedSock" type="MeshInstance3D" parent="FoxBody/RearLeftLeg" unique_id=1276804655]
 transform = Transform3D(0.048, 0, 0, 0, 0.058, 0, 0, 0, 0.058, -0.2576, 0.19, 0.34)
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("52_0ugki")
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("2_x7bqs")
 
-[node name="Toe-1" type="MeshInstance3D" parent="FoxBody/RearLeftLeg" unique_id=898750177]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("53_l33f6")
+[node name="Toe-1" type="MeshInstance3D" parent="FoxBody/RearLeftLeg" unique_id=113092366]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("37_6em5w")
 
-[node name="Toe0" type="MeshInstance3D" parent="FoxBody/RearLeftLeg" unique_id=1189762478]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("54_wkrpe")
+[node name="Toe0" type="MeshInstance3D" parent="FoxBody/RearLeftLeg" unique_id=999526436]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("38_d7wh8")
 
-[node name="Toe1" type="MeshInstance3D" parent="FoxBody/RearLeftLeg" unique_id=1490702394]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("55_xuvy0")
+[node name="Toe1" type="MeshInstance3D" parent="FoxBody/RearLeftLeg" unique_id=15158299]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("39_p65mv")
 
-[node name="ForeLeftLeg" type="Node3D" parent="FoxBody" unique_id=767631219]
+[node name="ForeLeftLeg" type="Node3D" parent="FoxBody" unique_id=746434873]
 
-[node name="TaperedLimb" type="MeshInstance3D" parent="FoxBody/ForeLeftLeg" unique_id=419919280]
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("56_3enn3")
+[node name="TaperedLimb" type="MeshInstance3D" parent="FoxBody/ForeLeftLeg" unique_id=1498768597]
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("40_sjcng")
 
-[node name="Paw" type="MeshInstance3D" parent="FoxBody/ForeLeftLeg" unique_id=1864194600]
+[node name="Paw" type="MeshInstance3D" parent="FoxBody/ForeLeftLeg" unique_id=915921393]
 transform = Transform3D(0.075, 0, 0, 0, 0.065, 0, 0, 0, 0.13, -0.2576, 0.13, -0.57)
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("57_kyn6v")
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("2_x7bqs")
 
-[node name="RedSock" type="MeshInstance3D" parent="FoxBody/ForeLeftLeg" unique_id=1150314554]
+[node name="RedSock" type="MeshInstance3D" parent="FoxBody/ForeLeftLeg" unique_id=1528979131]
 transform = Transform3D(0.048, 0, 0, 0, 0.058, 0, 0, 0, 0.058, -0.2576, 0.19, -0.52)
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("58_vf0h3")
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("2_x7bqs")
 
-[node name="Toe-1" type="MeshInstance3D" parent="FoxBody/ForeLeftLeg" unique_id=2070582323]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("59_t012c")
+[node name="Toe-1" type="MeshInstance3D" parent="FoxBody/ForeLeftLeg" unique_id=786055807]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("41_bmw7a")
 
-[node name="Toe0" type="MeshInstance3D" parent="FoxBody/ForeLeftLeg" unique_id=1664714357]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("60_3oucc")
+[node name="Toe0" type="MeshInstance3D" parent="FoxBody/ForeLeftLeg" unique_id=2128507161]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("42_naant")
 
-[node name="Toe1" type="MeshInstance3D" parent="FoxBody/ForeLeftLeg" unique_id=2108775449]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("61_svtr0")
+[node name="Toe1" type="MeshInstance3D" parent="FoxBody/ForeLeftLeg" unique_id=505635773]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("43_fvx6j")
 
-[node name="GoldAnklet" type="MeshInstance3D" parent="FoxBody/ForeLeftLeg" unique_id=355168914]
-material_override = ExtResource("29_6bugs")
-mesh = ExtResource("62_xj6cs")
+[node name="GoldAnklet" type="MeshInstance3D" parent="FoxBody/ForeLeftLeg" unique_id=1209931303]
+material_override = ExtResource("22_5e0vi")
+mesh = ExtResource("44_ynqqy")
 
-[node name="RearRightLeg" type="Node3D" parent="FoxBody" unique_id=984265391]
+[node name="RearRightLeg" type="Node3D" parent="FoxBody" unique_id=1215130211]
 
-[node name="TaperedLimb" type="MeshInstance3D" parent="FoxBody/RearRightLeg" unique_id=1357461738]
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("63_tmbem")
+[node name="TaperedLimb" type="MeshInstance3D" parent="FoxBody/RearRightLeg" unique_id=1277858810]
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("45_rqw10")
 
-[node name="Paw" type="MeshInstance3D" parent="FoxBody/RearRightLeg" unique_id=619918]
+[node name="Paw" type="MeshInstance3D" parent="FoxBody/RearRightLeg" unique_id=596448368]
 transform = Transform3D(0.075, 0, 0, 0, 0.065, 0, 0, 0, 0.13, 0.2576, 0.13, 0.29)
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("64_wsiow")
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("2_x7bqs")
 
-[node name="RedSock" type="MeshInstance3D" parent="FoxBody/RearRightLeg" unique_id=1613580356]
+[node name="RedSock" type="MeshInstance3D" parent="FoxBody/RearRightLeg" unique_id=1375332274]
 transform = Transform3D(0.048, 0, 0, 0, 0.058, 0, 0, 0, 0.058, 0.2576, 0.19, 0.34)
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("65_m6tuy")
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("2_x7bqs")
 
-[node name="Toe-1" type="MeshInstance3D" parent="FoxBody/RearRightLeg" unique_id=1694882719]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("66_ya3cr")
+[node name="Toe-1" type="MeshInstance3D" parent="FoxBody/RearRightLeg" unique_id=366507592]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("46_13hpo")
 
-[node name="Toe0" type="MeshInstance3D" parent="FoxBody/RearRightLeg" unique_id=335999660]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("67_jd2i5")
+[node name="Toe0" type="MeshInstance3D" parent="FoxBody/RearRightLeg" unique_id=1927569024]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("47_dbkws")
 
-[node name="Toe1" type="MeshInstance3D" parent="FoxBody/RearRightLeg" unique_id=1282333111]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("68_anj2j")
+[node name="Toe1" type="MeshInstance3D" parent="FoxBody/RearRightLeg" unique_id=2078443945]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("48_bld1s")
 
-[node name="ForeRightLeg" type="Node3D" parent="FoxBody" unique_id=1775519882]
+[node name="ForeRightLeg" type="Node3D" parent="FoxBody" unique_id=44565632]
 
-[node name="TaperedLimb" type="MeshInstance3D" parent="FoxBody/ForeRightLeg" unique_id=94241772]
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("69_l5s8g")
+[node name="TaperedLimb" type="MeshInstance3D" parent="FoxBody/ForeRightLeg" unique_id=2006709566]
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("49_8qtcd")
 
-[node name="Paw" type="MeshInstance3D" parent="FoxBody/ForeRightLeg" unique_id=1682626664]
+[node name="Paw" type="MeshInstance3D" parent="FoxBody/ForeRightLeg" unique_id=2048212617]
 transform = Transform3D(0.075, 0, 0, 0, 0.065, 0, 0, 0, 0.13, 0.2576, 0.28, -0.57)
-material_override = ExtResource("1_ycc4r")
-mesh = ExtResource("70_2yluo")
+material_override = ExtResource("1_bjqoq")
+mesh = ExtResource("2_x7bqs")
 
-[node name="RedSock" type="MeshInstance3D" parent="FoxBody/ForeRightLeg" unique_id=1774111942]
+[node name="RedSock" type="MeshInstance3D" parent="FoxBody/ForeRightLeg" unique_id=335884411]
 transform = Transform3D(0.048, 0, 0, 0, 0.058, 0, 0, 0, 0.058, 0.2576, 0.34, -0.52)
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("71_o6ucq")
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("2_x7bqs")
 
-[node name="Toe-1" type="MeshInstance3D" parent="FoxBody/ForeRightLeg" unique_id=704804646]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("72_w3kgq")
+[node name="Toe-1" type="MeshInstance3D" parent="FoxBody/ForeRightLeg" unique_id=1887383655]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("50_3bv6u")
 
-[node name="Toe0" type="MeshInstance3D" parent="FoxBody/ForeRightLeg" unique_id=972008446]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("73_csnq6")
+[node name="Toe0" type="MeshInstance3D" parent="FoxBody/ForeRightLeg" unique_id=2069249657]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("51_ilj52")
 
-[node name="Toe1" type="MeshInstance3D" parent="FoxBody/ForeRightLeg" unique_id=424497017]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("74_ledwq")
+[node name="Toe1" type="MeshInstance3D" parent="FoxBody/ForeRightLeg" unique_id=888210454]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("52_ycc4r")
 
-[node name="GoldAnklet" type="MeshInstance3D" parent="FoxBody/ForeRightLeg" unique_id=1381621291]
-material_override = ExtResource("29_6bugs")
-mesh = ExtResource("75_iqgux")
+[node name="GoldAnklet" type="MeshInstance3D" parent="FoxBody/ForeRightLeg" unique_id=954874896]
+material_override = ExtResource("22_5e0vi")
+mesh = ExtResource("53_c57hv")
 
-[node name="VermilionCollar" type="MeshInstance3D" parent="FoxBody" unique_id=642720013]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("76_o6dv5")
+[node name="VermilionCollar" type="MeshInstance3D" parent="FoxBody" unique_id=1430432891]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("54_gjy3w")
 
-[node name="CollarBead0" type="MeshInstance3D" parent="FoxBody" unique_id=1419718657]
+[node name="CollarBead0" type="MeshInstance3D" parent="FoxBody" unique_id=4923381]
 transform = Transform3D(0.052, 0, 0, 0, 0.052, 0, 0, 0, 0.052, -0.27, 1.26, -0.43)
-material_override = ExtResource("29_6bugs")
-mesh = ExtResource("77_x6ecl")
+material_override = ExtResource("22_5e0vi")
+mesh = ExtResource("2_x7bqs")
 
-[node name="CollarBead1" type="MeshInstance3D" parent="FoxBody" unique_id=206546446]
+[node name="CollarBead1" type="MeshInstance3D" parent="FoxBody" unique_id=361614900]
 transform = Transform3D(0.052, 0, 0, 0, 0.052, 0, 0, 0, 0.052, -0.23382686, 1.26, -0.565)
-material_override = ExtResource("29_6bugs")
-mesh = ExtResource("78_cg45n")
+material_override = ExtResource("22_5e0vi")
+mesh = ExtResource("2_x7bqs")
 
-[node name="Bell1" type="MeshInstance3D" parent="FoxBody" unique_id=849123215]
+[node name="Bell1" type="MeshInstance3D" parent="FoxBody" unique_id=1257792736]
 transform = Transform3D(0.064, 0, 0, 0, 0.074, 0, 0, 0, 0.064, -0.23382686, 1.17, -0.565)
-material_override = ExtResource("29_6bugs")
-mesh = ExtResource("79_bd136")
+material_override = ExtResource("22_5e0vi")
+mesh = ExtResource("2_x7bqs")
 
-[node name="BellSlit1" type="MeshInstance3D" parent="FoxBody" unique_id=1129147126]
-material_override = ExtResource("22_48qeo")
-mesh = ExtResource("80_ny631")
+[node name="BellSlit1" type="MeshInstance3D" parent="FoxBody" unique_id=1401845831]
+material_override = ExtResource("17_472k8")
+mesh = ExtResource("55_sio2l")
 
-[node name="CollarBead2" type="MeshInstance3D" parent="FoxBody" unique_id=953216918]
+[node name="CollarBead2" type="MeshInstance3D" parent="FoxBody" unique_id=1648389537]
 transform = Transform3D(0.052, 0, 0, 0, 0.052, 0, 0, 0, 0.052, -0.135, 1.26, -0.6638269)
-material_override = ExtResource("29_6bugs")
-mesh = ExtResource("81_7rugn")
+material_override = ExtResource("22_5e0vi")
+mesh = ExtResource("2_x7bqs")
 
-[node name="CollarBead3" type="MeshInstance3D" parent="FoxBody" unique_id=1119043904]
+[node name="CollarBead3" type="MeshInstance3D" parent="FoxBody" unique_id=1880783830]
 transform = Transform3D(0.052, 0, 0, 0, 0.052, 0, 0, 0, 0.052, -4.9598196e-17, 1.26, -0.7)
-material_override = ExtResource("29_6bugs")
-mesh = ExtResource("82_s3j0u")
+material_override = ExtResource("22_5e0vi")
+mesh = ExtResource("2_x7bqs")
 
-[node name="Bell3" type="MeshInstance3D" parent="FoxBody" unique_id=1909096405]
+[node name="Bell3" type="MeshInstance3D" parent="FoxBody" unique_id=1963703946]
 transform = Transform3D(0.064, 0, 0, 0, 0.074, 0, 0, 0, 0.064, -4.9598196e-17, 1.17, -0.7)
-material_override = ExtResource("29_6bugs")
-mesh = ExtResource("83_wktsq")
+material_override = ExtResource("22_5e0vi")
+mesh = ExtResource("2_x7bqs")
 
-[node name="BellSlit3" type="MeshInstance3D" parent="FoxBody" unique_id=160543506]
-material_override = ExtResource("22_48qeo")
-mesh = ExtResource("84_h3on5")
+[node name="BellSlit3" type="MeshInstance3D" parent="FoxBody" unique_id=1027051136]
+material_override = ExtResource("17_472k8")
+mesh = ExtResource("56_028a3")
 
-[node name="CollarBead4" type="MeshInstance3D" parent="FoxBody" unique_id=1197897566]
+[node name="CollarBead4" type="MeshInstance3D" parent="FoxBody" unique_id=866635919]
 transform = Transform3D(0.052, 0, 0, 0, 0.052, 0, 0, 0, 0.052, 0.135, 1.26, -0.6638269)
-material_override = ExtResource("29_6bugs")
-mesh = ExtResource("85_es5qj")
+material_override = ExtResource("22_5e0vi")
+mesh = ExtResource("2_x7bqs")
 
-[node name="CollarBead5" type="MeshInstance3D" parent="FoxBody" unique_id=2011705920]
+[node name="CollarBead5" type="MeshInstance3D" parent="FoxBody" unique_id=1539760572]
 transform = Transform3D(0.052, 0, 0, 0, 0.052, 0, 0, 0, 0.052, 0.23382686, 1.26, -0.565)
-material_override = ExtResource("29_6bugs")
-mesh = ExtResource("86_eqpoo")
+material_override = ExtResource("22_5e0vi")
+mesh = ExtResource("2_x7bqs")
 
-[node name="Bell5" type="MeshInstance3D" parent="FoxBody" unique_id=231294959]
+[node name="Bell5" type="MeshInstance3D" parent="FoxBody" unique_id=2128168562]
 transform = Transform3D(0.064, 0, 0, 0, 0.074, 0, 0, 0, 0.064, 0.23382686, 1.17, -0.565)
-material_override = ExtResource("29_6bugs")
-mesh = ExtResource("87_f8gpd")
+material_override = ExtResource("22_5e0vi")
+mesh = ExtResource("2_x7bqs")
 
-[node name="BellSlit5" type="MeshInstance3D" parent="FoxBody" unique_id=1839467834]
-material_override = ExtResource("22_48qeo")
-mesh = ExtResource("88_rn28c")
+[node name="BellSlit5" type="MeshInstance3D" parent="FoxBody" unique_id=1452636532]
+material_override = ExtResource("17_472k8")
+mesh = ExtResource("57_hovbv")
 
-[node name="CollarBead6" type="MeshInstance3D" parent="FoxBody" unique_id=1974565398]
+[node name="CollarBead6" type="MeshInstance3D" parent="FoxBody" unique_id=2127519775]
 transform = Transform3D(0.052, 0, 0, 0, 0.052, 0, 0, 0, 0.052, 0.27, 1.26, -0.43)
-material_override = ExtResource("29_6bugs")
-mesh = ExtResource("89_mmmjf")
+material_override = ExtResource("22_5e0vi")
+mesh = ExtResource("2_x7bqs")
 
-[node name="MirrorRim" type="MeshInstance3D" parent="FoxBody" unique_id=489109001]
+[node name="MirrorRim" type="MeshInstance3D" parent="FoxBody" unique_id=1270951467]
 transform = Transform3D(0.11, 0, 0, 0, 0.14, 0, 0, 0, 0.035, 0, 1.17, -0.735)
-material_override = ExtResource("29_6bugs")
-mesh = ExtResource("90_q6nco")
+material_override = ExtResource("22_5e0vi")
+mesh = ExtResource("2_x7bqs")
 
-[node name="SacredAmethyst" type="MeshInstance3D" parent="FoxBody" unique_id=44320804]
+[node name="SacredAmethyst" type="MeshInstance3D" parent="FoxBody" unique_id=295854528]
 transform = Transform3D(0.065, 0, 0, 0, 0.09, 0, 0, 0, 0.022, 0, 1.18, -0.77)
-material_override = ExtResource("91_kb3tx")
-mesh = ExtResource("92_70wnv")
+material_override = ExtResource("58_u8dln")
+mesh = ExtResource("2_x7bqs")
 
-[node name="PrayerTie-1_0" type="MeshInstance3D" parent="FoxBody" unique_id=1854855274]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("93_xw1ll")
+[node name="PrayerTie-1_0" type="MeshInstance3D" parent="FoxBody" unique_id=133438687]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("59_bll45")
 
-[node name="TieBead-1_0" type="MeshInstance3D" parent="FoxBody" unique_id=577940151]
+[node name="TieBead-1_0" type="MeshInstance3D" parent="FoxBody" unique_id=1192093318]
 transform = Transform3D(0.038, 0, 0, 0, 0.045, 0, 0, 0, 0.038, -0.18, 0.87, -0.6)
-material_override = ExtResource("29_6bugs")
-mesh = ExtResource("94_ntyo2")
+material_override = ExtResource("22_5e0vi")
+mesh = ExtResource("2_x7bqs")
 
-[node name="Tassel-1_0_0" type="MeshInstance3D" parent="FoxBody" unique_id=391359786]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("95_tofn5")
+[node name="Tassel-1_0_0" type="MeshInstance3D" parent="FoxBody" unique_id=1889513220]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("60_llokv")
 
-[node name="Tassel-1_0_1" type="MeshInstance3D" parent="FoxBody" unique_id=378629771]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("96_t8yd2")
+[node name="Tassel-1_0_1" type="MeshInstance3D" parent="FoxBody" unique_id=831271428]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("61_wcfsl")
 
-[node name="Tassel-1_0_2" type="MeshInstance3D" parent="FoxBody" unique_id=1595386524]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("97_u8ovf")
+[node name="Tassel-1_0_2" type="MeshInstance3D" parent="FoxBody" unique_id=1888410599]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("62_x7qvg")
 
-[node name="Tassel-1_0_3" type="MeshInstance3D" parent="FoxBody" unique_id=455353532]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("98_syh2x")
+[node name="Tassel-1_0_3" type="MeshInstance3D" parent="FoxBody" unique_id=206477261]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("63_brdvi")
 
-[node name="PrayerTie1_0" type="MeshInstance3D" parent="FoxBody" unique_id=1577213533]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("99_t5o2b")
+[node name="PrayerTie1_0" type="MeshInstance3D" parent="FoxBody" unique_id=881413683]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("64_afpqp")
 
-[node name="TieBead1_0" type="MeshInstance3D" parent="FoxBody" unique_id=46822629]
+[node name="TieBead1_0" type="MeshInstance3D" parent="FoxBody" unique_id=1907495335]
 transform = Transform3D(0.038, 0, 0, 0, 0.045, 0, 0, 0, 0.038, 0.18, 0.87, -0.6)
-material_override = ExtResource("29_6bugs")
-mesh = ExtResource("100_j0ltm")
+material_override = ExtResource("22_5e0vi")
+mesh = ExtResource("2_x7bqs")
 
-[node name="Tassel1_0_0" type="MeshInstance3D" parent="FoxBody" unique_id=411885891]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("101_6dl16")
+[node name="Tassel1_0_0" type="MeshInstance3D" parent="FoxBody" unique_id=1125010376]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("65_sx8s3")
 
-[node name="Tassel1_0_1" type="MeshInstance3D" parent="FoxBody" unique_id=1906624894]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("102_5ftar")
+[node name="Tassel1_0_1" type="MeshInstance3D" parent="FoxBody" unique_id=36039141]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("66_ewcot")
 
-[node name="Tassel1_0_2" type="MeshInstance3D" parent="FoxBody" unique_id=1934915775]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("103_hfymb")
+[node name="Tassel1_0_2" type="MeshInstance3D" parent="FoxBody" unique_id=369621830]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("67_fpusw")
 
-[node name="Tassel1_0_3" type="MeshInstance3D" parent="FoxBody" unique_id=620425041]
-material_override = ExtResource("33_2hfkk")
-mesh = ExtResource("104_gndeo")
+[node name="Tassel1_0_3" type="MeshInstance3D" parent="FoxBody" unique_id=24388308]
+material_override = ExtResource("24_ohs34")
+mesh = ExtResource("68_f5dun")
 
-[node name="Tails" type="Node3D" parent="." unique_id=299751149]
+[node name="Tails" type="Node3D" parent="." unique_id=1134135522]
 
-[node name="Tail0" type="Node3D" parent="Tails" unique_id=1124152416]
+[node name="Tail0" type="Node3D" parent="Tails" unique_id=1031026529]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.92, 0.51)
 
-[node name="SpiritPlume" type="MeshInstance3D" parent="Tails/Tail0" unique_id=993065284]
-material_override = ExtResource("105_vv4u7")
-mesh = ExtResource("106_lth7y")
+[node name="SpiritPlume" type="MeshInstance3D" parent="Tails/Tail0" unique_id=451365604]
+material_override = ExtResource("69_dqa48")
+mesh = ExtResource("70_g410w")
 
-[node name="SacredLightVein" type="MeshInstance3D" parent="Tails/Tail0" unique_id=2048524527]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("107_mbmg6")
+[node name="SacredLightVein" type="MeshInstance3D" parent="Tails/Tail0" unique_id=1934953645]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("71_htp1t")
 
-[node name="Fork12" type="MeshInstance3D" parent="Tails/Tail0" unique_id=1238526514]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("108_0jx5s")
+[node name="Fork12" type="MeshInstance3D" parent="Tails/Tail0" unique_id=738099093]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("72_ht71g")
 
-[node name="Fork22" type="MeshInstance3D" parent="Tails/Tail0" unique_id=784450087]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("109_cqro4")
+[node name="Fork22" type="MeshInstance3D" parent="Tails/Tail0" unique_id=1409886250]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("73_48qeo")
 
-[node name="Tail1" type="Node3D" parent="Tails" unique_id=1315422527]
+[node name="Tail1" type="Node3D" parent="Tails" unique_id=764953767]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.92, 0.51)
 
-[node name="SpiritPlume" type="MeshInstance3D" parent="Tails/Tail1" unique_id=1392113637]
-material_override = ExtResource("110_1cj70")
-mesh = ExtResource("111_w36wm")
+[node name="SpiritPlume" type="MeshInstance3D" parent="Tails/Tail1" unique_id=1148708843]
+material_override = ExtResource("69_dqa48")
+mesh = ExtResource("74_iaw7a")
 
-[node name="SacredLightVein" type="MeshInstance3D" parent="Tails/Tail1" unique_id=197079777]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("112_yyetc")
+[node name="SacredLightVein" type="MeshInstance3D" parent="Tails/Tail1" unique_id=1797336986]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("75_gfmyn")
 
-[node name="Fork12" type="MeshInstance3D" parent="Tails/Tail1" unique_id=240958650]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("113_xlham")
+[node name="Fork12" type="MeshInstance3D" parent="Tails/Tail1" unique_id=164588589]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("76_c5y68")
 
-[node name="Fork22" type="MeshInstance3D" parent="Tails/Tail1" unique_id=1254058214]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("114_4aqe4")
+[node name="Fork22" type="MeshInstance3D" parent="Tails/Tail1" unique_id=1308279271]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("77_r2x7g")
 
-[node name="Tail2" type="Node3D" parent="Tails" unique_id=579301444]
+[node name="Tail2" type="Node3D" parent="Tails" unique_id=1451083158]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.92, 0.51)
 
-[node name="SpiritPlume" type="MeshInstance3D" parent="Tails/Tail2" unique_id=204990287]
-material_override = ExtResource("115_n082x")
-mesh = ExtResource("116_lt18a")
+[node name="SpiritPlume" type="MeshInstance3D" parent="Tails/Tail2" unique_id=1005094609]
+material_override = ExtResource("69_dqa48")
+mesh = ExtResource("78_ngb6a")
 
-[node name="SacredLightVein" type="MeshInstance3D" parent="Tails/Tail2" unique_id=706520]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("117_0w4bf")
+[node name="SacredLightVein" type="MeshInstance3D" parent="Tails/Tail2" unique_id=491801954]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("79_18mju")
 
-[node name="Fork12" type="MeshInstance3D" parent="Tails/Tail2" unique_id=1620113672]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("118_tsntg")
+[node name="Fork12" type="MeshInstance3D" parent="Tails/Tail2" unique_id=1087000037]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("80_6bugs")
 
-[node name="Fork22" type="MeshInstance3D" parent="Tails/Tail2" unique_id=1322901695]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("119_8tktj")
+[node name="Fork22" type="MeshInstance3D" parent="Tails/Tail2" unique_id=101056016]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("81_cw5be")
 
-[node name="Tail3" type="Node3D" parent="Tails" unique_id=1509394688]
+[node name="Tail3" type="Node3D" parent="Tails" unique_id=1252156860]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.92, 0.51)
 
-[node name="SpiritPlume" type="MeshInstance3D" parent="Tails/Tail3" unique_id=203439075]
-material_override = ExtResource("120_gv1u8")
-mesh = ExtResource("121_bqkjt")
+[node name="SpiritPlume" type="MeshInstance3D" parent="Tails/Tail3" unique_id=900487541]
+material_override = ExtResource("69_dqa48")
+mesh = ExtResource("82_7f162")
 
-[node name="SacredLightVein" type="MeshInstance3D" parent="Tails/Tail3" unique_id=1086193748]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("122_p4gga")
+[node name="SacredLightVein" type="MeshInstance3D" parent="Tails/Tail3" unique_id=2131241820]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("83_hx8lt")
 
-[node name="Fork12" type="MeshInstance3D" parent="Tails/Tail3" unique_id=1614884110]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("123_b7xwo")
+[node name="Fork12" type="MeshInstance3D" parent="Tails/Tail3" unique_id=1965587972]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("84_2hfkk")
 
-[node name="Fork22" type="MeshInstance3D" parent="Tails/Tail3" unique_id=865965146]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("124_ipnjr")
+[node name="Fork22" type="MeshInstance3D" parent="Tails/Tail3" unique_id=855021388]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("85_ep242")
 
-[node name="Tail4" type="Node3D" parent="Tails" unique_id=534239531]
+[node name="Tail4" type="Node3D" parent="Tails" unique_id=62498260]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.92, 0.51)
 
-[node name="SpiritPlume" type="MeshInstance3D" parent="Tails/Tail4" unique_id=35342099]
-material_override = ExtResource("125_kygsd")
-mesh = ExtResource("126_2l6mt")
+[node name="SpiritPlume" type="MeshInstance3D" parent="Tails/Tail4" unique_id=1427377393]
+material_override = ExtResource("69_dqa48")
+mesh = ExtResource("86_cjda8")
 
-[node name="SacredLightVein" type="MeshInstance3D" parent="Tails/Tail4" unique_id=629497230]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("127_bpmkp")
+[node name="SacredLightVein" type="MeshInstance3D" parent="Tails/Tail4" unique_id=417612808]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("87_641fx")
 
-[node name="Fork12" type="MeshInstance3D" parent="Tails/Tail4" unique_id=1821974953]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("128_806wa")
+[node name="Fork12" type="MeshInstance3D" parent="Tails/Tail4" unique_id=1230952406]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("88_78eco")
 
-[node name="Fork22" type="MeshInstance3D" parent="Tails/Tail4" unique_id=546355634]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("129_u6fgc")
+[node name="Fork22" type="MeshInstance3D" parent="Tails/Tail4" unique_id=1202006672]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("89_skjbt")
 
-[node name="Tail5" type="Node3D" parent="Tails" unique_id=1839532245]
+[node name="Tail5" type="Node3D" parent="Tails" unique_id=2013267658]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.92, 0.51)
 
-[node name="SpiritPlume" type="MeshInstance3D" parent="Tails/Tail5" unique_id=1335754817]
-material_override = ExtResource("130_5cejn")
-mesh = ExtResource("131_6rs1s")
+[node name="SpiritPlume" type="MeshInstance3D" parent="Tails/Tail5" unique_id=2083581525]
+material_override = ExtResource("69_dqa48")
+mesh = ExtResource("90_7oqu5")
 
-[node name="SacredLightVein" type="MeshInstance3D" parent="Tails/Tail5" unique_id=37619654]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("132_8ige6")
+[node name="SacredLightVein" type="MeshInstance3D" parent="Tails/Tail5" unique_id=862942490]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("91_nydlm")
 
-[node name="Fork12" type="MeshInstance3D" parent="Tails/Tail5" unique_id=219664503]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("133_xwayg")
+[node name="Fork12" type="MeshInstance3D" parent="Tails/Tail5" unique_id=1289880313]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("92_m1slu")
 
-[node name="Fork22" type="MeshInstance3D" parent="Tails/Tail5" unique_id=56585687]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("134_872n6")
+[node name="Fork22" type="MeshInstance3D" parent="Tails/Tail5" unique_id=1543165985]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("93_qmr0j")
 
-[node name="Tail6" type="Node3D" parent="Tails" unique_id=129476918]
+[node name="Tail6" type="Node3D" parent="Tails" unique_id=325902077]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.92, 0.51)
 
-[node name="SpiritPlume" type="MeshInstance3D" parent="Tails/Tail6" unique_id=1742383619]
-material_override = ExtResource("135_h3s16")
-mesh = ExtResource("136_06vi1")
+[node name="SpiritPlume" type="MeshInstance3D" parent="Tails/Tail6" unique_id=1351279484]
+material_override = ExtResource("69_dqa48")
+mesh = ExtResource("94_0gxmw")
 
-[node name="SacredLightVein" type="MeshInstance3D" parent="Tails/Tail6" unique_id=204245621]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("137_r1j3n")
+[node name="SacredLightVein" type="MeshInstance3D" parent="Tails/Tail6" unique_id=930905801]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("95_q1xpi")
 
-[node name="Fork12" type="MeshInstance3D" parent="Tails/Tail6" unique_id=1504573283]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("138_xtctu")
+[node name="Fork12" type="MeshInstance3D" parent="Tails/Tail6" unique_id=498030515]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("96_dwli1")
 
-[node name="Fork22" type="MeshInstance3D" parent="Tails/Tail6" unique_id=168497408]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("139_le4vf")
+[node name="Fork22" type="MeshInstance3D" parent="Tails/Tail6" unique_id=719411496]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("97_f8gnq")
 
-[node name="Tail7" type="Node3D" parent="Tails" unique_id=1155433624]
+[node name="Tail7" type="Node3D" parent="Tails" unique_id=1365204186]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.92, 0.51)
 
-[node name="SpiritPlume" type="MeshInstance3D" parent="Tails/Tail7" unique_id=1226861025]
-material_override = ExtResource("140_v32c3")
-mesh = ExtResource("141_a36ji")
+[node name="SpiritPlume" type="MeshInstance3D" parent="Tails/Tail7" unique_id=2134414170]
+material_override = ExtResource("69_dqa48")
+mesh = ExtResource("98_tuari")
 
-[node name="SacredLightVein" type="MeshInstance3D" parent="Tails/Tail7" unique_id=1116112687]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("142_iyj2p")
+[node name="SacredLightVein" type="MeshInstance3D" parent="Tails/Tail7" unique_id=394457266]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("99_rxd0x")
 
-[node name="Fork12" type="MeshInstance3D" parent="Tails/Tail7" unique_id=835915963]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("143_4mpo7")
+[node name="Fork12" type="MeshInstance3D" parent="Tails/Tail7" unique_id=1163934171]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("100_wd8ah")
 
-[node name="Fork22" type="MeshInstance3D" parent="Tails/Tail7" unique_id=1512780257]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("144_yqjw5")
+[node name="Fork22" type="MeshInstance3D" parent="Tails/Tail7" unique_id=1209824118]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("101_ybbqv")
 
-[node name="Tail8" type="Node3D" parent="Tails" unique_id=861486945]
+[node name="Tail8" type="Node3D" parent="Tails" unique_id=1128051482]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.92, 0.51)
 
-[node name="SpiritPlume" type="MeshInstance3D" parent="Tails/Tail8" unique_id=1461456530]
-material_override = ExtResource("145_q6ano")
-mesh = ExtResource("146_o0hov")
+[node name="SpiritPlume" type="MeshInstance3D" parent="Tails/Tail8" unique_id=193064575]
+material_override = ExtResource("69_dqa48")
+mesh = ExtResource("102_en37c")
 
-[node name="SacredLightVein" type="MeshInstance3D" parent="Tails/Tail8" unique_id=39339629]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("147_jxfmw")
+[node name="SacredLightVein" type="MeshInstance3D" parent="Tails/Tail8" unique_id=495490595]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("103_0ugki")
 
-[node name="Fork12" type="MeshInstance3D" parent="Tails/Tail8" unique_id=1703557635]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("148_gug0d")
+[node name="Fork12" type="MeshInstance3D" parent="Tails/Tail8" unique_id=1122353694]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("104_l33f6")
 
-[node name="Fork22" type="MeshInstance3D" parent="Tails/Tail8" unique_id=708136096]
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("149_kh867")
+[node name="Fork22" type="MeshInstance3D" parent="Tails/Tail8" unique_id=1425221699]
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("105_wkrpe")
 
-[node name="Motes" type="Node3D" parent="." unique_id=1148008653]
+[node name="Motes" type="Node3D" parent="." unique_id=343464146]
 
-[node name="Star0" type="MeshInstance3D" parent="Motes" unique_id=1106929426]
+[node name="Star0" type="MeshInstance3D" parent="Motes" unique_id=816953713]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.19, 1.55, 0.66)
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("150_lge0i")
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("106_xuvy0")
 
-[node name="Star1" type="MeshInstance3D" parent="Motes" unique_id=1424616685]
+[node name="Star1" type="MeshInstance3D" parent="Motes" unique_id=919981721]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.84145707, 1.9147501, 0.9994112)
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("151_vryif")
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("106_xuvy0")
 
-[node name="Star2" type="MeshInstance3D" parent="Motes" unique_id=2014796177]
+[node name="Star2" type="MeshInstance3D" parent="Motes" unique_id=654691540]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.2866486e-17, 1.0120711, 1.14)
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("152_p65sr")
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("106_xuvy0")
 
-[node name="Star3" type="MeshInstance3D" parent="Motes" unique_id=789327654]
+[node name="Star3" type="MeshInstance3D" parent="Motes" unique_id=224525006]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.84145707, 1.9785806, 0.9994112)
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("153_twt5t")
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("106_xuvy0")
 
-[node name="Star4" type="MeshInstance3D" parent="Motes" unique_id=1648665706]
+[node name="Star4" type="MeshInstance3D" parent="Motes" unique_id=1055024743]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19, 1.4558636, 0.66)
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("154_npgdl")
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("106_xuvy0")
 
-[node name="Star5" type="MeshInstance3D" parent="Motes" unique_id=1573116964]
+[node name="Star5" type="MeshInstance3D" parent="Motes" unique_id=51499560]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.84145707, 1.2602506, 0.32058874)
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("155_88kna")
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("106_xuvy0")
 
-[node name="Star6" type="MeshInstance3D" parent="Motes" unique_id=868886063]
+[node name="Star6" type="MeshInstance3D" parent="Motes" unique_id=634114852]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1859946e-16, 2.0714552, 0.18)
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("156_blr8l")
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("106_xuvy0")
 
-[node name="Star7" type="MeshInstance3D" parent="Motes" unique_id=496735295]
+[node name="Star7" type="MeshInstance3D" parent="Motes" unique_id=742270483]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.84145707, 1.0707138, 0.32058874)
-material_override = ExtResource("31_7f162")
-mesh = ExtResource("157_v0ehc")
+material_override = ExtResource("23_78n0v")
+mesh = ExtResource("106_xuvy0")
 
-[node name="SpiritLight" type="OmniLight3D" parent="." unique_id=1021742339]
+[node name="SpiritLight" type="OmniLight3D" parent="." unique_id=1124524733]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0.7)
 light_color = Color(0.69411767, 0.5254902, 1, 1)
 light_energy = 0.35

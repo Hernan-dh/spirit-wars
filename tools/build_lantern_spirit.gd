@@ -160,5 +160,7 @@ func _initialize() -> void:
 	var packed := PackedScene.new()
 	packed.pack(visual)
 	var error := ResourceSaver.save(packed,"res://scenes/units/lantern_visual.tscn")
+	if error == OK:
+		GeneratedResources.cleanup_scene("res://scenes/units/lantern_visual.tscn")
 	visual.free()
 	quit(error)

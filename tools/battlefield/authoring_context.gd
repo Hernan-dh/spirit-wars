@@ -193,6 +193,7 @@ func save_scene(root: Node, path: String) -> PackedScene:
 	packed.pack(root)
 	var result := ResourceSaver.save(packed, path, ResourceSaver.FLAG_CHANGE_PATH)
 	assert(result == OK, "Could not save " + path)
+	GeneratedResources.cleanup_scene(path)
 	root.free()
 	return load(path) as PackedScene
 

@@ -280,5 +280,7 @@ func _initialize() -> void:
 	var error := packed.pack(visual)
 	if error == OK:
 		error = ResourceSaver.save(packed,"res://scenes/units/kitsune_visual.tscn")
+	if error == OK:
+		GeneratedResources.cleanup_scene("res://scenes/units/kitsune_visual.tscn")
 	visual.free()
 	quit(error)

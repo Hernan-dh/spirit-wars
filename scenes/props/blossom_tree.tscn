@@ -5,12 +5,12 @@
 [ext_resource type="Material" path="res://materials/generated/wood_weathered_grain.tres" id="3_h8g4j"]
 [ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/blossom_tree_combined_wood_weathered_grain_1_1_0_0.res" id="4_5nucx"]
 
-[node name="BlossomTree" type="Node3D" unique_id=229885438]
+[node name="BlossomTree" type="Node3D" unique_id=1380944272]
 
-[node name="BlossomCrown" type="MeshInstance3D" parent="." unique_id=1099674415]
+[node name="BlossomCrown" type="MeshInstance3D" parent="." unique_id=1921772636]
 material_override = ExtResource("1_i0sun")
 mesh = ExtResource("2_xtnma")
 
-[node name="Combined_Wood weathered grain_1_1_0_0" type="MeshInstance3D" parent="." unique_id=1611113146]
+[node name="Combined_Wood weathered grain_1_1_0_0" type="MeshInstance3D" parent="." unique_id=2093723659]
 material_override = ExtResource("3_h8g4j")
 mesh = ExtResource("4_5nucx")
