@@ -1,14 +1,13 @@
 extends CanvasLayer
 ## Runtime presentation only; the battlefield stays clear in the 3D editor.
 
-const GRID_NODE := "BattlefieldGrid"
-const SKIRMISH_NODE := "Skirmish"
+const SpiritPalette = preload("res://scripts/spirit_palette.gd")
 
 const COLOR_ACCENT := Color("cbb58e")
 const COLOR_TITLE := Color("e5e6dc")
 const COLOR_SUBTITLE := Color("a0bcc4")
 const COLOR_HINT := Color("a7bbc3")
-const COLOR_GOLD := Color("ffe08a")
+const COLOR_GOLD := SpiritPalette.HIGHLIGHT_MOVE
 const COLOR_BODY := Color("d6e1e2")
 const COLOR_PANEL := Color(0.035, 0.065, 0.09, 0.92)
 const COLOR_PANEL_BORDER := Color("52656d")
@@ -16,6 +15,9 @@ const COLOR_OVERLAY := Color(0.015, 0.03, 0.045, 0.65)
 
 const FOOTER_TEXT := "WASD / ARROWS / DRAG MMB  Pan     /     SHIFT  Fast pan\nDRAG RMB / Q E  Rotate     /     SCROLL  Zoom     /     R  Reset view"
 const OVERLAY_HEADING := "B A T T L E   C O M P L E T E"
+
+@export_node_path("Node3D") var skirmish_path: NodePath = ^"../Skirmish"
+@export_node_path("Node3D") var grid_path: NodePath = ^"../BattlefieldGrid"
 
 var selection_label: Label
 var turn_label: Label
@@ -31,7 +33,10 @@ var skirmish: SkirmishController
 var frame: Control
 
 func _ready() -> void:
-	skirmish = get_parent().get_node(SKIRMISH_NODE)
+	skirmish = get_node_or_null(skirmish_path) as SkirmishController
+	if skirmish == null:
+		push_error("CourtyardLabels needs a Skirmish controller at %s." % skirmish_path)
+		return
 	frame = Control.new()
 	frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -45,9 +50,9 @@ func _ready() -> void:
 	_refresh_status()
 
 func _build_header() -> void:
-	add_label(frame, "S P I R I T   W A R S", Vector2(38, 27), 14, COLOR_ACCENT)
-	add_label(frame, "The Moonwell", Vector2(36, 49), 34, COLOR_TITLE)
-	add_label(frame, "S H R I N E   C O U R T Y A R D", Vector2(39, 94), 11, COLOR_SUBTITLE)
+	_add_label(frame, "S P I R I T   W A R S", Vector2(38, 27), 14, COLOR_ACCENT)
+	_add_label(frame, "The Moonwell", Vector2(36, 49), 34, COLOR_TITLE)
+	_add_label(frame, "S H R I N E   C O U R T Y A R D", Vector2(39, 94), 11, COLOR_SUBTITLE)
 	var line := ColorRect.new()
 	line.position = Vector2(39, 122)
 	line.size = Vector2(48, 2)
@@ -66,7 +71,10 @@ func _build_footer() -> void:
 	frame.add_child(footer)
 
 func _build_grid_count() -> void:
-	var grid := get_parent().get_node(GRID_NODE)
+	var grid := get_node_or_null(grid_path)
+	if grid == null:
+		push_error("CourtyardLabels needs a grid at %s." % grid_path)
+		return
 	var count := Label.new()
 	count.text = "%d × %d   /   %d HEXES" % [int(grid.get_meta("rows")), int(grid.get_meta("columns")), grid.get_child_count()]
 	count.add_theme_font_size_override("font_size", 13)
@@ -89,27 +97,27 @@ func _build_status_panel() -> void:
 	rows.add_theme_constant_override("separation", 8)
 	rows.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	panel.add_child(rows)
-	add_status_row(rows, "LOCAL PLAY  /  BOTH TEAMS", 12, COLOR_ACCENT)
-	turn_label = add_status_row(rows, "", 22, Color.WHITE)
+	_add_status_row(rows, "LOCAL PLAY  /  BOTH TEAMS", 12, COLOR_ACCENT)
+	turn_label = _add_status_row(rows, "", 22, Color.WHITE)
 	end_turn_button = Button.new()
 	end_turn_button.name = "EndTurn"
 	end_turn_button.custom_minimum_size.y = 42
 	end_turn_button.pressed.connect(skirmish.end_turn)
 	rows.add_child(end_turn_button)
 	rows.add_child(HSeparator.new())
-	selection_label = add_status_row(rows, "", 16, COLOR_GOLD)
-	actions_label = add_status_row(rows, "", 14, COLOR_BODY)
+	selection_label = _add_status_row(rows, "", 16, COLOR_GOLD)
+	actions_label = _add_status_row(rows, "", 14, COLOR_BODY)
 	ability_button = Button.new()
-	ability_button.name = "SpiritPulse"
+	ability_button.name = "Ability"
 	ability_button.custom_minimum_size.y = 40
 	ability_button.tooltip_text = "Choose an enemy within %d hexes to deal %d damage.\nOne attack per turn; move and attack in either order." % [SkirmishController.ATTACK_RANGE, SkirmishController.ATTACK_DAMAGE]
 	ability_button.pressed.connect(skirmish.use_selected_ability)
 	rows.add_child(ability_button)
-	add_status_row(rows, "Attack: %d damage / %d hex range\nMove and attack in either order." % [SkirmishController.ATTACK_DAMAGE, SkirmishController.ATTACK_RANGE], 13, COLOR_HINT)
-	feedback_label = add_status_row(rows, "", 14, COLOR_GOLD)
+	_add_status_row(rows, "Attack: %d damage / %d hex range\nMove and attack in either order." % [SkirmishController.ATTACK_DAMAGE, SkirmishController.ATTACK_RANGE], 13, COLOR_HINT)
+	feedback_label = _add_status_row(rows, "", 14, COLOR_GOLD)
 	feedback_label.custom_minimum_size = Vector2(276, 48)
 	feedback_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	add_status_row(rows, "Click unit to select / inspect\nGold rings: move up to %d hexes\nRed rings: enemies in attack range\nEmpty space / Esc to clear selection" % SkirmishController.MOVE_RANGE, 13, COLOR_HINT)
+	_add_status_row(rows, "Click unit to select / inspect\nGold rings: move up to %d hexes\nRed rings: enemies in attack range\nEmpty space / Esc to clear selection" % SkirmishController.MOVE_RANGE, 13, COLOR_HINT)
 
 func _build_result_overlay() -> void:
 	result_overlay = ColorRect.new()
@@ -130,11 +138,11 @@ func _build_result_overlay() -> void:
 	var result_rows := VBoxContainer.new()
 	result_rows.add_theme_constant_override("separation", 18)
 	result_panel.add_child(result_rows)
-	var heading := add_status_row(result_rows, OVERLAY_HEADING, 14, COLOR_ACCENT)
+	var heading := _add_status_row(result_rows, OVERLAY_HEADING, 14, COLOR_ACCENT)
 	heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	result_label = add_status_row(result_rows, "", 36, Color.WHITE)
+	result_label = _add_status_row(result_rows, "", 36, Color.WHITE)
 	result_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	result_details = add_status_row(result_rows, "", 16, COLOR_BODY)
+	result_details = _add_status_row(result_rows, "", 16, COLOR_BODY)
 	result_details.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	restart_button = Button.new()
 	restart_button.name = "RestartEncounter"
@@ -171,14 +179,15 @@ func _refresh_status() -> void:
 	turn_label.modulate = PlaceholderUnit.color_for(skirmish.active_team)
 	end_turn_button.text = "End Turn  →  %s" % PlaceholderUnit.name_for(PlaceholderUnit.other_team(skirmish.active_team))
 	var unit := skirmish.selected_unit
-	selection_label.text = "%s  /  %d of %d HP" % [unit.display_name(), unit.health, PlaceholderUnit.MAX_HEALTH] if unit != null else "No unit selected"
+	var unit_valid := is_instance_valid(unit)
+	selection_label.text = "%s  /  %d of %d HP" % [unit.display_name(), unit.health, PlaceholderUnit.MAX_HEALTH] if unit_valid else "No unit selected"
 	ability_button.disabled = not skirmish.can_use_ability(unit)
 	ability_button.text = "Attack"
-	if unit != null:
+	if unit_valid:
 		ability_button.text = "%s  /  %s" % [unit.ability_name(), "Used" if unit.ability_used else "Attack"]
 	if skirmish.targeting_attack:
 		ability_button.text = "Cancel Attack"
-	if unit == null:
+	if not unit_valid:
 		actions_label.text = "Each unit: %d HP / 1 move + 1 attack" % PlaceholderUnit.MAX_HEALTH
 	elif unit.team != skirmish.active_team:
 		actions_label.text = "Waiting for %s's turn" % unit.team_name()
@@ -186,7 +195,7 @@ func _refresh_status() -> void:
 		actions_label.text = "Move: %s   /   Attack: %s" % ["used" if unit.has_moved else "ready", "used" if unit.ability_used else "ready"]
 	feedback_label.text = skirmish.feedback
 
-func add_status_row(parent: Control, text: String, size: int, color: Color) -> Label:
+func _add_status_row(parent: Control, text: String, size: int, color: Color) -> Label:
 	var label := Label.new()
 	label.text = text
 	label.add_theme_font_size_override("font_size", size)
@@ -195,7 +204,7 @@ func add_status_row(parent: Control, text: String, size: int, color: Color) -> L
 	parent.add_child(label)
 	return label
 
-func add_label(parent: Control, text: String, position: Vector2, size: int, color: Color) -> void:
+func _add_label(parent: Control, text: String, position: Vector2, size: int, color: Color) -> void:
 	var label := Label.new()
 	label.text = text
 	label.position = position

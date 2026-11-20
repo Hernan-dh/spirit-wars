@@ -2,10 +2,15 @@
 class_name PlaceholderUnit
 extends StaticBody3D
 ## Shared tactical pawn. Team identity stays visible while selected.
+const SpiritPalette = preload("res://scripts/spirit_palette.gd")
+
 enum Team { JADE, EMBER }
 const MAX_HEALTH := 3
 const TEAM_NAMES := ["Jade", "Ember"]
-const TEAM_COLORS := [Color("52e0c0"), Color("ff825e")]
+const TEAM_COLORS := SpiritPalette.TEAM_COLORS
+
+var _team_material: StandardMaterial3D
+var _team_material_team := -1
 
 static func name_for(value: int) -> String:
 	if value < 0 or value >= TEAM_NAMES.size():
@@ -56,17 +61,24 @@ func play_move(_origin: Vector3) -> void:
 	pass
 
 func _update_identity() -> void:
-	var material := StandardMaterial3D.new()
-	material.albedo_color = team_color()
-	material.roughness = 0.55
-	material.emission_enabled = true
-	material.emission = team_color()
-	material.emission_energy_multiplier = 0.25
+	var material := _material_for_team(team)
 	$Body.material_override = material
 	$TeamBase.material_override = material
 	$Badge.text = display_name().to_upper()
 	$Badge.modulate = team_color()
 	$Health.text = "%d / %d HP" % [health, MAX_HEALTH]
+
+func _material_for_team(value: Team) -> StandardMaterial3D:
+	if _team_material == null or _team_material_team != value:
+		_team_material = StandardMaterial3D.new()
+		_team_material.resource_name = "%sTeamMaterial" % name_for(value)
+		_team_material.albedo_color = color_for(value)
+		_team_material.roughness = 0.55
+		_team_material.emission_enabled = true
+		_team_material.emission = color_for(value)
+		_team_material.emission_energy_multiplier = 0.25
+		_team_material_team = value
+	return _team_material
 
 func take_damage(amount: int) -> void:
 	health = maxi(0, health - maxi(0, amount))

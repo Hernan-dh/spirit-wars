@@ -1,9 +1,9 @@
 [gd_scene format=3]
 
-[ext_resource type="Material" path="res://materials/generated/blossom_petals.tres" id="1_i0sun"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/blossom_tree_blossom_crown.res" id="2_xtnma"]
-[ext_resource type="Material" path="res://materials/generated/wood_weathered_grain.tres" id="3_h8g4j"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/blossom_tree_combined_wood_weathered_grain_1_1_0_0.res" id="4_5nucx"]
+[ext_resource type="Material" path="res://generated/materials/blossom_petals.tres" id="1_i0sun"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/blossom_tree_blossom_crown.res" id="2_xtnma"]
+[ext_resource type="Material" path="res://generated/materials/wood_weathered_grain.tres" id="3_h8g4j"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/blossom_tree_combined_wood_weathered_grain_1_1_0_0.res" id="4_5nucx"]
 
 [node name="BlossomTree" type="Node3D" unique_id=1380944272]
 

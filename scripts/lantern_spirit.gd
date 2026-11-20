@@ -50,7 +50,7 @@ func play_spirit_pulse(target_position: Vector3) -> void:
 	bolt.mesh = sphere
 	var glow := StandardMaterial3D.new()
 	glow.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	glow.albedo_color = Color("ffb33e")
+	glow.albedo_color = SpiritPalette.LANTERN_FLAME
 	bolt.material_override = glow
 	bolt.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	get_parent().add_child(bolt)
@@ -71,7 +71,7 @@ func play_spirit_pulse(target_position: Vector3) -> void:
 	var material := StandardMaterial3D.new()
 	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	material.albedo_color = Color("ff982b")
+	material.albedo_color = SpiritPalette.LANTERN_IMPACT
 	pulse.material_override = material
 	pulse.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	get_parent().add_child(pulse)

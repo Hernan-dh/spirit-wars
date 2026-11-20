@@ -1,7 +1,10 @@
 extends RefCounted
 
-const MESH_DIR := "res://scenes/generated/meshes"
-const MATERIAL_DIR := "res://materials/generated"
+const MESH_DIR := "res://generated/meshes"
+const MATERIAL_DIR := "res://generated/materials"
+
+const RESOURCE_KIND_MESH := "mesh"
+const RESOURCE_KIND_MATERIAL := "material"
 
 static var _resource_paths: Dictionary = {}
 static var _used_paths: Dictionary = {}
@@ -51,52 +54,40 @@ static func _node_path(node: Node, root: Node) -> String:
 	return "/".join(parts).to_snake_case()
 
 static func _externalize_mesh(mesh: Mesh, fallback_name: String) -> Mesh:
-	if mesh == null:
-		return null
-	if _resource_paths.has(mesh):
-		return _resource_paths[mesh]
-	if not mesh.resource_path.is_empty():
-		_resource_paths[mesh] = mesh
-		_used_paths[mesh.resource_path] = mesh
-		return mesh
-	var content_key := "mesh:" + _mesh_signature(mesh)
-	if _content_paths.has(content_key):
-		var shared: Mesh = _used_paths[_content_paths[content_key]]
-		_resource_paths[mesh] = shared
-		return shared
-	var base := _resource_base("", fallback_name)
-	var path := _unique_path(MESH_DIR, base, ".res", mesh)
-	mesh.resource_path = path
-	var error := ResourceSaver.save(mesh, path, ResourceSaver.FLAG_CHANGE_PATH)
-	assert(error == OK, "Could not save mesh " + path)
-	_resource_paths[mesh] = mesh
-	_used_paths[path] = mesh
-	_content_paths[content_key] = path
-	return mesh
+	return _externalize_resource(mesh, RESOURCE_KIND_MESH, MESH_DIR, ".res", fallback_name) as Mesh
 
 static func _externalize_material(material: Material, fallback_name: String) -> Material:
-	if material == null:
+	return _externalize_resource(material, RESOURCE_KIND_MATERIAL, MATERIAL_DIR, ".tres", fallback_name) as Material
+
+static func _externalize_resource(resource: Resource, kind: String, directory: String, extension: String, fallback_name: String) -> Resource:
+	if resource == null:
 		return null
-	if _resource_paths.has(material):
-		return _resource_paths[material]
-	if not material.resource_path.is_empty():
-		_resource_paths[material] = material
-		_used_paths[material.resource_path] = material
-		return material
-	var content_key := "material:" + _material_signature(material)
+	if _resource_paths.has(resource):
+		return _resource_paths[resource]
+	var content_key := kind + ":" + _resource_signature(resource, kind)
+	if not resource.resource_path.is_empty():
+		_resource_paths[resource] = resource
+		_used_paths[resource.resource_path] = resource
+		_content_paths[content_key] = resource.resource_path
+		return resource
 	if _content_paths.has(content_key):
-		var shared: Material = _used_paths[_content_paths[content_key]]
-		_resource_paths[material] = shared
+		var shared: Resource = _used_paths[_content_paths[content_key]]
+		_resource_paths[resource] = shared
 		return shared
-	var base := _resource_base(material.resource_name, fallback_name)
-	var path := _unique_path(MATERIAL_DIR, base, ".tres", material)
-	material.resource_path = path
-	var error := ResourceSaver.save(material, path, ResourceSaver.FLAG_CHANGE_PATH)
-	assert(error == OK, "Could not save material " + path)
-	_resource_paths[material] = material
-	_used_paths[path] = material
+	var base := _resource_base(resource.resource_name, fallback_name)
+	var path := _unique_path(directory, base, extension, resource)
+	resource.resource_path = path
+	var error := ResourceSaver.save(resource, path, ResourceSaver.FLAG_CHANGE_PATH)
+	assert(error == OK, "Could not save %s %s" % [kind, path])
+	_resource_paths[resource] = resource
+	_used_paths[path] = resource
 	_content_paths[content_key] = path
-	return material
+	return resource
+
+static func _resource_signature(resource: Resource, kind: String) -> String:
+	if kind == RESOURCE_KIND_MESH:
+		return _mesh_signature(resource as Mesh)
+	return _material_signature(resource as Material)
 
 static func _resource_base(resource_name: String, fallback_name: String) -> String:
 	var base := resource_name.to_snake_case() if not resource_name.is_empty() else fallback_name.to_snake_case()

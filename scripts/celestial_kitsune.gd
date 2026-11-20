@@ -3,6 +3,7 @@ class_name CelestialKitsune
 extends PlaceholderUnit
 ## Nine-tailed sacred fox. Combat uses the shared pawn's authoritative turn rules.
 const VISUAL := preload("res://scenes/units/kitsune_visual.tscn")
+const FACING_OFFSET := .45
 var _time := 0.0
 var _flare := 0.0
 var _move_tween: Tween
@@ -28,7 +29,7 @@ func _ready() -> void:
 	for child in _visual.get_node("Tails").get_children():
 		if child is Node3D:
 			_tails.append(child)
-	_visual.rotation.y = -.45 if team == Team.JADE else PI - .45
+	_visual.rotation.y = -FACING_OFFSET if team == Team.JADE else PI - FACING_OFFSET
 
 func _process(delta: float) -> void:
 	_time += delta
@@ -64,7 +65,7 @@ func play_spirit_pulse(target_position: Vector3) -> void:
 	for i in 3:
 		var echo := VISUAL.instantiate() as Node3D
 		echo.name = "MirageFox"
-		_tint_echo(echo, Color("d19bff") if i != 1 else Color("9cd9ff"))
+		_tint_echo(echo, SpiritPalette.KITSUNE_ECHO_PRIMARY if i != 1 else SpiritPalette.KITSUNE_ECHO_SECONDARY)
 		get_parent().add_child(echo)
 		echo.scale = Vector3.ONE * .38
 		echo.rotation.y = heading
@@ -91,7 +92,7 @@ func play_spirit_pulse(target_position: Vector3) -> void:
 	var glow := StandardMaterial3D.new()
 	glow.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	glow.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	glow.albedo_color = Color("cf9cff")
+	glow.albedo_color = SpiritPalette.KITSUNE_IMPACT
 	pulse.material_override = glow
 	pulse.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	get_parent().add_child(pulse)

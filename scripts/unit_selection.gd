@@ -4,7 +4,9 @@ extends Node3D
 signal selection_changed(unit: PlaceholderUnit)
 signal state_changed
 
-const NEIGHBORS := [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1), Vector2i(1, -1), Vector2i(-1, 1)]
+const HexGrid = preload("res://scripts/hex_grid.gd")
+const SpiritPalette = preload("res://scripts/spirit_palette.gd")
+
 const MOVE_RANGE := 3
 const ATTACK_RANGE := 3
 const ATTACK_DAMAGE := 1
@@ -13,16 +15,14 @@ const NO_WINNER := -1
 const GROUND_LAYER := 1
 const UNIT_LAYER := 2
 const PICK_MASK := GROUND_LAYER | UNIT_LAYER
-const BATTLEFIELD_NODE := "BattlefieldGrid"
-const DEFAULT_SURFACE_HEIGHT := 0.35
 
 const HIGHLIGHT_INNER_RADIUS := 0.58
 const HIGHLIGHT_OUTER_RADIUS := 0.65
 const HIGHLIGHT_RINGS := 24
 const HIGHLIGHT_RING_SEGMENTS := 6
 const HIGHLIGHT_HEIGHT_OFFSET := 0.04
-const HIGHLIGHT_MOVE_COLOR := Color("ffe08a")
-const HIGHLIGHT_TARGET_COLOR := Color("ff625e")
+
+@export_node_path("Node3D") var battlefield_path: NodePath = ^"../BattlefieldGrid"
 
 var selected_unit: PlaceholderUnit
 var active_team: PlaceholderUnit.Team = PlaceholderUnit.Team.JADE
@@ -32,6 +32,9 @@ var units: Array[PlaceholderUnit] = []
 var tiles: Dictionary[Vector2i, Node3D] = {}
 var unit_tiles: Dictionary[PlaceholderUnit, Vector2i] = {}
 var _highlights: Dictionary[Vector2i, MeshInstance3D] = {}
+var _highlight_mesh: TorusMesh
+var _highlight_move_material: StandardMaterial3D
+var _highlight_target_material: StandardMaterial3D
 var _pending_clicks: Array[Vector2] = []
 var targeting_attack := false
 var battle_over := false
@@ -40,11 +43,22 @@ var winner := NO_WINNER
 var _restarting := false
 
 func _ready() -> void:
+	_build_highlight_resources()
+	var battlefield := get_node_or_null(battlefield_path)
+	if battlefield == null:
+		push_error("SkirmishController needs a battlefield at %s." % battlefield_path)
+		return
 	feedback = "Select a %s unit to begin." % active_team_name()
-	for tile: Node3D in get_parent().get_node(BATTLEFIELD_NODE).get_children():
-		var cell := _cell_of(tile)
+	for child in battlefield.get_children():
+		if not child is Node3D or not HexGrid.has_cell(child):
+			continue
+		var tile := child as Node3D
+		var cell := HexGrid.cell_of(tile)
 		tiles[cell] = tile
 		_highlights[cell] = _make_highlight(tile)
+	if tiles.is_empty():
+		push_error("SkirmishController found no hex tiles under %s." % battlefield_path)
+		return
 	for child in get_children():
 		if child is PlaceholderUnit:
 			var unit := child as PlaceholderUnit
@@ -61,27 +75,29 @@ func _ready() -> void:
 			unit.reset_actions()
 	_check_battle_result()
 
-func _cell_of(tile: Node) -> Vector2i:
-	return Vector2i(int(tile.get_meta("axial_q")), int(tile.get_meta("axial_r")))
+func _build_highlight_resources() -> void:
+	_highlight_mesh = TorusMesh.new()
+	_highlight_mesh.inner_radius = HIGHLIGHT_INNER_RADIUS
+	_highlight_mesh.outer_radius = HIGHLIGHT_OUTER_RADIUS
+	_highlight_mesh.rings = HIGHLIGHT_RINGS
+	_highlight_mesh.ring_segments = HIGHLIGHT_RING_SEGMENTS
+	_highlight_move_material = _highlight_material(SpiritPalette.HIGHLIGHT_MOVE, "MoveHighlight")
+	_highlight_target_material = _highlight_material(SpiritPalette.HIGHLIGHT_TARGET, "TargetHighlight")
 
-func _surface_height(tile: Node) -> float:
-	return float(tile.get_meta("surface_height", DEFAULT_SURFACE_HEIGHT))
+func _highlight_material(color: Color, title: String) -> StandardMaterial3D:
+	var material := StandardMaterial3D.new()
+	material.resource_name = title
+	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	material.albedo_color = color
+	return material
 
 func _make_highlight(tile: Node3D) -> MeshInstance3D:
 	var marker := MeshInstance3D.new()
-	var ring := TorusMesh.new()
-	ring.inner_radius = HIGHLIGHT_INNER_RADIUS
-	ring.outer_radius = HIGHLIGHT_OUTER_RADIUS
-	ring.rings = HIGHLIGHT_RINGS
-	ring.ring_segments = HIGHLIGHT_RING_SEGMENTS
-	marker.mesh = ring
-	var material := StandardMaterial3D.new()
-	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	material.albedo_color = HIGHLIGHT_MOVE_COLOR
-	marker.material_override = material
+	marker.mesh = _highlight_mesh
+	marker.material_override = _highlight_move_material
 	marker.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	tile.add_child(marker)
-	marker.position.y = _surface_height(tile) + HIGHLIGHT_HEIGHT_OFFSET
+	marker.position.y = HexGrid.surface_height(tile) + HIGHLIGHT_HEIGHT_OFFSET
 	marker.visible = false
 	return marker
 
@@ -134,8 +150,7 @@ func can_use_ability(unit: PlaceholderUnit) -> bool:
 	return can_act(unit) and not unit.ability_used
 
 func hex_distance(a: Vector2i, b: Vector2i) -> int:
-	var delta := a - b
-	return maxi(absi(delta.x), maxi(absi(delta.y), absi(delta.x + delta.y)))
+	return HexGrid.distance(a, b)
 
 func available_targets(unit: PlaceholderUnit) -> Array[PlaceholderUnit]:
 	var result: Array[PlaceholderUnit] = []
@@ -186,7 +201,7 @@ func available_moves(unit: PlaceholderUnit) -> Array[Vector2i]:
 		index += 1
 		if distances[current] >= MOVE_RANGE:
 			continue
-		for offset: Vector2i in NEIGHBORS:
+		for offset: Vector2i in HexGrid.AXIAL_NEIGHBORS:
 			var cell := current + offset
 			if not tiles.has(cell) or cell in occupied or distances.has(cell):
 				continue
@@ -196,8 +211,7 @@ func available_moves(unit: PlaceholderUnit) -> Array[Vector2i]:
 	return result
 
 func tile_position(cell: Vector2i) -> Vector3:
-	var tile := tiles[cell]
-	return tile.to_global(Vector3(0, _surface_height(tile), 0))
+	return HexGrid.tile_position(tiles[cell])
 
 func try_move(unit: PlaceholderUnit, cell: Vector2i) -> bool:
 	if battle_over:
@@ -278,8 +292,8 @@ func _physics_process(_delta: float) -> void:
 				state_changed.emit()
 		elif collider is PlaceholderUnit:
 			select_unit(collider)
-		elif collider != null and collider.get_parent().has_meta("axial_q") and can_act(selected_unit):
-			try_move(selected_unit, _cell_of(collider.get_parent()))
+		elif collider != null and HexGrid.has_cell(collider.get_parent()) and can_act(selected_unit):
+			try_move(selected_unit, HexGrid.cell_of(collider.get_parent()))
 		else:
 			select_unit(null)
 	_pending_clicks.clear()
@@ -319,8 +333,9 @@ func _refresh() -> void:
 	if targeting_attack:
 		for target in available_targets(selected_unit):
 			target_cells.append(unit_tiles[target])
+	var highlight_material := _highlight_target_material if targeting_attack else _highlight_move_material
 	for cell: Vector2i in _highlights:
-		_highlights[cell].visible = cell in target_cells if targeting_attack else cell in moves
-		var material := _highlights[cell].material_override as StandardMaterial3D
-		material.albedo_color = HIGHLIGHT_TARGET_COLOR if targeting_attack else HIGHLIGHT_MOVE_COLOR
+		var marker := _highlights[cell]
+		marker.visible = cell in target_cells if targeting_attack else cell in moves
+		marker.material_override = highlight_material
 	state_changed.emit()

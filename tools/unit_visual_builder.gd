@@ -1,7 +1,7 @@
 extends SceneTree
 ## Shared helpers for authoring native-mesh unit visuals as editable scenes.
 ## Build scripts create geometry into one visual root, then save it with external
-## resources next to the reusable scene.
+## resources in the shared generated/ folders.
 
 const GeneratedResources = preload("res://tools/generated_resources.gd")
 

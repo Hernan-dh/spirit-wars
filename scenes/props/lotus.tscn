@@ -1,13 +1,13 @@
 [gd_scene format=3]
 
-[ext_resource type="Material" path="res://materials/generated/leaf.tres" id="1_65wf1"]
-[ext_resource type="CylinderMesh" path="res://scenes/generated/meshes/lotus_lily_pad.res" id="2_chahu"]
-[ext_resource type="Material" path="res://materials/generated/amber.tres" id="3_2y7pf"]
-[ext_resource type="CylinderMesh" path="res://scenes/generated/meshes/lotus_golden_heart.res" id="4_njxl4"]
-[ext_resource type="Material" path="res://materials/generated/blossom.tres" id="5_nmh3g"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lotus_combined_blossom_1_1_0_0.res" id="6_f1i5i"]
-[ext_resource type="Material" path="res://materials/generated/blossom_light.tres" id="7_no85n"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/lotus_combined_blossom_light_1_1_0_0.res" id="8_recjj"]
+[ext_resource type="Material" path="res://generated/materials/leaf.tres" id="1_65wf1"]
+[ext_resource type="CylinderMesh" path="res://generated/meshes/lotus_lily_pad.res" id="2_chahu"]
+[ext_resource type="Material" path="res://generated/materials/amber.tres" id="3_2y7pf"]
+[ext_resource type="CylinderMesh" path="res://generated/meshes/lotus_golden_heart.res" id="4_njxl4"]
+[ext_resource type="Material" path="res://generated/materials/blossom.tres" id="5_nmh3g"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_combined_blossom_1_1_0_0.res" id="6_f1i5i"]
+[ext_resource type="Material" path="res://generated/materials/blossom_light.tres" id="7_no85n"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_combined_blossom_light_1_1_0_0.res" id="8_recjj"]
 
 [node name="Lotus" type="Node3D" unique_id=509517240]
 

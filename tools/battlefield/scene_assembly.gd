@@ -6,6 +6,7 @@ const AuthoringContext = preload("res://tools/battlefield/authoring_context.gd")
 const StaticGeometry = preload("res://tools/static_geometry.gd")
 const Field = preload("res://tools/battlefield/field.gd")
 const Landscape = preload("res://tools/battlefield/landscape.gd")
+const HexGrid = preload("res://scripts/hex_grid.gd")
 const CameraScript = preload("res://scripts/battlefield_camera.gd")
 const LabelsScript = preload("res://scripts/courtyard_labels.gd")
 const SkirmishScene = preload("res://scenes/units/skirmish.tscn")
@@ -21,13 +22,13 @@ const SAVED_MESSAGE := "Saved Moonwell: %d ground-level playable hexes, editable
 static func build(ctx: AuthoringContext) -> void:
 	var root := Node3D.new()
 	root.name = "MoonwellCourtyard"
-	var cell_count := Field.GRID_SIZE * Field.GRID_SIZE
-	root.set_meta("description", FIELD_DESCRIPTION % [Field.GRID_SIZE, Field.GRID_SIZE, cell_count])
+	var cell_count := HexGrid.cell_count()
+	root.set_meta("description", FIELD_DESCRIPTION % [HexGrid.SIZE, HexGrid.SIZE, cell_count])
 	var board := ctx.node(root,"BattlefieldGrid")
-	board.set_meta("rows",Field.GRID_SIZE)
-	board.set_meta("columns",Field.GRID_SIZE)
-	for row in range(Field.GRID_SIZE):
-		for column in range(Field.GRID_SIZE):
+	board.set_meta("rows",HexGrid.SIZE)
+	board.set_meta("columns",HexGrid.SIZE)
+	for row in range(HexGrid.SIZE):
+		for column in range(HexGrid.SIZE):
 			Field.make_tile(ctx,board,row,column)
 	var land := ctx.node(root,"IslandFoundation")
 	var rim := Landscape.ISLAND_RIM
@@ -134,7 +135,7 @@ static func make_camera(ctx: AuthoringContext, root: Node3D) -> void:
 	camera.far = CameraScript.DEFAULT_FAR
 	camera.current = true
 	rig.add_child(camera)
-	camera.position = CameraScript.DEFAULT_CAMERA_POSITION
+	camera.position = CameraScript.default_camera_position()
 	camera.basis = Basis.looking_at(CameraScript.DEFAULT_FOCUS - camera.position)
 	var hud := CanvasLayer.new()
 	hud.name = "CourtyardLabels"

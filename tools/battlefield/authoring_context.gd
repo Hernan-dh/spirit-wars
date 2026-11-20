@@ -10,6 +10,19 @@ const PROP_SCENE_DIR := "res://scenes/props/"
 const BATCHED_PROP_KEYS := ["tree", "bamboo", "lotus"]
 const OCTAGON_CORNER_SCALE := 1.4142
 
+const ROOF_SIDES := 8
+const ROOF_RING_SCALES := [1.0, 0.62, 0.12]
+const ROOF_MIDDLE_T := 0.62
+const ROOF_EAVE_OFFSET := 0.18
+const ROOF_MIDDLE_HEIGHT := 0.38
+const ROOF_MIN_TILES := 3
+const ROOF_TILES_PER_UNIT := 7.0
+const ROOF_TILE_COURSES := 6
+const ROOF_TILE_GAP_T := 0.025
+const ROOF_TILE_GAP_U := 0.018
+const ROOF_RIDGE_HEIGHT := 0.035
+const ROOF_SURFACE_OFFSET := 0.012
+
 var rng := RandomNumberGenerator.new()
 var palette: Dictionary = {}
 var prop_scenes: Dictionary = {}
@@ -130,38 +143,38 @@ func disk(parent: Node, title: String, radius: float, height: float, mat: String
 func roof(parent: Node, title: String, pos: Vector3, radius: float, height: float) -> Node3D:
 	var n := node(parent, title, pos)
 	var rings: Array = []
-	for level in range(3):
+	for level in range(ROOF_RING_SCALES.size()):
 		var pts: Array = []
-		var scale_factor: float = [1.0, 0.62, 0.12][level]
-		for i in range(8):
-			var a := PI/4 + i * TAU/8
+		var scale_factor: float = ROOF_RING_SCALES[level]
+		for i in range(ROOF_SIDES):
+			var a := TAU/ROOF_SIDES + i * TAU/ROOF_SIDES
 			var r := radius * scale_factor * (OCTAGON_CORNER_SCALE if i % 2 == 0 else 1.0)
-			var y: float = [0.18 if i % 2 == 0 else 0.0, height * 0.38, height][level]
+			var y: float = [ROOF_EAVE_OFFSET if i % 2 == 0 else 0.0, height * ROOF_MIDDLE_HEIGHT, height][level]
 			pts.append(Vector3(cos(a)*r, y, sin(a)*r))
 		rings.append(pts)
 	var faces: Array = []
 	for k in range(2):
-		for i in range(8):
-			var j := (i + 1) % 8
+		for i in range(ROOF_SIDES):
+			var j := (i + 1) % ROOF_SIDES
 			tri(faces, rings[k][i], rings[k + 1][i], rings[k][j])
 			tri(faces, rings[k][j], rings[k + 1][i], rings[k + 1][j])
 	surface(n, "SweptTileRoof", faces, "Roof")
 	var tile_faces: Array = []
-	for side in range(8):
-		var next := (side+1)%8
-		var count := maxi(3,int(radius*7))
-		for course in range(6):
-			var t0 := course/6.0
-			var t1 := (course+1)/6.0-.025
+	for side in range(ROOF_SIDES):
+		var next := (side+1)%ROOF_SIDES
+		var count := maxi(ROOF_MIN_TILES,int(radius*ROOF_TILES_PER_UNIT))
+		for course in range(ROOF_TILE_COURSES):
+			var t0 := float(course)/ROOF_TILE_COURSES
+			var t1 := float(course+1)/ROOF_TILE_COURSES-ROOF_TILE_GAP_T
 			for column in range(count):
 				var u0 := column/float(count)
-				var u1 := (column+1)/float(count)-.018
+				var u1 := (column+1)/float(count)-ROOF_TILE_GAP_U
 				var a := roof_point(rings,side,next,u0,t0)
 				var b := roof_point(rings,side,next,u1,t0)
 				var c := roof_point(rings,side,next,u0,t1)
 				var d := roof_point(rings,side,next,u1,t1)
-				var ridge0 := (a+b)*.5+Vector3.UP*.035
-				var ridge1 := (c+d)*.5+Vector3.UP*.035
+				var ridge0 := (a+b)*.5+Vector3.UP*ROOF_RIDGE_HEIGHT
+				var ridge1 := (c+d)*.5+Vector3.UP*ROOF_RIDGE_HEIGHT
 				tri(tile_faces,a,c,ridge0)
 				tri(tile_faces,c,ridge1,ridge0)
 				tri(tile_faces,ridge0,ridge1,b)
@@ -170,8 +183,8 @@ func roof(parent: Node, title: String, pos: Vector3, radius: float, height: floa
 	# Roof faces include both windings at swept corners.
 	tiles.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_DOUBLE_SIDED
 
-	for i in range(8):
-		rod(n, "GildedEave%d" % i, rings[0][i], rings[0][(i+1)%8], 0.025, "Gold")
+	for i in range(ROOF_SIDES):
+		rod(n, "GildedEave%d" % i, rings[0][i], rings[0][(i+1)%ROOF_SIDES], 0.025, "Gold")
 		line(n, "RoofRib%d" % i, [rings[0][i], rings[1][i], rings[2][i]], 0.018, "Jade")
 	cylinder(n, "Finial", Vector3(0,height + 0.12,0), .12, .0, .35, "Gold")
 	return n
@@ -180,7 +193,7 @@ func roof_point(rings: Array, side: int, next: int, u: float, t: float) -> Vecto
 	var eave: Vector3 = rings[0][side].lerp(rings[0][next],u)
 	var middle: Vector3 = rings[1][side].lerp(rings[1][next],u)
 	var peak: Vector3 = rings[2][side].lerp(rings[2][next],u)
-	return (eave.lerp(middle,t/.62) if t<.62 else middle.lerp(peak,(t-.62)/.38)) + Vector3.UP*.012
+	return (eave.lerp(middle,t/ROOF_MIDDLE_T) if t<ROOF_MIDDLE_T else middle.lerp(peak,(t-ROOF_MIDDLE_T)/(1.0-ROOF_MIDDLE_T))) + Vector3.UP*ROOF_SURFACE_OFFSET
 
 func own_recursive(n: Node, root: Node) -> void:
 	for child in n.get_children():

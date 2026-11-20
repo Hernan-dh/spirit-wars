@@ -79,7 +79,7 @@ prop and the saved battlefield. `BLOSSOM_LOD_ERROR` in
 All 196 tile roots, metadata, collisions, and gameplay nodes remain
 independent. Tile seals and static lines are combined meshes, with no segment nodes.
 Meshes and materials are native Godot resources saved under
-`scenes/generated/meshes/` (binary `.res`) and `materials/generated/` (text `.tres`);
+`generated/meshes/` (binary `.res`) and `generated/materials/` (text `.tres`);
 repeated props and scenery batches reference the same files instead of embedding
 copies. Identical mesh geometry and material settings are written once, so shared
 hex surfaces, grid etchings, pavilion roofs and unit shaders reference a single
@@ -135,7 +135,7 @@ cache, RNG and primitive mesh helpers, then runs the modules in order:
 - `materials.gd` authors the palette and weathering shaders.
 - `props.gd` builds the reusable lantern, blossom tree, bamboo, lotus and gate scenes.
 - `ground_zones.gd` defines the path, plaza and meadow zones shared by the field, shader and vegetation clearing.
-- `field.gd` defines grid coordinates and tile contents using those zone functions.
+- `field.gd` builds tile contents from the shared grid coordinates and ground zones.
 - `landscape.gd` builds the island foundation, terraces, wetlands, gardens, ruins and sanctuary details.
 - `scene_assembly.gd` roots the field and landscape, then adds atmosphere, camera and starting units.
 
@@ -143,9 +143,11 @@ cache, RNG and primitive mesh helpers, then runs the modules in order:
 batches repeated scenery during authoring; `tools/generated_resources.gd` saves the
 resulting meshes and materials as shared external resources. Normal game/editor use
 does no conversion.
-`GRID_SIZE`, `HEX_RADIUS`, `GRID_CENTER_Z`, and
-`grid_position()` live in `field.gd`; `ground_material()` reads `ground_zones.gd`, whose
-parameters are applied to the shader as uniforms.
+Grid dimensions, `grid_position()`, axial coordinates and neighbors live in
+`scripts/hex_grid.gd`, shared by `tools/battlefield/field.gd` and the runtime movement
+controller. `ground_material()` reads `ground_zones.gd`, whose parameters are applied
+to the shader as uniforms. Team, highlight and effect colors live in
+`scripts/spirit_palette.gd`.
 `materials/sanctuary_ground.gdshader` defines continuous paths, stone joints, and
 moss coverage in world coordinates. `materials/weathered_surface.gdshader` controls
 scenery grain and weathering, and `materials/lotus_water.gdshader` controls pool ripples.

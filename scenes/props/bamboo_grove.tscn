@@ -1,13 +1,13 @@
 [gd_scene format=3]
 
-[ext_resource type="Material" path="res://materials/generated/bamboo.tres" id="1_xi02m"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/bamboo_grove_combined_bamboo_1_1_0_0.res" id="2_pcpmu"]
-[ext_resource type="Material" path="res://materials/generated/moss_light_weathered_grain.tres" id="3_iyc1c"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/bamboo_grove_combined_moss_light_weathered_grain_1_1_0_0.res" id="4_5hmkx"]
-[ext_resource type="Material" path="res://materials/generated/leaf_double_sided.tres" id="5_s4o03"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/bamboo_grove_combined_leaf_double_sided_1_1_0_0.res" id="6_nnnor"]
-[ext_resource type="Material" path="res://materials/generated/leaf_light_double_sided.tres" id="7_wo6ml"]
-[ext_resource type="ArrayMesh" path="res://scenes/generated/meshes/bamboo_grove_combined_leaf_light_double_sided_1_1_0_0.res" id="8_obd84"]
+[ext_resource type="Material" path="res://generated/materials/bamboo.tres" id="1_xi02m"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/bamboo_grove_combined_bamboo_1_1_0_0.res" id="2_pcpmu"]
+[ext_resource type="Material" path="res://generated/materials/moss_light_weathered_grain.tres" id="3_iyc1c"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/bamboo_grove_combined_moss_light_weathered_grain_1_1_0_0.res" id="4_5hmkx"]
+[ext_resource type="Material" path="res://generated/materials/leaf_double_sided.tres" id="5_s4o03"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/bamboo_grove_combined_leaf_double_sided_1_1_0_0.res" id="6_nnnor"]
+[ext_resource type="Material" path="res://generated/materials/leaf_light_double_sided.tres" id="7_wo6ml"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/bamboo_grove_combined_leaf_light_double_sided_1_1_0_0.res" id="8_obd84"]
 
 [node name="BambooGrove" type="Node3D" unique_id=2109815586]
 

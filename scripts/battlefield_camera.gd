@@ -14,7 +14,6 @@ const DEFAULT_YAW := 0.57
 const DEFAULT_ELEVATION := 0.63
 const DEFAULT_ZOOM := 39.0
 const DEFAULT_FAR := 150.0
-const DEFAULT_CAMERA_POSITION := Vector3(24.3, 33.0, 37.4)
 const ORBIT_DISTANCE := 54.0
 const MIN_ELEVATION := 0.55
 const MAX_ELEVATION := 1.25
@@ -26,6 +25,16 @@ var elevation := DEFAULT_ELEVATION
 var panning := false
 var rotating := false
 var window_focused := true
+
+static func orbit_offset(orbit_yaw: float, orbit_elevation: float) -> Vector3:
+	return Vector3(
+		sin(orbit_yaw) * cos(orbit_elevation),
+		sin(orbit_elevation),
+		cos(orbit_yaw) * cos(orbit_elevation)
+	) * ORBIT_DISTANCE
+
+static func default_camera_position() -> Vector3:
+	return DEFAULT_FOCUS + orbit_offset(DEFAULT_YAW, DEFAULT_ELEVATION)
 
 func _ready() -> void:
 	reset_view()
@@ -121,5 +130,5 @@ func _notification(what: int) -> void:
 		window_focused = true
 
 func _update_camera() -> void:
-	camera.position = focus + Vector3(sin(yaw) * cos(elevation), sin(elevation), cos(yaw) * cos(elevation)) * ORBIT_DISTANCE
+	camera.position = focus + orbit_offset(yaw, elevation)
 	camera.look_at(to_global(focus))

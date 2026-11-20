@@ -10,6 +10,8 @@ const Props = preload("res://tools/battlefield/props.gd")
 const SceneAssembly = preload("res://tools/battlefield/scene_assembly.gd")
 const GeneratedResources = preload("res://tools/generated_resources.gd")
 
+const RNG_SEED := 72819
+
 func _initialize() -> void:
 	# The dummy renderer drops MultiMesh buffers when saving. Fail before overwriting
 	# assets; use Compatibility with a display (or xvfb-run) for offline generation.
@@ -19,7 +21,7 @@ func _initialize() -> void:
 		return
 	GeneratedResources.reset()
 	var ctx = AuthoringContext.new()
-	ctx.rng.seed = 72819
+	ctx.rng.seed = RNG_SEED
 	Materials.build(ctx)
 	Props.build(ctx)
 	SceneAssembly.build(ctx)
