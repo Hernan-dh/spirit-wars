@@ -100,6 +100,18 @@ static func batch_scenery(parent: Node3D) -> void:
 			groups[key].append(entry)
 	for key in groups:
 		var entries: Array = groups[key]
+		if entries.size() == 1:
+			# A one-instance MultiMesh costs more than the node it replaces.
+			var entry: Dictionary = entries[0]
+			var single := MeshInstance3D.new()
+			single.name = "Scenery_%s_%d" % [entry.source_name, parent.get_child_count()]
+			single.mesh = key[0]
+			single.material_override = key[1]
+			single.transform = entry.transform
+			single.cast_shadow = key[2]
+			single.layers = key[3]
+			parent.add_child(single)
+			continue
 		var multimesh := MultiMesh.new()
 		multimesh.transform_format = MultiMesh.TRANSFORM_3D
 		multimesh.mesh = key[0]

@@ -455,8 +455,7 @@ ruins = {
 "line_radius": 0.023,
 "radius": 0.22,
 "z": 0.005
-},
-"vine_count": 4
+}
 }
 sanctuary_details = {
 "approach_fern_offset": Vector3(0.3, 0, 0.2),
@@ -603,6 +602,37 @@ lighting = {
 "ssao_radius": 1.2
 }
 prop_templates = {
+"bamboo": {
+"bottom_radius": 0.065,
+"culm_count": 6,
+"height_range": Vector2(2.7, 4.7),
+"joint_divisions": 7.0,
+"joint_end": 6,
+"joint_height": 0.045,
+"joint_material": "MossLight",
+"joint_radius": 0.078,
+"joint_start": 1,
+"leaf_count": 5,
+"leaf_materials": ["Leaf", "LeafLight"],
+"leaf_side": Vector3(0.025, 0.045, 0.07),
+"leaf_start": 0.15,
+"leaf_step": 0.12,
+"leaf_x_scale": 0.42,
+"leaf_y": -0.12,
+"leaf_z_step": 0.21,
+"material": "Bamboo",
+"position_x_range": Vector2(-0.7, 0.7),
+"position_z_range": Vector2(-0.6, 0.6),
+"tip_x_range": Vector2(-0.45, 0.45),
+"tip_z_range": Vector2(-0.4, 0.4),
+"top_radius": 0.035,
+"twig_from_joint": 2,
+"twig_length": 0.7,
+"twig_radius": 0.023,
+"twig_top_radius": 0.008,
+"twig_y": 0.25,
+"twig_z": 0.2
+},
 "banner": {
 "finial_size": Vector3(0.12, 0.2, 0.12),
 "finial_y": 3.6,
@@ -633,6 +663,56 @@ prop_templates = {
 "stitch_z": 0.09,
 "suspension_points": [Vector3(-1.55, 3.45, 0), Vector3(0, 3.15, 0), Vector3(1.55, 3.45, 0)],
 "suspension_radius": 0.025
+},
+"blossom_tree": {
+"bough_bottom_radius": 0.17,
+"bough_ends": [Vector3(-1.8, 3.6, 0.1), Vector3(1.6, 3.4, 0.1), Vector3(0.4, 4.35, -0.5), Vector3(-0.2, 3.5, 1.3), Vector3(0.6, 3.6, -1.2)],
+"bough_material": "Wood",
+"bough_start_step": 0.17,
+"bough_start_x": 0.1,
+"bough_start_y": 2.0,
+"bough_top_radius": 0.045,
+"crown": {
+"blooms": 64,
+"color_far": Color(0.6509804, 0.37254903, 0.61960787, 1),
+"color_mix": 0.55,
+"color_near": Color(0.9411765, 0.7176471, 0.84313726, 1),
+"far_scale": 1.225,
+"lod_error": 0.045,
+"radius_x": 0.76,
+"radius_z": 0.6,
+"shade_step": 0.09,
+"size_range": Vector2(0.12, 0.24),
+"y_range": Vector2(-0.22, 0.26)
+},
+"leaning_trunk": {
+"bottom_radius": 0.22,
+"from": Vector3(0.18, 2.3, 0),
+"material": "Wood",
+"to": Vector3(-0.45, 3.7, 0.1),
+"top_radius": 0.09
+},
+"root_bottom_radius": 0.12,
+"root_count": 5,
+"root_material": "Wood",
+"root_radius": 0.8,
+"root_start": Vector3(0, 0.15, 0),
+"root_top_radius": 0.04,
+"trunk": {
+"bottom_radius": 0.34,
+"from": Vector3(0, 0, 0),
+"material": "Wood",
+"to": Vector3(0.18, 2.3, 0),
+"top_radius": 0.22
+},
+"twig_count": 6,
+"twig_lift": 0.15,
+"twig_material": "Wood",
+"twig_offset_x": Vector2(-0.65, 0.65),
+"twig_offset_y": Vector2(-0.2, 0.4),
+"twig_offset_z": Vector2(-0.5, 0.5),
+"twig_radius": 0.034,
+"twig_top_radius": 0.009
 },
 "brazier": {
 "bowl": {
@@ -732,6 +812,29 @@ prop_templates = {
 "whisker_points": [Vector3(0.25, 2.09, 0.96), Vector3(0.63, 2.07, 0.85), Vector3(0.72, 2.28, 0.69)],
 "whisker_radius": 0.035
 },
+"lotus": {
+"heart": {
+"bottom": 0.085,
+"height": 0.13,
+"material": "Amber",
+"position": Vector3(0, 0.16, 0),
+"top": 0.045
+},
+"pad": {
+"bottom": 0.35,
+"height": 0.025,
+"material": "Leaf",
+"position": Vector3(0, 0.01, 0),
+"sides": 10,
+"top": 0.35
+},
+"petal_count": 8,
+"petal_materials": ["Blossom", "BlossomLight"],
+"petal_radius": 0.15,
+"petal_size": Vector3(0.1, 0.17, 0.22),
+"petal_tilt": 0.6,
+"petal_y": 0.13
+},
 "pavilion": {
 "balustrade_size": Vector3(0.12, 0.12, 2.7),
 "balustrade_x": 1.8,
@@ -784,6 +887,281 @@ prop_templates = {
 "upper_roof_height": 0.85,
 "upper_roof_position": Vector3(0, 4.15, 0),
 "upper_roof_radius": 1.45
+},
+"ruin_pillar": {
+"collar_material": "StoneLight",
+"collar_size": Vector3(0.9, 0.15, 1),
+"foot": {
+"material": "StoneDark",
+"position": Vector3(0, 0.2, 0),
+"size": Vector3(1.2, 0.4, 1.2)
+},
+"overgrowth": {
+"material": "Moss",
+"position": Vector3(0.1, 3.04, 0),
+"size": Vector3(0.55, 0.12, 0.54)
+},
+"shaft": {
+"material": "Stone",
+"position": Vector3(0, 1.6, 0),
+"size": Vector3(0.7, 2.7, 0.8)
+},
+"vine": {
+"center": 1.5,
+"count": 4,
+"material": "Leaf",
+"radius": 0.026,
+"x_jitter": 0.05,
+"x_step": 0.17,
+"y_drop": 2.15,
+"y_mid": 2.7,
+"y_start": 3,
+"y_step": 0.15,
+"z_end": 0.47,
+"z_mid": 0.49,
+"z_start": 0.48
+}
+},
+"spirit_gate": {
+"approach_steps": {
+"count": 5,
+"depth": 0.5,
+"height_start": 0.24,
+"height_step": 0.32,
+"materials": ["StoneLight", "Stone"],
+"width_start": 5.2,
+"width_step": -0.15,
+"y_start": 0.12,
+"y_step": 0.16,
+"z_start": 1.45,
+"z_step": -0.42
+},
+"banner": {
+"emblem_material": "Gold",
+"emblem_size": Vector3(0.18, 0.18, 0.025),
+"emblem_y": 3.5,
+"emblem_z": -0.265,
+"material": "Cloth",
+"outward": 0.6,
+"size": Vector3(0.4, 1.25, 0.035),
+"stripe_material": "Gold",
+"stripe_size": Vector3(0.025, 1.12, 0.015),
+"stripe_z": -0.27,
+"y": 3.42,
+"z": -0.3
+},
+"banner_arm": {
+"from": Vector3(0, 4.1, -0.3),
+"material": "Gold",
+"outward": 0.8,
+"radius": 0.05,
+"to": Vector3(0, 4.1, -0.3)
+},
+"collar_heights": [1.55, 3.7, 4.15],
+"collar_material": "Gold",
+"collar_size": Vector3(0.7, 0.13, 0.72),
+"cornice": {
+"material": "Stone",
+"position": Vector3(0, 1, -0.72),
+"size": Vector3(6.55, 0.18, 2.6)
+},
+"crown_roof": {
+"height": 0.65,
+"position": Vector3(0, 5.35, -0.35),
+"radius": 1.65,
+"scale_z": 0.46
+},
+"glow": {
+"color": Color(0.34901962, 0.9137255, 0.8980392, 1),
+"energy": 3.0,
+"position": Vector3(0, 2.5, 0.3),
+"range": 5.5
+},
+"glyph_count": 4,
+"glyph_material": "SpiritDim",
+"glyph_size": Vector3(0.11, 0.11, 0.035),
+"glyph_y_start": 2.25,
+"glyph_y_step": 0.38,
+"glyph_z": -0.025,
+"gold_lintel": {
+"material": "Gold",
+"position": Vector3(0, 4.49, -0.35),
+"size": Vector3(5.8, 0.09, 0.77)
+},
+"great_roof": {
+"height": 0.9,
+"position": Vector3(0, 4.55, -0.35),
+"radius": 3.0,
+"scale_z": 0.4
+},
+"halo": {
+"count": 24,
+"material": "StoneLight",
+"position": Vector3(0, 2.66, -0.55),
+"radius": 1.42,
+"thickness": 0.14,
+"vertical": true
+},
+"halo_seal": {
+"count": 8,
+"material": "Gold",
+"radius": 1.43,
+"size": Vector3(0.16, 0.24, 0.12),
+"y": 2.66,
+"z": -0.38
+},
+"inner_halo": {
+"material": "SpiritDim",
+"position": Vector3(0, 2.66, -0.38),
+"radius": 1.29,
+"thickness": 0.025,
+"vertical": true
+},
+"inset": {
+"material": "StoneDark",
+"position": Vector3(0, 2.85, -0.046),
+"size": Vector3(0.21, 1.7, 0.025)
+},
+"jade_pillar": {
+"material": "Jade",
+"position": Vector3(0, 2.85, -0.35),
+"size": Vector3(0.55, 3, 0.58)
+},
+"motes": {
+"count": 12,
+"material": "Spirit",
+"size": 0.035,
+"x_range": Vector2(-1.05, 1.05),
+"y_range": Vector2(1.4, 4),
+"z_range": Vector2(-0.1, 0.3)
+},
+"pillar_foot": {
+"material": "StoneLight",
+"position": Vector3(0, 1.25, -0.35),
+"size": Vector3(0.96, 0.4, 0.95)
+},
+"pillar_x": 2.28,
+"platform": {
+"material": "StoneDark",
+"position": Vector3(0, 0.48, -0.72),
+"size": Vector3(6.4, 0.96, 2.5)
+},
+"spirit": {
+"count": 49,
+"line_radius": 0.04,
+"material": "Spirit",
+"turns": 1.45,
+"x_radius": 0.47,
+"x_taper": 0.25,
+"y_start": 1.42,
+"y_step": 2.65,
+"z": -0.18
+},
+"timber_lintel": {
+"material": "Wood",
+"position": Vector3(0, 4.35, -0.35),
+"size": Vector3(5.55, 0.32, 0.65)
+}
+},
+"stone_lantern": {
+"carved_foot": {
+"center": 1,
+"count": 3,
+"material": "StoneDark",
+"size": Vector3(0.11, 0.045, 0.018),
+"x_step": 0.19,
+"y": 0.3,
+"z": 0.365
+},
+"corner": {
+"material": "Wood",
+"offset": 0.31,
+"size": Vector3(0.075, 0.76, 0.075),
+"y": 1.73
+},
+"light": {
+"color": Color(1, 0.7254902, 0.3882353, 1),
+"energy": 1.1,
+"range": 4.3,
+"y": 1.8
+},
+"lintel": {
+"material": "Wood",
+"position": Vector3(0, 2.08, 0),
+"size": Vector3(0.72, 0.12, 0.72)
+},
+"parts": [{
+"bottom": 0.0,
+"height": 0.0,
+"kind": "box",
+"material": "StoneDark",
+"name": "Foot",
+"position": Vector3(0, 0.12, 0),
+"sides": 0,
+"size": Vector3(0.9, 0.24, 0.9),
+"top": 0.0
+}, {
+"bottom": 0.0,
+"height": 0.0,
+"kind": "box",
+"material": "StoneLight",
+"name": "Plinth",
+"position": Vector3(0, 0.29, 0),
+"sides": 0,
+"size": Vector3(0.72, 0.12, 0.72),
+"top": 0.0
+}, {
+"bottom": 0.26,
+"height": 1.0,
+"kind": "cylinder",
+"material": "Stone",
+"name": "Column",
+"position": Vector3(0, 0.8, 0),
+"sides": 6,
+"size": Vector3(0, 0, 0),
+"top": 0.2
+}, {
+"bottom": 0.0,
+"height": 0.0,
+"kind": "box",
+"material": "StoneLight",
+"name": "LightShelf",
+"position": Vector3(0, 1.34, 0),
+"sides": 0,
+"size": Vector3(0.85, 0.18, 0.85),
+"top": 0.0
+}, {
+"bottom": 0.0,
+"height": 0.0,
+"kind": "box",
+"material": "Amber",
+"name": "LuminousPaper",
+"position": Vector3(0, 1.72, 0),
+"sides": 0,
+"size": Vector3(0.48, 0.62, 0.48),
+"top": 0.0
+}],
+"roof": {
+"height": 0.37,
+"name": "PagodaCap",
+"position": Vector3(0, 2.1, 0),
+"radius": 0.62
+},
+"window_crossbar": {
+"material": "Wood",
+"size": Vector3(0.54, 0.035, 0.025),
+"y": 1.67,
+"z": 0.27
+},
+"window_lattice": {
+"center": 1,
+"count": 3,
+"material": "Wood",
+"size": Vector3(0.025, 0.6, 0.025),
+"x_step": 0.15,
+"y": 1.72,
+"z": 0.255
+}
 },
 "waterfall": {
 "ribbon_center": 2,

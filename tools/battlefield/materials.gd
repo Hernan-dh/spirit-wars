@@ -3,7 +3,6 @@ const AuthoringContext = preload("res://tools/battlefield/authoring_context.gd")
 const GroundZones = preload("res://tools/battlefield/ground_zones.gd")
 ## Authored palette for the Moonwell courtyard.
 
-const PAVING_DARKEN_STEP := 0.032
 const WEATHERED_MATERIAL_KEYS := ["Stone", "StoneLight", "StoneDark", "Foundation", "Cliff", "CliffLight", "Moss", "MossLight", "Jade", "Wood", "WoodLight", "Roof"]
 const HIGH_GRAIN_MATERIAL_KEYS := ["Wood", "WoodLight", "Roof"]
 const STRATA_MATERIAL_KEYS := ["Cliff", "CliffLight", "Foundation"]
@@ -14,12 +13,10 @@ static func build(ctx: AuthoringContext) -> void:
 	ctx.material("StoneLight", "91a0a4")
 	ctx.material("StoneDark", "334956")
 	ctx.material("Foundation", "233846")
-	ctx.material("Earth", "4b6056")
 	ctx.material("Moss", "506a48")
 	ctx.material("Cliff", "3e5262")
 	ctx.material("CliffLight", "647782")
 	ctx.material("Grass", "718a53")
-	ctx.material("Sand", "7c8c86")
 	ctx.material("Foam", "a8e4e1", 0.35)
 	ctx.material("FallingWater", "62b6c6", 0.4, 0.25)
 	ctx.material("MossLight", "8aab75")
@@ -35,8 +32,6 @@ static func build(ctx: AuthoringContext) -> void:
 	ctx.material("Meadow", "566b52")
 	ctx.material("MeadowLight", "63765b")
 	ctx.material("MossPaving", "657b6c")
-	ctx.material("TrailEarth", "727666")
-	ctx.material("BankPaving", "617c81")
 	ctx.material("Cloth", "ab5265")
 	ctx.material("Blossom", "d887b9")
 	ctx.material("BlossomLight", "f4bbd7")
@@ -46,10 +41,6 @@ static func build(ctx: AuthoringContext) -> void:
 	ctx.material("Spirit", "6ef5ed", 2.0)
 	ctx.material("SpiritDim", "338d96", 0.8)
 	ctx.material("Amber", "ff9f42", 0.8)
-	for i in range(GroundZones.PAVING_VARIANTS):
-		var m := ctx.material("Paving%d" % i, "71858f")
-		m.albedo_color = Color("71858f").darkened(i * PAVING_DARKEN_STEP)
-
 	# One shared world-space material makes the ground continuous through the grid.
 	var ground := ShaderMaterial.new()
 	ground.resource_name = "Continuous sanctuary earth and flagstone"

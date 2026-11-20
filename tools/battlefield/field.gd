@@ -78,7 +78,10 @@ static func make_tile(ctx: AuthoringContext, parent: Node, row: int, column: int
 
 static func _moonwell_cell_value() -> Vector2i:
 	if _moonwell_cell.x < 0:
-		_moonwell_cell = LevelPlan.load_default().moonwell_cell
+		var plan := LevelPlan.load_default()
+		if plan == null:
+			return Vector2i.ZERO
+		_moonwell_cell = plan.moonwell_cell
 	return _moonwell_cell
 
 static func _shared_collision_shape() -> ConvexPolygonShape3D:

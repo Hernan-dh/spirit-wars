@@ -37,9 +37,9 @@ func _ready() -> void:
 	_refresh_status()
 
 func _build_header() -> void:
-	_add_label(frame, "S P I R I T   W A R S", HudStyle.HEADER_EYEBROW_POS, HudStyle.HEADER_EYEBROW_SIZE, HudStyle.COLOR_ACCENT)
-	_add_label(frame, "The Moonwell", HudStyle.HEADER_TITLE_POS, HudStyle.HEADER_TITLE_SIZE, HudStyle.COLOR_TITLE)
-	_add_label(frame, "S H R I N E   C O U R T Y A R D", HudStyle.HEADER_SUBTITLE_POS, HudStyle.HEADER_SUBTITLE_SIZE, HudStyle.COLOR_SUBTITLE)
+	_add_label(frame, HudStyle.HEADER_EYEBROW_TEXT, HudStyle.HEADER_EYEBROW_POS, HudStyle.HEADER_EYEBROW_SIZE, HudStyle.COLOR_ACCENT)
+	_add_label(frame, HudStyle.HEADER_TITLE_TEXT, HudStyle.HEADER_TITLE_POS, HudStyle.HEADER_TITLE_SIZE, HudStyle.COLOR_TITLE)
+	_add_label(frame, HudStyle.HEADER_SUBTITLE_TEXT, HudStyle.HEADER_SUBTITLE_POS, HudStyle.HEADER_SUBTITLE_SIZE, HudStyle.COLOR_SUBTITLE)
 	var line := ColorRect.new()
 	line.position = HudStyle.HEADER_RULE_POS
 	line.size = HudStyle.HEADER_RULE_SIZE
@@ -63,7 +63,7 @@ func _build_grid_count() -> void:
 		push_error("CourtyardLabels needs a grid at %s." % grid_path)
 		return
 	var count := Label.new()
-	count.text = "%d × %d   /   %d HEXES" % [int(grid.get_meta("rows")), int(grid.get_meta("columns")), grid.get_child_count()]
+	count.text = HudStyle.GRID_COUNT_FORMAT % [int(grid.get_meta("rows")), int(grid.get_meta("columns")), grid.get_child_count()]
 	count.add_theme_font_size_override("font_size", HudStyle.GRID_COUNT_SIZE)
 	count.add_theme_color_override("font_color", HudStyle.COLOR_ACCENT)
 	count.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
@@ -97,7 +97,7 @@ func _build_status_panel() -> void:
 	ability_button = Button.new()
 	ability_button.name = "Ability"
 	ability_button.custom_minimum_size.y = HudStyle.ABILITY_HEIGHT
-	ability_button.tooltip_text = "Choose an enemy within %d hexes to deal %d damage.\nOne attack per turn; move and attack in either order." % [SkirmishController.ATTACK_RANGE, SkirmishController.ATTACK_DAMAGE]
+	ability_button.tooltip_text = HudStyle.ABILITY_TOOLTIP % [SkirmishController.ATTACK_RANGE, SkirmishController.ATTACK_DAMAGE]
 	ability_button.pressed.connect(skirmish.use_selected_ability)
 	rows.add_child(ability_button)
 	_add_status_row(rows, HudStyle.ATTACK_HELP % [SkirmishController.ATTACK_DAMAGE, SkirmishController.ATTACK_RANGE], HudStyle.HINT_SIZE, HudStyle.COLOR_HINT)
@@ -133,7 +133,7 @@ func _build_result_overlay() -> void:
 	result_details.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	restart_button = Button.new()
 	restart_button.name = "RestartEncounter"
-	restart_button.text = "Restart Encounter"
+	restart_button.text = HudStyle.RESTART_TEXT
 	restart_button.custom_minimum_size.y = HudStyle.RESTART_HEIGHT
 	restart_button.pressed.connect(skirmish.restart_encounter)
 	result_rows.add_child(restart_button)
@@ -160,26 +160,26 @@ func _refresh_status() -> void:
 		result_details.text = HudStyle.RESULT_DETAILS % skirmish.turn_number
 		if show_result:
 			restart_button.grab_focus()
-	turn_label.text = "TURN %d  /  %s" % [skirmish.turn_number, skirmish.active_team_name().to_upper()]
+	turn_label.text = HudStyle.TURN_FORMAT % [skirmish.turn_number, skirmish.active_team_name().to_upper()]
 	if skirmish.battle_over:
-		turn_label.text = "BATTLE COMPLETE"
+		turn_label.text = HudStyle.BATTLE_COMPLETE_TEXT
 	turn_label.modulate = PlaceholderUnit.color_for(skirmish.active_team)
-	end_turn_button.text = "End Turn  →  %s" % PlaceholderUnit.name_for(PlaceholderUnit.other_team(skirmish.active_team))
+	end_turn_button.text = HudStyle.END_TURN_FORMAT % PlaceholderUnit.name_for(PlaceholderUnit.other_team(skirmish.active_team))
 	var unit := skirmish.selected_unit
 	var unit_valid := is_instance_valid(unit)
-	selection_label.text = "%s  /  %d of %d HP" % [unit.display_name(), unit.health, PlaceholderUnit.MAX_HEALTH] if unit_valid else "No unit selected"
+	selection_label.text = HudStyle.SELECTION_FORMAT % [unit.display_name(), unit.health, PlaceholderUnit.MAX_HEALTH] if unit_valid else HudStyle.NO_UNIT_TEXT
 	ability_button.disabled = not skirmish.can_use_ability(unit)
-	ability_button.text = "Attack"
+	ability_button.text = HudStyle.ATTACK_TEXT
 	if unit_valid:
-		ability_button.text = "%s  /  %s" % [unit.ability_name(), "Used" if unit.ability_used else "Attack"]
+		ability_button.text = HudStyle.ABILITY_STATUS_FORMAT % [unit.ability_name(), HudStyle.USED_TEXT if unit.ability_used else HudStyle.ATTACK_TEXT]
 	if skirmish.targeting_attack:
-		ability_button.text = "Cancel Attack"
+		ability_button.text = HudStyle.CANCEL_ATTACK_TEXT
 	if not unit_valid:
 		actions_label.text = HudStyle.ACTIONS_HELP % PlaceholderUnit.MAX_HEALTH
 	elif unit.team != skirmish.active_team:
 		actions_label.text = HudStyle.WAITING_HELP % unit.team_name()
 	else:
-		actions_label.text = HudStyle.ACTION_STATUS % ["used" if unit.has_moved else "ready", "used" if unit.ability_used else "ready"]
+		actions_label.text = HudStyle.ACTION_STATUS % [HudStyle.USED_STATE_TEXT if unit.has_moved else HudStyle.READY_TEXT, HudStyle.USED_STATE_TEXT if unit.ability_used else HudStyle.READY_TEXT]
 	feedback_label.text = skirmish.feedback
 
 func _add_status_row(parent: Control, text: String, size: int, color: Color) -> Label:

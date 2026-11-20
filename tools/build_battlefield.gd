@@ -9,6 +9,7 @@ const Materials = preload("res://tools/battlefield/materials.gd")
 const Props = preload("res://tools/battlefield/props.gd")
 const SceneAssembly = preload("res://tools/battlefield/scene_assembly.gd")
 const GeneratedResources = preload("res://tools/generated_resources.gd")
+const LevelPlan = preload("res://tools/battlefield/level_plan.gd")
 
 const RNG_SEED := 72819
 
@@ -17,6 +18,10 @@ func _initialize() -> void:
 	# assets; use Compatibility with a display (or xvfb-run) for offline generation.
 	if DisplayServer.get_name() == "headless":
 		push_error("Rebuild requires the Compatibility renderer to save MultiMesh transforms. Run without --headless; use xvfb-run on a display-less machine.")
+		quit(1)
+		return
+	if LevelPlan.load_default() == null:
+		push_error("Level plan validation failed; not writing battlefield files.")
 		quit(1)
 		return
 	GeneratedResources.reset()

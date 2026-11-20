@@ -8,6 +8,8 @@ const LevelPlan = preload("res://tools/battlefield/level_plan.gd")
 
 static func make_bridge(ctx: AuthoringContext, root: Node3D) -> void:
 	var plan := LevelPlan.load_default()
+	if plan == null:
+		return
 	var data: Dictionary = plan.bridge
 	var bridge := ctx.node(root,"GardenBridge")
 	var deck_size: Vector3 = data["deck_size"]
@@ -29,6 +31,8 @@ static func make_bridge(ctx: AuthoringContext, root: Node3D) -> void:
 # Nothing here runs in the game; each named terrace, rock and plant can be edited.
 static func terrace(ctx: AuthoringContext, parent: Node, title: String, center: Vector3, radius: Vector2, height: float) -> Node3D:
 	var plan := LevelPlan.load_default()
+	if plan == null:
+		return null
 	var data: Dictionary = plan.terrain
 	var layers := int(data["layers"])
 	var sides := int(data["sides"])
@@ -120,6 +124,8 @@ static func fern(ctx: AuthoringContext, parent: Node, title: String, pos: Vector
 
 static func banner(ctx: AuthoringContext, parent: Node, title: String, pos: Vector3, yaw := 0.0) -> void:
 	var plan := LevelPlan.load_default()
+	if plan == null:
+		return
 	var data: Dictionary = plan.prop_templates["banner"]
 	var n := ctx.node(parent,title,pos)
 	n.rotation.y = yaw
@@ -145,6 +151,8 @@ static func banner(ctx: AuthoringContext, parent: Node, title: String, pos: Vect
 			seal.rotation.z = PI/4
 static func brazier(ctx: AuthoringContext, parent: Node, title: String, pos: Vector3) -> void:
 	var plan := LevelPlan.load_default()
+	if plan == null:
+		return
 	var data: Dictionary = plan.prop_templates["brazier"]
 	var n := ctx.node(parent,title,pos)
 	var part_keys := ["plinth", "stem", "bowl", "coals"]
@@ -160,6 +168,8 @@ static func brazier(ctx: AuthoringContext, parent: Node, title: String, pos: Vec
 		flame.rotation.z = sin(a)*float(data["flame_tilt"])
 static func pavilion(ctx: AuthoringContext, parent: Node, title: String, pos: Vector3, size := 1.0) -> void:
 	var plan := LevelPlan.load_default()
+	if plan == null:
+		return
 	var data: Dictionary = plan.prop_templates["pavilion"]
 	var n := ctx.node(parent,title,pos)
 	n.scale *= size
@@ -189,6 +199,8 @@ static func pavilion(ctx: AuthoringContext, parent: Node, title: String, pos: Ve
 			ctx.box(n,"RailSpindle%d_%d"%[side,j],Vector3(side*float(data["rail_x"]),float(data["rail_y"]),float(data["rail_z_start"])+j*float(data["rail_z_step"])),data["rail_size"],"Wood")
 static func waterfall(ctx: AuthoringContext, parent: Node, title: String, pos: Vector3, height: float, width: float) -> void:
 	var plan := LevelPlan.load_default()
+	if plan == null:
+		return
 	var data: Dictionary = plan.prop_templates["waterfall"]
 	var n := ctx.node(parent,title,pos)
 	# Opaque ribbons avoid sorting artifacts in the project's Compatibility renderer.
@@ -209,6 +221,8 @@ static func waterfall(ctx: AuthoringContext, parent: Node, title: String, pos: V
 		ctx.rock(n,"Spray%d"%i,Vector3(ctx.rng.randf_range(-width*float(data["spray_x_scale"]),width*float(data["spray_x_scale"])),ctx.rng.randf_range(spray_y.x,spray_y.y),ctx.rng.randf_range(spray_z.x,spray_z.y)),data["spray_size"],"Foam")
 static func make_expanded_landscape(ctx: AuthoringContext, root: Node3D) -> void:
 	var plan := LevelPlan.load_default()
+	if plan == null:
+		return
 	var terrain := ctx.node(root,"HighlandTerraces")
 	for spec: Dictionary in plan.terraces:
 		var center: Vector3 = spec["center"]
@@ -375,24 +389,32 @@ static func make_expanded_landscape(ctx: AuthoringContext, root: Node3D) -> void
 
 static func make_ruins(ctx: AuthoringContext, root: Node3D) -> void:
 	var plan := LevelPlan.load_default()
+	if plan == null:
+		return
 	var data: Dictionary = plan.ruins
 	var ruins := ctx.node(root,"WesternRuins",data["position"])
 	ruins.scale = Vector3.ONE*float(data["scale"])
 	for i in range(int(data["paving_count"])):
 		var slab := ctx.box(ruins,"BrokenPaving%d"%i,Vector3((i%3-1)*float(data["paving_x_step"]),float(data["paving_y"]),(floori(i/3.0)-1)*float(data["paving_z_step"])),data["paving_size"],"StoneDark" if i%2 else "Stone")
 		slab.rotation.y = ctx.rng.randf_range(-float(data["paving_rotation"]),float(data["paving_rotation"]))
+	var pillar_data: Dictionary = plan.prop_templates["ruin_pillar"]
+	var foot: Dictionary = pillar_data["foot"]
+	var shaft: Dictionary = pillar_data["shaft"]
+	var overgrowth: Dictionary = pillar_data["overgrowth"]
+	var vine: Dictionary = pillar_data["vine"]
 	for side in [-1,1]:
 		var pillar := ctx.node(ruins,"CarvedPillar%d"%side,Vector3(side*float(data["pillar_offset"]),0,float(data["pillar_z"])))
-		ctx.box(pillar,"Foot",Vector3(0,.2,0),Vector3(1.2,.4,1.2),"StoneDark")
-		ctx.box(pillar,"Shaft",Vector3(0,1.6,0),Vector3(.7,2.7,.8),"Stone")
+		ctx.box(pillar,"Foot",foot["position"],foot["size"],String(foot["material"]))
+		ctx.box(pillar,"Shaft",shaft["position"],shaft["size"],String(shaft["material"]))
 		for y in data["collar_heights"]:
-			ctx.box(pillar,"Collar%s"%y,Vector3(0,y,0),Vector3(.9,.15,1),"StoneLight")
+			ctx.box(pillar,"Collar%s"%y,Vector3(0,y,0),pillar_data["collar_size"],String(pillar_data["collar_material"]))
 		for j in range(int(data["rune_count"])):
 			var glyph := ctx.box(pillar,"InsetRune%d"%j,Vector3(0,float(data["rune_start_y"])+j*float(data["rune_step_y"]),float(data["rune_z"])),data["rune_size"],"SpiritDim")
 			glyph.rotation.z = PI/4
-		ctx.rock(pillar,"Overgrowth",Vector3(.1,3.04,0),Vector3(.55,.12,.54),"Moss")
-		for j in range(int(data["vine_count"])):
-			ctx.line(pillar,"HangingVine%d"%j,[Vector3((j-1.5)*.17,3,.48),Vector3((j-1.5)*.17+.05,2.7,.49),Vector3((j-1.5)*.17,2.15-j*.15,.47)],.026,"Leaf")
+		ctx.rock(pillar,"Overgrowth",overgrowth["position"],overgrowth["size"],String(overgrowth["material"]))
+		for j in range(int(vine["count"])):
+			var x := (j-float(vine["center"]))*float(vine["x_step"])
+			ctx.line(pillar,"HangingVine%d"%j,[Vector3(x,float(vine["y_start"]),float(vine["z_start"])),Vector3(x+float(vine["x_jitter"]),float(vine["y_mid"]),float(vine["z_mid"])),Vector3(x,float(vine["y_drop"])-j*float(vine["y_step"]),float(vine["z_end"]))],float(vine["radius"]),String(vine["material"]))
 	var fallen_data: Dictionary = data["fallen_lintel"]
 	var fallen := ctx.box(ruins,"FallenLintel",fallen_data["position"],fallen_data["size"],"Stone")
 	fallen.rotation = fallen_data["rotation"]
@@ -415,6 +437,8 @@ static func make_ruins(ctx: AuthoringContext, root: Node3D) -> void:
 
 static func guardian(ctx: AuthoringContext, parent: Node, title: String, pos: Vector3, yaw: float) -> void:
 	var plan := LevelPlan.load_default()
+	if plan == null:
+		return
 	var data: Dictionary = plan.prop_templates["guardian"]
 	var n := ctx.node(parent,title,pos)
 	n.rotation.y = yaw
@@ -486,6 +510,8 @@ static func guardian(ctx: AuthoringContext, parent: Node, title: String, pos: Ve
 
 static func make_sanctuary_details(ctx: AuthoringContext, root: Node3D) -> void:
 	var plan := LevelPlan.load_default()
+	if plan == null:
+		return
 	var data: Dictionary = plan.sanctuary_details
 	var details := ctx.node(root,"SanctuaryDetails")
 	for spec: Dictionary in data["guardians"]:

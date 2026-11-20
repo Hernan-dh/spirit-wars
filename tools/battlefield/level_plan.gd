@@ -7,9 +7,16 @@ extends Resource
 ## tools/battlefield/level_plan.tres.
 
 const RESOURCE_PATH := "res://tools/battlefield/level_plan.tres"
-const LevelPlanSchema = preload("res://tools/battlefield/level_plan_schema.gd")
+const SCHEMA_PATH := "res://tools/battlefield/level_plan_schema.json"
+const SECTIONS := [
+	"foundation", "bridge", "terrain", "terraces", "ridge", "spires", "pavilions",
+	"shrine_trees", "shrine_stairs", "shrine_lanterns", "shrine_banners", "braziers",
+	"wetlands", "gardens", "approach", "ruins", "sanctuary_details", "sanctuary",
+	"lighting", "prop_templates",
+]
 
 static var _validated := false
+static var _schema: Dictionary = {}
 
 @export var island_rim := PackedVector2Array()
 @export var moonwell_cell := Vector2i(6, 6)
@@ -41,14 +48,36 @@ static func load_default() -> BattlefieldLevelPlan:
 		push_error("Could not load the battlefield level plan at %s." % RESOURCE_PATH)
 		return null
 	if not _validated:
-		plan.validate()
+		if not plan.validate():
+			push_error("The battlefield level plan failed validation; aborting.")
+			return null
 		_validated = true
 	return plan
 
+static func schema() -> Dictionary:
+	if _schema.is_empty():
+		var file := FileAccess.open(SCHEMA_PATH, FileAccess.READ)
+		if file == null:
+			push_error("Could not read the level plan schema at %s." % SCHEMA_PATH)
+			return {}
+		var parsed = JSON.parse_string(file.get_as_text())
+		if parsed is Dictionary:
+			_schema = parsed
+		else:
+			push_error("The level plan schema at %s is not a JSON object." % SCHEMA_PATH)
+	return _schema
+
 func validate() -> bool:
 	var ok := true
-	for section in LevelPlanSchema.SCHEMA:
-		var expected: Variant = LevelPlanSchema.SCHEMA[section]
+	var expected_schema := schema()
+	if expected_schema.is_empty():
+		return false
+	for section in SECTIONS:
+		if not expected_schema.has(section):
+			push_error("Level plan schema is missing section '%s'." % section)
+			ok = false
+			continue
+		var expected: Variant = expected_schema[section]
 		var actual: Variant = get(section)
 		if not _matches(actual, expected, String(section)):
 			ok = false

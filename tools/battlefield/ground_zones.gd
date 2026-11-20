@@ -16,7 +16,8 @@ const PLAZA_CENTER := Vector2(0.0, 1.4)
 const PLAZA_RADIUS := 3.8
 # Keep vegetation slightly clear of the paved footprint.
 const VEGETATION_CLEARANCE := .3
-# Number of painted flagstone variants authored in materials.gd.
+# Number of painted flagstone labels stored in tile terrain metadata.
+# These labels describe the shared shader zones; they are not palette materials.
 const PAVING_VARIANTS := 6
 
 # Meadow bands and the eastern/western edges of the authored field.

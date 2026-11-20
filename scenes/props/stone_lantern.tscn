@@ -18,52 +18,52 @@
 [ext_resource type="Material" path="res://generated/materials/jade_weathered_grain.tres" id="16_3he3g"]
 [ext_resource type="ArrayMesh" path="res://generated/meshes/stone_lantern_combined_jade_weathered_grain_1_1_0_0.res" id="17_xhfg4"]
 
-[node name="StoneLantern" type="Node3D" unique_id=1336961991]
+[node name="StoneLantern" type="Node3D" unique_id=595353580]
 
-[node name="Column" type="MeshInstance3D" parent="." unique_id=305444353]
+[node name="Column" type="MeshInstance3D" parent="." unique_id=1600012512]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 material_override = ExtResource("1_0frx8")
 mesh = ExtResource("2_6q56x")
 
-[node name="LuminousPaper" type="MeshInstance3D" parent="." unique_id=1534059377]
+[node name="LuminousPaper" type="MeshInstance3D" parent="." unique_id=526038895]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.72, 0)
 material_override = ExtResource("3_a8ex4")
 mesh = ExtResource("4_yam3a")
 
-[node name="PagodaCap" type="Node3D" parent="." unique_id=1632790884]
+[node name="PagodaCap" type="Node3D" parent="." unique_id=562392252]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
 
-[node name="SweptTileRoof" type="MeshInstance3D" parent="PagodaCap" unique_id=1066460948]
+[node name="SweptTileRoof" type="MeshInstance3D" parent="PagodaCap" unique_id=2020748063]
 material_override = ExtResource("5_h73s2")
 mesh = ExtResource("6_i63mk")
 
-[node name="OverlappingCeramicTiles" type="MeshInstance3D" parent="PagodaCap" unique_id=1125686534]
+[node name="OverlappingCeramicTiles" type="MeshInstance3D" parent="PagodaCap" unique_id=164821128]
 material_override = ExtResource("5_h73s2")
 cast_shadow = 2
 mesh = ExtResource("7_eo6yl")
 
-[node name="WarmLanternLight" type="OmniLight3D" parent="." unique_id=1459088076]
+[node name="WarmLanternLight" type="OmniLight3D" parent="." unique_id=328386277]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
 light_color = Color(1, 0.7254902, 0.3882353, 1)
 light_energy = 1.1
 omni_range = 4.3
 
-[node name="Combined_StoneDark weathered grain_1_1_0_0" type="MeshInstance3D" parent="." unique_id=616451178]
+[node name="Combined_StoneDark weathered grain_1_1_0_0" type="MeshInstance3D" parent="." unique_id=2135378160]
 material_override = ExtResource("8_34o5e")
 mesh = ExtResource("9_yw48e")
 
-[node name="Combined_StoneLight weathered grain_1_1_0_0" type="MeshInstance3D" parent="." unique_id=568154287]
+[node name="Combined_StoneLight weathered grain_1_1_0_0" type="MeshInstance3D" parent="." unique_id=1736940991]
 material_override = ExtResource("10_pk808")
 mesh = ExtResource("11_3c33n")
 
-[node name="Combined_Wood weathered grain_1_1_0_0" type="MeshInstance3D" parent="." unique_id=2140808714]
+[node name="Combined_Wood weathered grain_1_1_0_0" type="MeshInstance3D" parent="." unique_id=600964236]
 material_override = ExtResource("12_cdmgw")
 mesh = ExtResource("13_uywnc")
 
-[node name="Combined_Gold_1_1_0_0" type="MeshInstance3D" parent="." unique_id=603224262]
+[node name="Combined_Gold_1_1_0_0" type="MeshInstance3D" parent="." unique_id=1290914297]
 material_override = ExtResource("14_52lre")
 mesh = ExtResource("15_860lk")
 
-[node name="Combined_Jade weathered grain_1_1_0_0" type="MeshInstance3D" parent="." unique_id=247208044]
+[node name="Combined_Jade weathered grain_1_1_0_0" type="MeshInstance3D" parent="." unique_id=1365845606]
 material_override = ExtResource("16_3he3g")
 mesh = ExtResource("17_xhfg4")

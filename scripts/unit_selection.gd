@@ -194,7 +194,8 @@ func try_attack(unit: PlaceholderUnit, target: PlaceholderUnit) -> bool:
 		target.queue_free()
 	targeting_attack = false
 	_check_battle_result()
-	_refresh()
+	if not battle_over:
+		_refresh()
 	return true
 
 func available_moves(unit: PlaceholderUnit) -> Array[Vector2i]:

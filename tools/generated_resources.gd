@@ -16,13 +16,15 @@ static func reset() -> void:
 	_content_paths.clear()
 	refresh_resource_paths()
 
-static func refresh_resource_paths() -> void:
-	# Assets were moved between folders once; keep every stored path matching
-	# its actual location so tools that trust resource_path stay reliable.
-	_refresh_directory(MESH_DIR, true)
-	_refresh_directory(MATERIAL_DIR, false)
+const LEGACY_PATH_PREFIX := "res://scenes/generated/"
 
-static func _refresh_directory(directory: String, force_resave: bool) -> void:
+static func refresh_resource_paths() -> void:
+	# Assets were moved out of scenes/generated once. Only resave files that
+	# still contain the legacy path so unrelated builds stay isolated.
+	_refresh_directory(MESH_DIR)
+	_refresh_directory(MATERIAL_DIR)
+
+static func _refresh_directory(directory: String) -> void:
 	var dir := DirAccess.open(directory)
 	if dir == null:
 		return
@@ -33,13 +35,23 @@ static func _refresh_directory(directory: String, force_resave: bool) -> void:
 			var extension := entry.get_extension().to_lower()
 			if extension == "res" or extension == "tres":
 				var path := directory.path_join(entry)
+				if not _contains_legacy_path(path):
+					entry = dir.get_next()
+					continue
 				var resource := ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE)
-				if resource != null and (force_resave or resource.resource_path != path):
+				if resource != null:
 					resource.resource_path = path
 					var error := ResourceSaver.save(resource, path, ResourceSaver.FLAG_CHANGE_PATH)
 					assert(error == OK, "Could not refresh resource path for " + path)
 		entry = dir.get_next()
 	dir.list_dir_end()
+
+static func _contains_legacy_path(path: String) -> bool:
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		return false
+	var data := file.get_buffer(file.get_length())
+	return data.hex_encode().contains(LEGACY_PATH_PREFIX.to_utf8_buffer().hex_encode())
 
 static func externalize(root: Node, scene_path: String) -> void:
 	_ensure_dir(MESH_DIR)
