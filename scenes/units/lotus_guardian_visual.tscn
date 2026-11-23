@@ -1,0 +1,403 @@
+[gd_scene format=3]
+
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_lotus_base_stone_plinth_material.tres" id="1_hvkwg"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_lotus_base_stone_plinth.res" id="2_np434"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_lotus_base_rim_stone_0_material.tres" id="3_i504d"]
+[ext_resource type="SphereMesh" path="res://generated/meshes/lotus_guardian_visual_lotus_base_rim_stone_0.res" id="4_me4fr"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_lotus_base_rim_stone_1_material.tres" id="5_8bn1q"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_lotus_base_still_water_material.tres" id="6_r1tec"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_lotus_base_still_water.res" id="7_q2av6"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_lotus_base_water_ripple_0_material.tres" id="8_nyytr"]
+[ext_resource type="TorusMesh" path="res://generated/meshes/lotus_guardian_visual_lotus_base_water_ripple_0.res" id="9_257k1"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_lotus_base_water_ripple_1_material.tres" id="10_72bg1"]
+[ext_resource type="TorusMesh" path="res://generated/meshes/lotus_guardian_visual_lotus_base_water_ripple_1.res" id="11_q4oev"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_lotus_base_lily_pad_material.tres" id="12_5cseq"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_lotus_base_lily_pad.res" id="13_ipxmn"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_lotus_base_combined_material_0_material.tres" id="14_hs065"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_lotus_base_combined_material_0.res" id="15_ciu8v"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_lotus_base_combined_material_1_material.tres" id="16_2rny3"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_lotus_base_combined_material_1.res" id="17_361wj"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_lotus_base_combined_material_2_material.tres" id="18_x87oe"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_lotus_base_combined_material_2.res" id="19_qb5lc"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_lotus_base_combined_material_3_material.tres" id="20_tclip"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_lotus_base_combined_material_3.res" id="21_b2eb7"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_lotus_base_combined_material_4_material.tres" id="22_78bhn"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_lotus_base_combined_material_4.res" id="23_pt103"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_guardian_body_nose_material.tres" id="24_v4biv"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_guardian_body_combined_material_0_material.tres" id="25_lmfq8"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_guardian_body_combined_material_0.res" id="26_e17i0"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_guardian_body_combined_material_1_material.tres" id="27_rr1m8"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_guardian_body_combined_material_1.res" id="28_343fm"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_guardian_body_combined_material_2_material.tres" id="29_l1s3l"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_guardian_body_combined_material_2.res" id="30_l7jx8"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_guardian_body_combined_material_3_material.tres" id="31_ixqtf"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_guardian_body_combined_material_3.res" id="32_7rgqx"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_guardian_body_combined_material_4_material.tres" id="33_2j7l3"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_guardian_body_combined_material_4.res" id="34_acckh"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_guardian_body_combined_material_5_material.tres" id="35_741nx"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_guardian_body_combined_material_5.res" id="36_jbv2k"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_guardian_body_combined_material_6_material.tres" id="37_a3xfk"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_guardian_body_combined_material_6.res" id="38_3dg5r"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_guardian_body_combined_material_7.res" id="39_mvt4y"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_guardian_body_combined_material_8.res" id="40_qmvue"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_guardian_body_combined_material_9.res" id="41_bjuhe"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_guardian_body_combined_material_10.res" id="42_c3xhp"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_guardian_body_combined_material_11_material.tres" id="43_ikyfd"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_guardian_body_combined_material_11.res" id="44_v52cc"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_guardian_body_combined_material_12_material.tres" id="45_uxjb7"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_guardian_body_combined_material_12.res" id="46_sttek"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_guardian_body_combined_material_13_material.tres" id="47_7ceqt"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_guardian_body_combined_material_13.res" id="48_m38jf"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_guardian_body_combined_material_14_material.tres" id="49_382iq"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_guardian_body_combined_material_14.res" id="50_igevb"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_guardian_body_combined_material_15.res" id="51_b177j"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_guardian_body_combined_material_16_material.tres" id="52_1xkys"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_guardian_body_combined_material_16.res" id="53_t08f6"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_guardian_body_combined_material_17_material.tres" id="54_diren"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_guardian_body_combined_material_17.res" id="55_aimap"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_hair_combined_material_0.res" id="56_0cfmf"]
+[ext_resource type="Material" path="res://generated/materials/lotus_guardian_visual_hair_combined_material_1_material.tres" id="57_kr6bf"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_hair_combined_material_1.res" id="58_w1xxq"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_ribbons_sash_1_0_outer_silk.res" id="59_4xngv"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_ribbons_sash_1_0_inner_silk.res" id="60_ver3g"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_ribbons_sash_1_0_gold_edge.res" id="61_r1e7s"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_ribbons_sash_1_0_outer_silk_2.res" id="62_4f88f"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_ribbons_sash_1_0_inner_silk_2.res" id="63_orav2"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_ribbons_sash_1_0_gold_edge_2.res" id="64_jnyby"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_ribbons_back_veil.res" id="65_o22b4"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_ribbons_back_veil_trim.res" id="66_evurr"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_floating_lotus_blossom_0_combined_material_0.res" id="67_6vmni"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/lotus_guardian_visual_floating_lotus_blossom_0_combined_material_1.res" id="68_8dkel"]
+
+[node name="LotusGuardianVisual" type="Node3D" unique_id=1754330631]
+
+[node name="LotusBase" type="Node3D" parent="." unique_id=397320550]
+
+[node name="StonePlinth" type="MeshInstance3D" parent="LotusBase" unique_id=1158828849]
+material_override = ExtResource("1_hvkwg")
+mesh = ExtResource("2_np434")
+
+[node name="RimStone0" type="MeshInstance3D" parent="LotusBase" unique_id=1842377511]
+transform = Transform3D(0.084045544, 0, -0.009713479, 0, 0.045, 0, 0.0127022425, 0, 0.06427012, 0.46966627, 0.075, 0.07098311)
+material_override = ExtResource("3_i504d")
+mesh = ExtResource("4_me4fr")
+
+[node name="RimStone1" type="MeshInstance3D" parent="LotusBase" unique_id=2012790944]
+transform = Transform3D(0.06643446, 0, -0.04054718, 0, 0.045, 0, 0.053023238, 0, 0.050802816, 0.37125134, 0.075, 0.2963063)
+material_override = ExtResource("5_8bn1q")
+mesh = ExtResource("4_me4fr")
+
+[node name="RimStone2" type="MeshInstance3D" parent="LotusBase" unique_id=1807551949]
+transform = Transform3D(0.031022308, 0, -0.060516294, 0, 0.045, 0, 0.0791367, 0, 0.023722941, 0.17335995, 0.075, 0.44223446)
+material_override = ExtResource("3_i504d")
+mesh = ExtResource("4_me4fr")
+
+[node name="RimStone3" type="MeshInstance3D" parent="LotusBase" unique_id=2076417000]
+transform = Transform3D(-0.012702243, 0, -0.06427012, 0, 0.045, 0, 0.084045544, 0, -0.00971348, -0.07098311, 0.075, 0.46966627)
+material_override = ExtResource("5_8bn1q")
+mesh = ExtResource("4_me4fr")
+
+[node name="RimStone4" type="MeshInstance3D" parent="LotusBase" unique_id=159698454]
+transform = Transform3D(-0.05302323, 0, -0.05080282, 0, 0.045, 0, 0.06643446, 0, -0.040547177, -0.2963063, 0.075, 0.37125134)
+material_override = ExtResource("3_i504d")
+mesh = ExtResource("4_me4fr")
+
+[node name="RimStone5" type="MeshInstance3D" parent="LotusBase" unique_id=1786452668]
+transform = Transform3D(-0.0791367, 0, -0.023722937, 0, 0.045, 0, 0.031022303, 0, -0.060516294, -0.44223446, 0.075, 0.17335995)
+material_override = ExtResource("5_8bn1q")
+mesh = ExtResource("4_me4fr")
+
+[node name="RimStone6" type="MeshInstance3D" parent="LotusBase" unique_id=1597046027]
+transform = Transform3D(-0.084045544, 0, 0.009713475, 0, 0.045, 0, -0.012702237, 0, -0.06427012, -0.46966627, 0.075, -0.07098311)
+material_override = ExtResource("3_i504d")
+mesh = ExtResource("4_me4fr")
+
+[node name="RimStone7" type="MeshInstance3D" parent="LotusBase" unique_id=969498294]
+transform = Transform3D(-0.06643445, 0, 0.040547185, 0, 0.045, 0, -0.05302324, 0, -0.050802812, -0.37125134, 0.075, -0.2963063)
+material_override = ExtResource("5_8bn1q")
+mesh = ExtResource("4_me4fr")
+
+[node name="RimStone8" type="MeshInstance3D" parent="LotusBase" unique_id=1827510640]
+transform = Transform3D(-0.03102229, 0, 0.060516298, 0, 0.045, 0, -0.0791367, 0, -0.023722926, -0.17335995, 0.075, -0.44223446)
+material_override = ExtResource("3_i504d")
+mesh = ExtResource("4_me4fr")
+
+[node name="RimStone9" type="MeshInstance3D" parent="LotusBase" unique_id=88414461]
+transform = Transform3D(0.01270225, 0, 0.06427012, 0, 0.045, 0, -0.084045544, 0, 0.009713485, 0.07098311, 0.075, -0.46966627)
+material_override = ExtResource("5_8bn1q")
+mesh = ExtResource("4_me4fr")
+
+[node name="RimStone10" type="MeshInstance3D" parent="LotusBase" unique_id=1592186796]
+transform = Transform3D(0.053023238, 0, 0.050802816, 0, 0.045, 0, -0.06643446, 0, 0.04054718, 0.2963063, 0.075, -0.37125134)
+material_override = ExtResource("3_i504d")
+mesh = ExtResource("4_me4fr")
+
+[node name="RimStone11" type="MeshInstance3D" parent="LotusBase" unique_id=852277019]
+transform = Transform3D(0.07913669, 0, 0.023722947, 0, 0.045, 0, -0.031022316, 0, 0.06051629, 0.44223446, 0.075, -0.17335995)
+material_override = ExtResource("5_8bn1q")
+mesh = ExtResource("4_me4fr")
+
+[node name="StillWater" type="MeshInstance3D" parent="LotusBase" unique_id=56344452]
+material_override = ExtResource("6_r1tec")
+mesh = ExtResource("7_q2av6")
+
+[node name="WaterRipple0" type="MeshInstance3D" parent="LotusBase" unique_id=506860888]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.105, 0)
+material_override = ExtResource("8_nyytr")
+mesh = ExtResource("9_257k1")
+
+[node name="WaterRipple1" type="MeshInstance3D" parent="LotusBase" unique_id=2049492246]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.105, 0)
+material_override = ExtResource("10_72bg1")
+mesh = ExtResource("11_q4oev")
+
+[node name="LilyPad" type="MeshInstance3D" parent="LotusBase" unique_id=746594189]
+material_override = ExtResource("12_5cseq")
+mesh = ExtResource("13_ipxmn")
+
+[node name="Combined_Material_0" type="MeshInstance3D" parent="LotusBase" unique_id=244711653]
+material_override = ExtResource("14_hs065")
+mesh = ExtResource("15_ciu8v")
+
+[node name="Combined_Material_1" type="MeshInstance3D" parent="LotusBase" unique_id=123876020]
+material_override = ExtResource("16_2rny3")
+mesh = ExtResource("17_361wj")
+
+[node name="Combined_Material_2" type="MeshInstance3D" parent="LotusBase" unique_id=2031753706]
+material_override = ExtResource("18_x87oe")
+mesh = ExtResource("19_qb5lc")
+
+[node name="Combined_Material_3" type="MeshInstance3D" parent="LotusBase" unique_id=432078993]
+material_override = ExtResource("20_tclip")
+mesh = ExtResource("21_b2eb7")
+
+[node name="Combined_Material_4" type="MeshInstance3D" parent="LotusBase" unique_id=502138120]
+material_override = ExtResource("22_78bhn")
+mesh = ExtResource("23_pt103")
+
+[node name="GuardianBody" type="Node3D" parent="." unique_id=1386125068]
+
+[node name="Nose" type="MeshInstance3D" parent="GuardianBody" unique_id=1699949871]
+transform = Transform3D(0.011, 0, 0, 0, 0.018, 0, 0, 0, 0.012, 0, 1.818, -0.104)
+material_override = ExtResource("24_v4biv")
+mesh = ExtResource("4_me4fr")
+
+[node name="Combined_Material_0" type="MeshInstance3D" parent="GuardianBody" unique_id=60840500]
+material_override = ExtResource("25_lmfq8")
+mesh = ExtResource("26_e17i0")
+
+[node name="Combined_Material_1" type="MeshInstance3D" parent="GuardianBody" unique_id=556009203]
+material_override = ExtResource("27_rr1m8")
+mesh = ExtResource("28_343fm")
+
+[node name="Combined_Material_2" type="MeshInstance3D" parent="GuardianBody" unique_id=1653113771]
+material_override = ExtResource("29_l1s3l")
+mesh = ExtResource("30_l7jx8")
+
+[node name="Combined_Material_3" type="MeshInstance3D" parent="GuardianBody" unique_id=182876026]
+material_override = ExtResource("31_ixqtf")
+mesh = ExtResource("32_7rgqx")
+
+[node name="Combined_Material_4" type="MeshInstance3D" parent="GuardianBody" unique_id=2037207063]
+material_override = ExtResource("33_2j7l3")
+mesh = ExtResource("34_acckh")
+
+[node name="Combined_Material_5" type="MeshInstance3D" parent="GuardianBody" unique_id=1795598395]
+material_override = ExtResource("35_741nx")
+mesh = ExtResource("36_jbv2k")
+
+[node name="Combined_Material_6" type="MeshInstance3D" parent="GuardianBody" unique_id=760747514]
+material_override = ExtResource("37_a3xfk")
+mesh = ExtResource("38_3dg5r")
+
+[node name="Combined_Material_7" type="MeshInstance3D" parent="GuardianBody" unique_id=64972599]
+material_override = ExtResource("10_72bg1")
+mesh = ExtResource("39_mvt4y")
+
+[node name="Combined_Material_8" type="MeshInstance3D" parent="GuardianBody" unique_id=43460853]
+material_override = ExtResource("16_2rny3")
+mesh = ExtResource("40_qmvue")
+
+[node name="Combined_Material_9" type="MeshInstance3D" parent="GuardianBody" unique_id=2092114068]
+material_override = ExtResource("20_tclip")
+mesh = ExtResource("41_bjuhe")
+
+[node name="Combined_Material_10" type="MeshInstance3D" parent="GuardianBody" unique_id=1313064850]
+material_override = ExtResource("22_78bhn")
+mesh = ExtResource("42_c3xhp")
+
+[node name="Combined_Material_11" type="MeshInstance3D" parent="GuardianBody" unique_id=340737728]
+material_override = ExtResource("43_ikyfd")
+mesh = ExtResource("44_v52cc")
+
+[node name="Combined_Material_12" type="MeshInstance3D" parent="GuardianBody" unique_id=1617606575]
+material_override = ExtResource("45_uxjb7")
+mesh = ExtResource("46_sttek")
+
+[node name="Combined_Material_13" type="MeshInstance3D" parent="GuardianBody" unique_id=239627700]
+material_override = ExtResource("47_7ceqt")
+mesh = ExtResource("48_m38jf")
+
+[node name="Combined_Material_14" type="MeshInstance3D" parent="GuardianBody" unique_id=107444432]
+material_override = ExtResource("49_382iq")
+mesh = ExtResource("50_igevb")
+
+[node name="Combined_Material_15" type="MeshInstance3D" parent="GuardianBody" unique_id=1335280245]
+material_override = ExtResource("8_nyytr")
+mesh = ExtResource("51_b177j")
+
+[node name="Combined_Material_16" type="MeshInstance3D" parent="GuardianBody" unique_id=2102063794]
+material_override = ExtResource("52_1xkys")
+mesh = ExtResource("53_t08f6")
+
+[node name="Combined_Material_17" type="MeshInstance3D" parent="GuardianBody" unique_id=1324693643]
+material_override = ExtResource("54_diren")
+mesh = ExtResource("55_aimap")
+
+[node name="Hair" type="Node3D" parent="." unique_id=1560962784]
+
+[node name="Combined_Material_0" type="MeshInstance3D" parent="Hair" unique_id=926490258]
+material_override = ExtResource("52_1xkys")
+mesh = ExtResource("56_0cfmf")
+
+[node name="Combined_Material_1" type="MeshInstance3D" parent="Hair" unique_id=1413828743]
+material_override = ExtResource("57_kr6bf")
+mesh = ExtResource("58_w1xxq")
+
+[node name="Ribbons" type="Node3D" parent="." unique_id=152874220]
+
+[node name="Sash-1_0" type="Node3D" parent="Ribbons" unique_id=1746197855]
+
+[node name="OuterSilk" type="MeshInstance3D" parent="Ribbons/Sash-1_0" unique_id=844922468]
+material_override = ExtResource("27_rr1m8")
+mesh = ExtResource("59_4xngv")
+
+[node name="InnerSilk" type="MeshInstance3D" parent="Ribbons/Sash-1_0" unique_id=1673843118]
+material_override = ExtResource("35_741nx")
+mesh = ExtResource("60_ver3g")
+
+[node name="GoldEdge" type="MeshInstance3D" parent="Ribbons/Sash-1_0" unique_id=945336300]
+material_override = ExtResource("31_ixqtf")
+mesh = ExtResource("61_r1e7s")
+
+[node name="Sash1_0" type="Node3D" parent="Ribbons" unique_id=199484886]
+
+[node name="OuterSilk" type="MeshInstance3D" parent="Ribbons/Sash1_0" unique_id=1499987980]
+material_override = ExtResource("33_2j7l3")
+mesh = ExtResource("62_4f88f")
+
+[node name="InnerSilk" type="MeshInstance3D" parent="Ribbons/Sash1_0" unique_id=565269275]
+material_override = ExtResource("35_741nx")
+mesh = ExtResource("63_orav2")
+
+[node name="GoldEdge" type="MeshInstance3D" parent="Ribbons/Sash1_0" unique_id=897934610]
+material_override = ExtResource("31_ixqtf")
+mesh = ExtResource("64_jnyby")
+
+[node name="BackVeil" type="MeshInstance3D" parent="Ribbons" unique_id=269065471]
+material_override = ExtResource("35_741nx")
+mesh = ExtResource("65_o22b4")
+
+[node name="BackVeilTrim" type="MeshInstance3D" parent="Ribbons" unique_id=899330052]
+material_override = ExtResource("31_ixqtf")
+mesh = ExtResource("66_evurr")
+
+[node name="FloatingLotus" type="Node3D" parent="." unique_id=743401735]
+
+[node name="Blossom0" type="Node3D" parent="FloatingLotus" unique_id=331264854]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.61, 0.58, 0.14)
+
+[node name="Flower" type="Node3D" parent="FloatingLotus/Blossom0" unique_id=47316514]
+
+[node name="Heart" type="MeshInstance3D" parent="FloatingLotus/Blossom0/Flower" unique_id=456532764]
+transform = Transform3D(0.045, 0, 0, 0, 0.03, 0, 0, 0, 0.045, 0, 0.02, 0)
+material_override = ExtResource("16_2rny3")
+mesh = ExtResource("4_me4fr")
+
+[node name="Mote" type="MeshInstance3D" parent="FloatingLotus/Blossom0" unique_id=145952525]
+transform = Transform3D(0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, 0, 0.185, 0)
+material_override = ExtResource("8_nyytr")
+mesh = ExtResource("4_me4fr")
+
+[node name="Combined_Material_0" type="MeshInstance3D" parent="FloatingLotus/Blossom0" unique_id=245533075]
+material_override = ExtResource("20_tclip")
+mesh = ExtResource("67_6vmni")
+
+[node name="Combined_Material_1" type="MeshInstance3D" parent="FloatingLotus/Blossom0" unique_id=1364265972]
+material_override = ExtResource("22_78bhn")
+mesh = ExtResource("68_8dkel")
+
+[node name="Blossom1" type="Node3D" parent="FloatingLotus" unique_id=752826835]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.57, 0.72, 0.24)
+
+[node name="Flower" type="Node3D" parent="FloatingLotus/Blossom1" unique_id=739116534]
+
+[node name="Heart" type="MeshInstance3D" parent="FloatingLotus/Blossom1/Flower" unique_id=305052381]
+transform = Transform3D(0.045, 0, 0, 0, 0.03, 0, 0, 0, 0.045, 0, 0.02, 0)
+material_override = ExtResource("16_2rny3")
+mesh = ExtResource("4_me4fr")
+
+[node name="Mote" type="MeshInstance3D" parent="FloatingLotus/Blossom1" unique_id=2074418338]
+transform = Transform3D(0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, 0, 0.185, 0)
+material_override = ExtResource("8_nyytr")
+mesh = ExtResource("4_me4fr")
+
+[node name="Combined_Material_0" type="MeshInstance3D" parent="FloatingLotus/Blossom1" unique_id=317529035]
+material_override = ExtResource("20_tclip")
+mesh = ExtResource("67_6vmni")
+
+[node name="Combined_Material_1" type="MeshInstance3D" parent="FloatingLotus/Blossom1" unique_id=499960785]
+material_override = ExtResource("22_78bhn")
+mesh = ExtResource("68_8dkel")
+
+[node name="Blossom2" type="Node3D" parent="FloatingLotus" unique_id=399375351]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22, 1.02, 0.56)
+
+[node name="Flower" type="Node3D" parent="FloatingLotus/Blossom2" unique_id=823351986]
+
+[node name="Heart" type="MeshInstance3D" parent="FloatingLotus/Blossom2/Flower" unique_id=1244693927]
+transform = Transform3D(0.045, 0, 0, 0, 0.03, 0, 0, 0, 0.045, 0, 0.02, 0)
+material_override = ExtResource("16_2rny3")
+mesh = ExtResource("4_me4fr")
+
+[node name="Mote" type="MeshInstance3D" parent="FloatingLotus/Blossom2" unique_id=1619084239]
+transform = Transform3D(0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, 0, 0.185, 0)
+material_override = ExtResource("8_nyytr")
+mesh = ExtResource("4_me4fr")
+
+[node name="Combined_Material_0" type="MeshInstance3D" parent="FloatingLotus/Blossom2" unique_id=419983911]
+material_override = ExtResource("20_tclip")
+mesh = ExtResource("67_6vmni")
+
+[node name="Combined_Material_1" type="MeshInstance3D" parent="FloatingLotus/Blossom2" unique_id=1565108243]
+material_override = ExtResource("22_78bhn")
+mesh = ExtResource("68_8dkel")
+
+[node name="Blossom3" type="Node3D" parent="FloatingLotus" unique_id=512319498]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0.92, -0.52)
+
+[node name="Flower" type="Node3D" parent="FloatingLotus/Blossom3" unique_id=2126553160]
+
+[node name="Heart" type="MeshInstance3D" parent="FloatingLotus/Blossom3/Flower" unique_id=1179737687]
+transform = Transform3D(0.045, 0, 0, 0, 0.03, 0, 0, 0, 0.045, 0, 0.02, 0)
+material_override = ExtResource("16_2rny3")
+mesh = ExtResource("4_me4fr")
+
+[node name="Mote" type="MeshInstance3D" parent="FloatingLotus/Blossom3" unique_id=1242949768]
+transform = Transform3D(0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, 0, 0.185, 0)
+material_override = ExtResource("8_nyytr")
+mesh = ExtResource("4_me4fr")
+
+[node name="Combined_Material_0" type="MeshInstance3D" parent="FloatingLotus/Blossom3" unique_id=2140134741]
+material_override = ExtResource("20_tclip")
+mesh = ExtResource("67_6vmni")
+
+[node name="Combined_Material_1" type="MeshInstance3D" parent="FloatingLotus/Blossom3" unique_id=1632077805]
+material_override = ExtResource("22_78bhn")
+mesh = ExtResource("68_8dkel")
+
+[node name="LotusLight" type="OmniLight3D" parent="." unique_id=705079384]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0.1)
+light_color = Color(0.56078434, 0.9098039, 0.89411765, 1)
+light_energy = 0.42
+omni_range = 2.6

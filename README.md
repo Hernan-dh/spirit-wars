@@ -97,12 +97,12 @@ file. No external asset tools are required.
 - **R** restores the opening position, angle, and zoom.
 - **Left click** a unit from either team to select or inspect it. Click empty space or press **Esc** to clear selection.
 - During the active team's turn, **click a gold-ringed hex** to move the selected unit up to three hexes in one move. Gold rings mark every empty destination reachable within three steps; units cannot move through occupied hexes or off the field.
-- **Spirit Pulse / Attack** (Lantern) or **Mirage Rush / Attack** (Kitsune) enters targeting mode. Click a red-ringed enemy within three hexes to deal one damage. **Cancel Attack** exits targeting without spending the attack; **Esc** clears selection. Invalid targets spend no action.
+- **Spirit Pulse / Attack** (Lantern), **Mirage Rush / Attack** (Kitsune), or **Lotus Ward / Attack** (Lotus Guardian) enters targeting mode. Click a red-ringed enemy within three hexes to deal one damage. **Cancel Attack** exits targeting without spending the attack; **Esc** clears selection. Invalid targets spend no action.
 - **End Turn** hands local control to the other team, even if actions remain. Jade starts.
-- Defeating a team's last surviving unit ends the battle and displays the winner. Movement, attacks, selection, and turn changes stop. Choose **Restart Encounter** (or press Enter with the button focused) to restore the starting encounter, including all four units at full health, Jade's first turn, and the opening camera.
+- Defeating a team's last surviving unit ends the battle and displays the winner. Movement, attacks, selection, and turn changes stop. Choose **Restart Encounter** (or press Enter with the button focused) to restore the starting encounter, including all six units at full health, Jade's first turn, and the opening camera.
 
-Each team fields one Lantern Spirit and one Celestial Kitsune on rows 12 and 3 of the field. Each has a
-team-colored base plus a team/name label and visible health. Every unit starts with **3 HP**; health persists between turns. A unit at zero health is removed and its hex becomes available. Selection adds a gold ground
+Each team fields a Lantern Spirit, a Celestial Kitsune, and a Lotus Guardian across
+two starting ranks. Each has a team-colored base plus a team/name label and visible health. Every unit starts with **3 HP**; health persists between turns. A unit at zero health is removed and its hex becomes available. Selection adds a gold ground
 ring and overhead pointer, while the top-right panel names the selected unit.
 Only one unit is selected at a time; both teams can be inspected. Only the active
 team can act. Each unit can move once and attack once, in either order, per
@@ -111,10 +111,11 @@ turn clears selection and refreshes only the incoming team's actions. The panel
 shows the turn, active team, and selected unit's remaining actions. Both teams
 are controlled locally; there is no AI or networking.
 
-`scenes/units/skirmish.tscn` holds the four editable starting positions and team
-assignments. `scenes/units/lantern_spirit.tscn` and
-`scenes/units/celestial_kitsune.tscn` are the reusable units; their `team`
-and `unit_number` properties also update their bases and labels in the editor. Selection
+`scenes/units/skirmish.tscn` holds the six editable starting positions and team
+assignments. `scenes/units/lantern_spirit.tscn`,
+`scenes/units/celestial_kitsune.tscn`, and `scenes/units/lotus_guardian.tscn`
+are the reusable units; their `team` and `unit_number` properties also update
+their bases and labels in the editor. Selection
 uses 3D collision picking on physics layer 2, with hex ground picking on layer 1.
 
 Panning stays within 18 world units of the opening focus on each ground axis.
@@ -249,3 +250,36 @@ godot --headless --path . --script tools/build_kitsune_echo.gd
 ```
 
 No rebuild is needed to play.
+
+## Lotus Guardian
+
+The Lotus Guardian follows the middle-right concept in `references/sw_concept_2.png`:
+a serene robed protector rising from a giant pink lotus on a lily pad and still pool.
+Layered white, cyan, and teal robes flow from a gold sash, with wide draped sleeves,
+a lotus-crowned headdress, gold hairpins, long dark hair, and small blossoms drifting
+around her. The stone rim, lily pad, water ripples, layered petals, trailing sashes,
+and floating flowers are native editable meshes referenced from
+`scenes/units/lotus_guardian_visual.tscn`; parts merge by material and each animated
+group stays a few saved meshes. The body breathes, the hair and ribbons sway, the
+blossoms orbit, and the guardian's light pulses. No imported textures or runtime mesh
+generation are needed.
+
+Each team starts with one Lotus Guardian in slot 03. It retains the shared three HP,
+three-hex movement and attack range, and one move plus one attack per turn. Its attack,
+**Lotus Ward**, sends glowing petals spiralling toward the selected enemy, then blooms
+a translucent teal ward dome with an opening ring of pink petals and a soft impact
+ring. The effect deals one damage and cleans itself up after a lethal hit.
+`materials/lotus_ward.gdshader` supplies the rim-lit dome in the project's
+Compatibility renderer.
+
+`lotus_guardian.tscn` inherits the shared pawn scene with its own picking volume,
+label heights, and visual. `scripts/lotus_guardian.gd` adds animation and the ward
+effect; the common controller still validates all movement, targeting, turns, and
+damage. To regenerate only the editable visual after changing its authoring source:
+
+```sh
+godot --headless --path . --script tools/build_lotus_guardian.gd
+```
+
+This overwrites only `scenes/units/lotus_guardian_visual.tscn` and its generated
+external resources. No rebuild is needed to play.
