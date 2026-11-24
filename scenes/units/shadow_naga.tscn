@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/units/placeholder_unit.tscn" id="1_base"]
+[ext_resource type="Script" path="res://scripts/shadow_naga.gd" id="2_naga"]
+[ext_resource type="PackedScene" path="res://scenes/units/shadow_naga_visual.tscn" id="3_visual"]
+
+[sub_resource type="CapsuleShape3D" id="NagaPick"]
+radius = 0.50
+height = 2.50
+
+[node name="ShadowNaga" instance=ExtResource("1_base")]
+script = ExtResource("2_naga")
+
+[node name="Body" parent="." index="1"]
+visible = false
+
+[node name="Head" parent="." index="2"]
+visible = false
+
+[node name="PickShape" parent="." index="3"]
+position = Vector3(0, 1.18, 0)
+shape = SubResource("NagaPick")
+
+[node name="SelectionMarker" parent="." index="6"]
+position = Vector3(0, 2.58, 0)
+
+[node name="Badge" parent="." index="7"]
+position = Vector3(0, 2.88, 0)
+font_size = 20
+pixel_size = 0.010
+
+[node name="Health" parent="." index="8"]
+position = Vector3(0, 3.15, 0)
+font_size = 20
+pixel_size = 0.010
+
+[node name="ShadowNagaVisual" parent="." instance=ExtResource("3_visual")]
+position = Vector3(0, 0.04, 0)

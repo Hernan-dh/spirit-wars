@@ -1,0 +1,342 @@
+[gd_scene format=3]
+
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_stone_base_stone_plinth_material.tres" id="1_vlbmv"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_stone_base_stone_plinth.res" id="2_t22sy"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_stone_base_base_lotus_heart_material.tres" id="3_av7mf"]
+[ext_resource type="SphereMesh" path="res://generated/meshes/shadow_naga_visual_stone_base_base_lotus_heart.res" id="4_mjx04"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_stone_base_combined_material_0_material.tres" id="5_jevu0"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_stone_base_combined_material_0.res" id="6_05blv"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_stone_base_combined_material_1_material.tres" id="7_m5nky"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_stone_base_combined_material_1.res" id="8_tf2j0"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_stone_base_combined_material_2_material.tres" id="9_4whyp"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_stone_base_combined_material_2.res" id="10_nlrrx"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_stone_base_combined_material_3_material.tres" id="11_kp5ph"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_stone_base_combined_material_3.res" id="12_85yk3"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_stone_base_combined_material_4_material.tres" id="13_ulqw0"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_stone_base_combined_material_4.res" id="14_f5f2c"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_naga_body_serpent_coil_material.tres" id="15_ioip1"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_body_serpent_coil.res" id="16_1poml"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_naga_body_scale_hook_14_material.tres" id="17_73rxl"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_body_scale_hook_14.res" id="18_b57pd"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_naga_body_dorsal_fin_0_material.tres" id="19_pxdxx"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_body_dorsal_fin_0.res" id="20_hw561"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_naga_body_dorsal_fin_1_material.tres" id="21_1fks5"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_body_dorsal_fin_1.res" id="22_tendv"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_body_dorsal_fin_2.res" id="23_mewe3"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_body_dorsal_fin_3.res" id="24_n3vth"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_body_dorsal_fin_4.res" id="25_512d2"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_body_dorsal_fin_5.res" id="26_rj8ie"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_body_dorsal_fin_6.res" id="27_5lrb3"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_naga_body_combined_material_0_material.tres" id="28_8uj04"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_body_combined_material_0.res" id="29_tf1f8"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_naga_body_combined_material_1_material.tres" id="30_qrmjm"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_body_combined_material_1.res" id="31_b16nb"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_naga_body_combined_material_2_material.tres" id="32_juvmi"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_body_combined_material_2.res" id="33_840ak"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_naga_body_combined_material_3_material.tres" id="34_dgh4p"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_body_combined_material_3.res" id="35_x4xfn"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_naga_head_mouth_gap_material.tres" id="36_jnrs5"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_head_cheek_fin_1_0.res" id="37_4g8c4"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_head_cheek_fin_1_0_2.res" id="38_3v447"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_naga_head_crest_spike_material.tres" id="39_yhtj0"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_head_crest_spike.res" id="40_7stnk"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_head_crest_fin.res" id="41_ygvfy"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_head_combined_material_0.res" id="42_12xwo"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_head_combined_material_1.res" id="43_wloi6"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_naga_head_combined_material_2_material.tres" id="44_rhdm4"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_head_combined_material_2.res" id="45_1la68"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_naga_head_combined_material_3_material.tres" id="46_deabq"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_head_combined_material_3.res" id="47_32cs5"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_naga_head_combined_material_4_material.tres" id="48_u5hwt"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_head_combined_material_4.res" id="49_a8dwd"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_naga_head_combined_material_5_material.tres" id="50_w480a"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_head_combined_material_5.res" id="51_51v7w"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_naga_head_combined_material_6_material.tres" id="52_kgtdj"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_head_combined_material_6.res" id="53_t75ad"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_naga_head_combined_material_7_material.tres" id="54_m2snt"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_head_combined_material_7.res" id="55_1jagd"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_head_combined_material_8.res" id="56_r6jrx"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_naga_head_combined_material_9.res" id="57_pl808"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_mane_combined_material_0_material.tres" id="58_f7xe0"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_mane_combined_material_0.res" id="59_2exxs"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_mane_combined_material_1_material.tres" id="60_jh2sm"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_mane_combined_material_1.res" id="61_0kl6x"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_mane_combined_material_2.res" id="62_kkpwh"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_blossoms_blossom_0_combined_material_0.res" id="63_h2i3d"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_blossoms_blossom_0_combined_material_1.res" id="64_nmii1"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_miasma_combined_material_0_material.tres" id="65_ljhkj"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_miasma_combined_material_0.res" id="66_1dy2u"]
+[ext_resource type="Material" path="res://generated/materials/shadow_naga_visual_miasma_combined_material_1_material.tres" id="67_nfqdk"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_miasma_combined_material_1.res" id="68_igarn"]
+[ext_resource type="ArrayMesh" path="res://generated/meshes/shadow_naga_visual_miasma_combined_material_2.res" id="69_xvw2e"]
+
+[node name="ShadowNagaVisual" type="Node3D" unique_id=1473084497]
+
+[node name="StoneBase" type="Node3D" parent="." unique_id=1937496817]
+
+[node name="StonePlinth" type="MeshInstance3D" parent="StoneBase" unique_id=125418807]
+material_override = ExtResource("1_vlbmv")
+mesh = ExtResource("2_t22sy")
+
+[node name="BaseLotus" type="Node3D" parent="StoneBase" unique_id=1318973145]
+transform = Transform3D(0.8750079, 0, -0.3699474, 0, 0.95, 0, 0.3699474, 0, 0.8750079, 0.285, 0.11, -0.275)
+
+[node name="Heart" type="MeshInstance3D" parent="StoneBase/BaseLotus" unique_id=244873117]
+transform = Transform3D(0.045, 0, 0, 0, 0.03, 0, 0, 0, 0.045, 0, 0.02, 0)
+material_override = ExtResource("3_av7mf")
+mesh = ExtResource("4_mjx04")
+
+[node name="Combined_Material_0" type="MeshInstance3D" parent="StoneBase" unique_id=583198308]
+material_override = ExtResource("5_jevu0")
+mesh = ExtResource("6_05blv")
+
+[node name="Combined_Material_1" type="MeshInstance3D" parent="StoneBase" unique_id=1882002854]
+material_override = ExtResource("7_m5nky")
+mesh = ExtResource("8_tf2j0")
+
+[node name="Combined_Material_2" type="MeshInstance3D" parent="StoneBase" unique_id=311096816]
+material_override = ExtResource("9_4whyp")
+mesh = ExtResource("10_nlrrx")
+
+[node name="Combined_Material_3" type="MeshInstance3D" parent="StoneBase" unique_id=884165791]
+material_override = ExtResource("11_kp5ph")
+mesh = ExtResource("12_85yk3")
+
+[node name="Combined_Material_4" type="MeshInstance3D" parent="StoneBase" unique_id=1532548668]
+material_override = ExtResource("13_ulqw0")
+mesh = ExtResource("14_f5f2c")
+
+[node name="NagaBody" type="Node3D" parent="." unique_id=2022955880]
+
+[node name="SerpentCoil" type="MeshInstance3D" parent="NagaBody" unique_id=1062837663]
+material_override = ExtResource("15_ioip1")
+mesh = ExtResource("16_1poml")
+
+[node name="ScaleHook14" type="MeshInstance3D" parent="NagaBody" unique_id=1694999731]
+transform = Transform3D(-0.37439108, 0, -0.9272709, 0, 1, 0, 0.9272709, 0, -0.37439108, 0, 0, 0)
+material_override = ExtResource("17_73rxl")
+mesh = ExtResource("18_b57pd")
+
+[node name="DorsalFin0" type="MeshInstance3D" parent="NagaBody" unique_id=1911610636]
+material_override = ExtResource("19_pxdxx")
+mesh = ExtResource("20_hw561")
+
+[node name="DorsalFin1" type="MeshInstance3D" parent="NagaBody" unique_id=497028400]
+material_override = ExtResource("21_1fks5")
+mesh = ExtResource("22_tendv")
+
+[node name="DorsalFin2" type="MeshInstance3D" parent="NagaBody" unique_id=1356983560]
+material_override = ExtResource("21_1fks5")
+mesh = ExtResource("23_mewe3")
+
+[node name="DorsalFin3" type="MeshInstance3D" parent="NagaBody" unique_id=264248233]
+material_override = ExtResource("19_pxdxx")
+mesh = ExtResource("24_n3vth")
+
+[node name="DorsalFin4" type="MeshInstance3D" parent="NagaBody" unique_id=1881316279]
+material_override = ExtResource("21_1fks5")
+mesh = ExtResource("25_512d2")
+
+[node name="DorsalFin5" type="MeshInstance3D" parent="NagaBody" unique_id=410946505]
+material_override = ExtResource("21_1fks5")
+mesh = ExtResource("26_rj8ie")
+
+[node name="DorsalFin6" type="MeshInstance3D" parent="NagaBody" unique_id=870112872]
+material_override = ExtResource("19_pxdxx")
+mesh = ExtResource("27_5lrb3")
+
+[node name="Combined_Material_0" type="MeshInstance3D" parent="NagaBody" unique_id=1070447158]
+material_override = ExtResource("28_8uj04")
+mesh = ExtResource("29_tf1f8")
+
+[node name="Combined_Material_1" type="MeshInstance3D" parent="NagaBody" unique_id=605684140]
+material_override = ExtResource("30_qrmjm")
+mesh = ExtResource("31_b16nb")
+
+[node name="Combined_Material_2" type="MeshInstance3D" parent="NagaBody" unique_id=1339532800]
+material_override = ExtResource("32_juvmi")
+mesh = ExtResource("33_840ak")
+
+[node name="Combined_Material_3" type="MeshInstance3D" parent="NagaBody" unique_id=803605425]
+material_override = ExtResource("34_dgh4p")
+mesh = ExtResource("35_x4xfn")
+
+[node name="NagaHead" type="Node3D" parent="." unique_id=1488227852]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.36, -0.02)
+
+[node name="Snout" type="MeshInstance3D" parent="NagaHead" unique_id=1216717303]
+transform = Transform3D(0.115, 0, 0, 0, 0.075, 0, 0, 0, 0.16, 0, 0.215, -0.28)
+material_override = ExtResource("28_8uj04")
+mesh = ExtResource("4_mjx04")
+
+[node name="LowerJaw" type="MeshInstance3D" parent="NagaHead" unique_id=549010861]
+transform = Transform3D(0.1, 0, 0, 0, 0.054, 0, 0, 0, 0.15, 0, 0.172, -0.265)
+material_override = ExtResource("32_juvmi")
+mesh = ExtResource("4_mjx04")
+
+[node name="Chin" type="MeshInstance3D" parent="NagaHead" unique_id=284440984]
+transform = Transform3D(0.07, 0, 0, 0, 0.036, 0, 0, 0, 0.092, 0, 0.146, -0.3)
+material_override = ExtResource("34_dgh4p")
+mesh = ExtResource("4_mjx04")
+
+[node name="MouthGap" type="MeshInstance3D" parent="NagaHead" unique_id=1353751385]
+transform = Transform3D(0.083, 0, 0, 0, 0.014, 0, 0, 0, 0.112, 0, 0.196, -0.348)
+material_override = ExtResource("36_jnrs5")
+mesh = ExtResource("4_mjx04")
+
+[node name="CheekFin-1_0" type="MeshInstance3D" parent="NagaHead" unique_id=2087887810]
+material_override = ExtResource("19_pxdxx")
+mesh = ExtResource("37_4g8c4")
+
+[node name="CheekFin1_0" type="MeshInstance3D" parent="NagaHead" unique_id=368240078]
+material_override = ExtResource("19_pxdxx")
+mesh = ExtResource("38_3v447")
+
+[node name="CrestSpike" type="MeshInstance3D" parent="NagaHead" unique_id=1494398880]
+material_override = ExtResource("39_yhtj0")
+mesh = ExtResource("40_7stnk")
+
+[node name="CrestFin" type="MeshInstance3D" parent="NagaHead" unique_id=1496297034]
+material_override = ExtResource("19_pxdxx")
+mesh = ExtResource("41_ygvfy")
+
+[node name="Combined_Material_0" type="MeshInstance3D" parent="NagaHead" unique_id=975370137]
+material_override = ExtResource("15_ioip1")
+mesh = ExtResource("42_12xwo")
+
+[node name="Combined_Material_1" type="MeshInstance3D" parent="NagaHead" unique_id=544765188]
+material_override = ExtResource("30_qrmjm")
+mesh = ExtResource("43_wloi6")
+
+[node name="Combined_Material_2" type="MeshInstance3D" parent="NagaHead" unique_id=1156524373]
+material_override = ExtResource("44_rhdm4")
+mesh = ExtResource("45_1la68")
+
+[node name="Combined_Material_3" type="MeshInstance3D" parent="NagaHead" unique_id=1929253083]
+material_override = ExtResource("46_deabq")
+mesh = ExtResource("47_32cs5")
+
+[node name="Combined_Material_4" type="MeshInstance3D" parent="NagaHead" unique_id=1364813370]
+material_override = ExtResource("48_u5hwt")
+mesh = ExtResource("49_a8dwd")
+
+[node name="Combined_Material_5" type="MeshInstance3D" parent="NagaHead" unique_id=514579974]
+material_override = ExtResource("50_w480a")
+mesh = ExtResource("51_51v7w")
+
+[node name="Combined_Material_6" type="MeshInstance3D" parent="NagaHead" unique_id=80354249]
+material_override = ExtResource("52_kgtdj")
+mesh = ExtResource("53_t75ad")
+
+[node name="Combined_Material_7" type="MeshInstance3D" parent="NagaHead" unique_id=503918469]
+material_override = ExtResource("54_m2snt")
+mesh = ExtResource("55_1jagd")
+
+[node name="Combined_Material_8" type="MeshInstance3D" parent="NagaHead" unique_id=774295309]
+material_override = ExtResource("21_1fks5")
+mesh = ExtResource("56_r6jrx")
+
+[node name="Combined_Material_9" type="MeshInstance3D" parent="NagaHead" unique_id=2112032238]
+material_override = ExtResource("17_73rxl")
+mesh = ExtResource("57_pl808")
+
+[node name="Mane" type="Node3D" parent="." unique_id=674804376]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.52, 0.04)
+
+[node name="Combined_Material_0" type="MeshInstance3D" parent="Mane" unique_id=161569651]
+material_override = ExtResource("58_f7xe0")
+mesh = ExtResource("59_2exxs")
+
+[node name="Combined_Material_1" type="MeshInstance3D" parent="Mane" unique_id=164975164]
+material_override = ExtResource("60_jh2sm")
+mesh = ExtResource("61_0kl6x")
+
+[node name="Combined_Material_2" type="MeshInstance3D" parent="Mane" unique_id=1049975343]
+material_override = ExtResource("52_kgtdj")
+mesh = ExtResource("62_kkpwh")
+
+[node name="Blossoms" type="Node3D" parent="." unique_id=1350656146]
+
+[node name="Blossom0" type="Node3D" parent="Blossoms" unique_id=365873409]
+transform = Transform3D(0.50899786, 0, 0.2780668, 0, 0.58, 0, -0.2780668, 0, 0.50899786, 0.15, 1.305, -0.105)
+
+[node name="Heart" type="MeshInstance3D" parent="Blossoms/Blossom0" unique_id=847443740]
+transform = Transform3D(0.045, 0, 0, 0, 0.03, 0, 0, 0, 0.045, 0, 0.02, 0)
+material_override = ExtResource("3_av7mf")
+mesh = ExtResource("4_mjx04")
+
+[node name="Combined_Material_0" type="MeshInstance3D" parent="Blossoms/Blossom0" unique_id=1702461041]
+material_override = ExtResource("13_ulqw0")
+mesh = ExtResource("63_h2i3d")
+
+[node name="Combined_Material_1" type="MeshInstance3D" parent="Blossoms/Blossom0" unique_id=811985300]
+material_override = ExtResource("11_kp5ph")
+mesh = ExtResource("64_nmii1")
+
+[node name="Blossom1" type="Node3D" parent="Blossoms" unique_id=827320012]
+transform = Transform3D(0.32323718, 0, -0.40732998, 0, 0.52, 0, 0.40732998, 0, 0.32323718, -0.155, 1.255, -0.055)
+
+[node name="Heart" type="MeshInstance3D" parent="Blossoms/Blossom1" unique_id=1002142930]
+transform = Transform3D(0.045, 0, 0, 0, 0.03, 0, 0, 0, 0.045, 0, 0.02, 0)
+material_override = ExtResource("3_av7mf")
+mesh = ExtResource("4_mjx04")
+
+[node name="Combined_Material_0" type="MeshInstance3D" parent="Blossoms/Blossom1" unique_id=1977883059]
+material_override = ExtResource("13_ulqw0")
+mesh = ExtResource("63_h2i3d")
+
+[node name="Combined_Material_1" type="MeshInstance3D" parent="Blossoms/Blossom1" unique_id=1843369580]
+material_override = ExtResource("11_kp5ph")
+mesh = ExtResource("64_nmii1")
+
+[node name="Blossom2" type="Node3D" parent="Blossoms" unique_id=2034451852]
+transform = Transform3D(0.45083064, 0, 0.09138789, 0, 0.46, 0, -0.09138789, 0, 0.45083064, 0.315, 0.5, 0.06)
+
+[node name="Heart" type="MeshInstance3D" parent="Blossoms/Blossom2" unique_id=1323732855]
+transform = Transform3D(0.045, 0, 0, 0, 0.03, 0, 0, 0, 0.045, 0, 0.02, 0)
+material_override = ExtResource("3_av7mf")
+mesh = ExtResource("4_mjx04")
+
+[node name="Combined_Material_0" type="MeshInstance3D" parent="Blossoms/Blossom2" unique_id=1164219010]
+material_override = ExtResource("13_ulqw0")
+mesh = ExtResource("63_h2i3d")
+
+[node name="Combined_Material_1" type="MeshInstance3D" parent="Blossoms/Blossom2" unique_id=490056974]
+material_override = ExtResource("11_kp5ph")
+mesh = ExtResource("64_nmii1")
+
+[node name="Blossom3" type="Node3D" parent="Blossoms" unique_id=1937398034]
+transform = Transform3D(0.117699504, 0, 0.4239656, 0, 0.44, 0, -0.4239656, 0, 0.117699504, -0.39, 0.455, 0.18)
+
+[node name="Heart" type="MeshInstance3D" parent="Blossoms/Blossom3" unique_id=1738157653]
+transform = Transform3D(0.045, 0, 0, 0, 0.03, 0, 0, 0, 0.045, 0, 0.02, 0)
+material_override = ExtResource("3_av7mf")
+mesh = ExtResource("4_mjx04")
+
+[node name="Combined_Material_0" type="MeshInstance3D" parent="Blossoms/Blossom3" unique_id=159835162]
+material_override = ExtResource("13_ulqw0")
+mesh = ExtResource("63_h2i3d")
+
+[node name="Combined_Material_1" type="MeshInstance3D" parent="Blossoms/Blossom3" unique_id=835773077]
+material_override = ExtResource("11_kp5ph")
+mesh = ExtResource("64_nmii1")
+
+[node name="Miasma" type="Node3D" parent="." unique_id=1696880775]
+
+[node name="Combined_Material_0" type="MeshInstance3D" parent="Miasma" unique_id=370738873]
+material_override = ExtResource("65_ljhkj")
+mesh = ExtResource("66_1dy2u")
+
+[node name="Combined_Material_1" type="MeshInstance3D" parent="Miasma" unique_id=1807175307]
+material_override = ExtResource("67_nfqdk")
+mesh = ExtResource("68_igarn")
+
+[node name="Combined_Material_2" type="MeshInstance3D" parent="Miasma" unique_id=49100061]
+material_override = ExtResource("50_w480a")
+mesh = ExtResource("69_xvw2e")
+
+[node name="MiasmaLight" type="OmniLight3D" parent="." unique_id=868616440]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0.08)
+light_color = Color(0.6901961, 0.41960785, 1, 1)
+light_energy = 0.46
+omni_range = 2.8

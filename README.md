@@ -97,12 +97,12 @@ file. No external asset tools are required.
 - **R** restores the opening position, angle, and zoom.
 - **Left click** a unit from either team to select or inspect it. Click empty space or press **Esc** to clear selection.
 - During the active team's turn, **click a gold-ringed hex** to move the selected unit up to three hexes in one move. Gold rings mark every empty destination reachable within three steps; units cannot move through occupied hexes or off the field.
-- **Spirit Pulse / Attack** (Lantern), **Mirage Rush / Attack** (Kitsune), or **Lotus Ward / Attack** (Lotus Guardian) enters targeting mode. Click a red-ringed enemy within three hexes to deal one damage. **Cancel Attack** exits targeting without spending the attack; **Esc** clears selection. Invalid targets spend no action.
+- **Spirit Pulse / Attack** (Lantern), **Mirage Rush / Attack** (Kitsune), **Lotus Ward / Attack** (Lotus Guardian), or **Miasma Cloud / Attack** (Shadow Naga) enters targeting mode. Click a red-ringed enemy within three hexes to deal one damage. **Cancel Attack** exits targeting without spending the attack; **Esc** clears selection. Invalid targets spend no action.
 - **End Turn** hands local control to the other team, even if actions remain. Jade starts.
-- Defeating a team's last surviving unit ends the battle and displays the winner. Movement, attacks, selection, and turn changes stop. Choose **Restart Encounter** (or press Enter with the button focused) to restore the starting encounter, including all six units at full health, Jade's first turn, and the opening camera.
+- Defeating a team's last surviving unit ends the battle and displays the winner. Movement, attacks, selection, and turn changes stop. Choose **Restart Encounter** (or press Enter with the button focused) to restore the starting encounter, including all eight units at full health, Jade's first turn, and the opening camera.
 
-Each team fields a Lantern Spirit, a Celestial Kitsune, and a Lotus Guardian across
-two starting ranks. Each has a team-colored base plus a team/name label and visible health. Every unit starts with **3 HP**; health persists between turns. A unit at zero health is removed and its hex becomes available. Selection adds a gold ground
+Each team fields a Lantern Spirit, a Celestial Kitsune, a Lotus Guardian, and a
+Shadow Naga across two starting ranks. Each has a team-colored base plus a team/name label and visible health. Every unit starts with **3 HP**; health persists between turns. A unit at zero health is removed and its hex becomes available. Selection adds a gold ground
 ring and overhead pointer, while the top-right panel names the selected unit.
 Only one unit is selected at a time; both teams can be inspected. Only the active
 team can act. Each unit can move once and attack once, in either order, per
@@ -111,10 +111,10 @@ turn clears selection and refreshes only the incoming team's actions. The panel
 shows the turn, active team, and selected unit's remaining actions. Both teams
 are controlled locally; there is no AI or networking.
 
-`scenes/units/skirmish.tscn` holds the six editable starting positions and team
+`scenes/units/skirmish.tscn` holds the eight editable starting positions and team
 assignments. `scenes/units/lantern_spirit.tscn`,
-`scenes/units/celestial_kitsune.tscn`, and `scenes/units/lotus_guardian.tscn`
-are the reusable units; their `team` and `unit_number` properties also update
+`scenes/units/celestial_kitsune.tscn`, `scenes/units/lotus_guardian.tscn`, and
+`scenes/units/shadow_naga.tscn` are the reusable units; their `team` and `unit_number` properties also update
 their bases and labels in the editor. Selection
 uses 3D collision picking on physics layer 2, with hex ground picking on layer 1.
 
@@ -283,3 +283,36 @@ godot --headless --path . --script tools/build_lotus_guardian.gd
 
 This overwrites only `scenes/units/lotus_guardian_visual.tscn` and its generated
 external resources. No rebuild is needed to play.
+
+## Shadow Naga
+
+The Shadow Naga follows the lower-left concept in `references/sw_concept_2.png`:
+a serpentine jungle spirit steeped in miasma. A deep indigo and violet scaled coil
+rises into an ivory-bellied dragon neck and horned head with glowing gold eyes, a
+swept purple mane, a gold collar and a crimson throat tassel. Pink lotus blossoms
+drift near the neck and over a mossy ring of paving stones, while translucent violet
+miasma trails curl around the coil. All geometry is native editable meshes referenced
+from `scenes/units/shadow_naga_visual.tscn`; the body, head, mane, blossoms and miasma
+merge by material so each animated group stays a few saved meshes. The body breathes
+and sways, the head and mane move independently, the miasma drifts, the blossoms bob
+and the light pulses. No imported textures or runtime mesh generation are needed.
+
+Each team starts with one Shadow Naga in slot 04. It retains the shared three HP,
+three-hex movement and attack range, and one move plus one attack per turn. Its attack,
+**Miasma Cloud**, spits three venom motes toward the selected enemy, then blooms a low,
+churning green toxic cloud with rising spores, an impact ring and a green flash.
+`materials/shadow_miasma.gdshader` supplies the animated translucent fog in the
+project's Compatibility renderer. The effect deals one damage and cleans itself up
+even after a lethal hit.
+
+`shadow_naga.tscn` inherits the shared pawn scene with its own picking volume, label
+heights, and visual. `scripts/shadow_naga.gd` adds animation and the miasma effect;
+the common controller still validates all movement, targeting, turns, and damage. To
+regenerate only the editable visual after changing its authoring source:
+
+```sh
+godot --headless --path . --script tools/build_shadow_naga.gd
+```
+
+This overwrites only `scenes/units/shadow_naga_visual.tscn` and its generated external
+resources. No rebuild is needed to play.
